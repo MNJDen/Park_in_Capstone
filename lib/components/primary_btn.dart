@@ -16,7 +16,7 @@ class PRKPrimaryBtn extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: blueColor,
           foregroundColor: whiteColor,
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 16.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
