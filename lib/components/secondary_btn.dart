@@ -16,7 +16,7 @@ class PRKSecondaryBtn extends StatelessWidget {
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: blueColor),
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 16.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
