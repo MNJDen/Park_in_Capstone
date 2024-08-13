@@ -69,6 +69,7 @@ class _PRKFormFieldState extends State<PRKFormField> {
       ), 
       decoration: InputDecoration(
         prefixIcon: Icon(
+          size: 20,
           widget.prefixIcon,
           color: _isFocused ? blueColor : blackColor,
         ),
