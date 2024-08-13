@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/screens/sign_in_student_employee.dart';
 import 'package:park_in/screens/test.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           ).copyWith(
             colorScheme: ThemeData().colorScheme.copyWith(primary: blueColor),
           ),
-          home: const testScreen(),
+          home: SignInScreen(),
         );
       },
     );
