@@ -88,7 +88,7 @@ class SignUpMainScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 20.h),
+                padding: EdgeInsets.only(bottom: 40.h),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
