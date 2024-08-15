@@ -10,6 +10,7 @@ class PRKFormField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final bool? enable;
   final bool obscureText; // Add this property
+  final TextInputType? keyboardType; // Add this property
 
   PRKFormField({
     required this.prefixIcon,
@@ -19,6 +20,7 @@ class PRKFormField extends StatefulWidget {
     this.validator,
     this.enable,
     this.obscureText = false, // Set default value to false
+    this.keyboardType, // Set default value to null
   });
 
   @override
@@ -63,11 +65,14 @@ class _PRKFormFieldState extends State<PRKFormField> {
       enabled: widget.enable,
       focusNode: _focusNode,
       obscureText: _obscureText,
+      keyboardType: widget.keyboardType, // Add this line
       style: TextStyle(
         fontSize: 12.r,
         color: blackColor,
-      ), 
+      ),
       decoration: InputDecoration(
+        filled: true, 
+        fillColor: whiteColor,
         prefixIcon: Icon(
           size: 20,
           widget.prefixIcon,
