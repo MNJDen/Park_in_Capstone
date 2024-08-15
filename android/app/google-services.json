@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "66482745641",
+    "project_id": "park-in-capstone",
+    "storage_bucket": "park-in-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66482745641:android:84bfff87d8a0b466504738",
+        "android_client_info": {
+          "package_name": "com.example.park_in"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYzAJlXw5bFwMU-BWoxNnK57bBFdixVdg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
