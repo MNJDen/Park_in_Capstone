@@ -5,6 +5,8 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
+import 'package:park_in/services/auth/Auth_Service.dart';
 
 class SignInAdminScreen extends StatefulWidget {
   const SignInAdminScreen({super.key});
@@ -16,6 +18,85 @@ class SignInAdminScreen extends StatefulWidget {
 class _SignInAdminScreenState extends State<SignInAdminScreen> {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
+
+  void login(BuildContext context) async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailPassword(
+        _emailCtrl.text,
+        _passwordCtrl.text,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Color.fromRGBO(34, 109, 34, 1),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle_rounded,
+                color: Color.fromRGBO(49, 255, 49, 1),
+              ),
+              SizedBox(
+                width: 4.w,
+              ),
+              Flexible(
+                child: Text(
+                  'Sign In Successful!', // Use the cleaned error message here
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        String errorMessage;
+        if (e is AuthServiceException) {
+          errorMessage = e.message;
+        } else {
+          errorMessage = 'An unknown error occurred';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            width: MediaQuery.of(context).size.width * 0.95,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Color.fromRGBO(59, 23, 23, 1),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_rounded,
+                  color: Color.fromRGBO(255, 49, 49, 1),
+                ),
+                SizedBox(
+                  width: 4.w,
+                ),
+                Flexible(
+                  child: Text(
+                    errorMessage, // Use the cleaned error message here
+                    style: TextStyle(
+                      color: whiteColor,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +165,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
               ),
               PRKPrimaryBtn(
                 label: "Sign In",
-                onPressed: () {},
+                onPressed: () => login(context),
               ),
               SizedBox(
                 height: 8.h,
@@ -123,7 +204,28 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
               PRKSecondaryBtn(
                 label: "Continue as a Student/Employee",
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation1,
+                          Animation<double> animation2) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                              CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                          child: const Material(
+                            elevation: 5,
+                            child: SignInScreen(),
+                          ),
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
               ),
             ],
