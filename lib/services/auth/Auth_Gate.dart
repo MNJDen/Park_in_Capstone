@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:park_in/screens/sign in/sign_in_admin.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/screens/test.dart';
 
 class AuthGate extends StatelessWidget {
@@ -15,7 +16,7 @@ class AuthGate extends StatelessWidget {
           if (snapshot.hasData) {
             return const testScreen();
           } else {
-            return const SignInAdminScreen();
+            return const SignInScreen();
           }
         },
       ),
