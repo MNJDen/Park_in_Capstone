@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
@@ -125,7 +124,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                 height: 88.h,
               ),
               Text(
-                "Welcome",
+                "Welcome Back!",
                 style: TextStyle(
                   color: blueColor,
                   fontSize: 24.r,
