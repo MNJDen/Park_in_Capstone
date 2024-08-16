@@ -4,7 +4,8 @@ import 'package:park_in/components/back_btn.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
-import 'package:park_in/screens/sign%20up/sign%20up%20student/page_indicator.dart';
+import 'package:park_in/screens/sign%20up/sign%20up%20employee/page_indicator_employee.dart';
+import 'package:park_in/screens/sign%20up/sign%20up%20student/page_indicator_student.dart';
 
 class SignUpMainScreen extends StatelessWidget {
   const SignUpMainScreen({super.key});
@@ -69,7 +70,7 @@ class SignUpMainScreen extends StatelessWidget {
                                   .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
-                                child: PageIndicator(),
+                                child: PageIndicatorStudent(),
                               ),
                             );
                           },
@@ -83,7 +84,30 @@ class SignUpMainScreen extends StatelessWidget {
                   ),
                   PRKSecondaryBtn(
                     label: "I'm an Employee",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: const Material(
+                                elevation: 5,
+                                child: PageIndicatorEmployee(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
