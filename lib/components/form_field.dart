@@ -37,7 +37,7 @@ class _PRKFormFieldState extends State<PRKFormField> {
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
-    _obscureText = widget.obscureText; // Initialize _obscureText with widget.obscureText
+    _obscureText = widget.obscureText;
   }
 
   @override
@@ -65,13 +65,13 @@ class _PRKFormFieldState extends State<PRKFormField> {
       enabled: widget.enable,
       focusNode: _focusNode,
       obscureText: _obscureText,
-      keyboardType: widget.keyboardType, // Add this line
+      keyboardType: widget.keyboardType,
       style: TextStyle(
         fontSize: 12.r,
         color: blackColor,
       ),
       decoration: InputDecoration(
-        filled: true, 
+        filled: true,
         fillColor: whiteColor,
         prefixIcon: Icon(
           size: 20,
