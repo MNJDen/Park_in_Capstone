@@ -41,6 +41,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
