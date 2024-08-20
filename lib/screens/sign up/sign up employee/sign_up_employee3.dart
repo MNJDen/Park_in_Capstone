@@ -45,6 +45,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +110,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                     color: blackColor,
                   ),
                   suggestionsDecoration: SuggestionDecoration(
-                    elevation: 15,
+                      elevation: 15,
                       color: whiteColor,
                       selectionColor: Color.fromRGBO(45, 49, 250, 0.2),
                       borderRadius: BorderRadius.circular(10)),
