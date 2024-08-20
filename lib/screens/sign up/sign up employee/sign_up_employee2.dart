@@ -41,6 +41,7 @@ class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +111,7 @@ class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
                   keyboardType: TextInputType.numberWithOptions(
                       signed: true, decimal: true),
                   inputDecoration: InputDecoration(
-                    filled: true, 
+                    filled: true,
                     fillColor: whiteColor,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
