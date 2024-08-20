@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/components/bottom_nav_bar_student.dart';
 import 'package:park_in/screens/sign%20in/sign_in_admin.dart';
 import 'package:park_in/screens/sign%20up/sign_up_main.dart';
 
@@ -25,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,9 +141,58 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(
                 height: 204.h,
               ),
-              PRKPrimaryBtn(
-                label: "Sign In",
-                onPressed: () {},
+              GestureDetector(
+                onLongPress: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation1,
+                          Animation<double> animation2) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                              CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                          child: const Material(
+                            elevation: 5,
+                            child: BottomNavBarEmployee(),
+                          ),
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
+                },
+                child: PRKPrimaryBtn(
+                  label: "Sign In",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (BuildContext context,
+                            Animation<double> animation1,
+                            Animation<double> animation2) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(1, 0),
+                              end: Offset.zero,
+                            ).animate(CurveTween(
+                                    curve: Curves.fastEaseInToSlowEaseOut)
+                                .animate(animation1)),
+                            child: const Material(
+                              elevation: 5,
+                              child: BottomNavBarStudent(),
+                            ),
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 400),
+                      ),
+                    );
+                  },
+                ),
               ),
               SizedBox(
                 height: 8.h,

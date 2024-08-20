@@ -1,43 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:park_in/providers/user_data_provider.dart';
 
-class SignUpStudentScreen2 extends StatefulWidget {
-  const SignUpStudentScreen2({super.key});
+class SignUpEmployeeScreen2 extends StatefulWidget {
+  const SignUpEmployeeScreen2({super.key});
 
   @override
-  State<SignUpStudentScreen2> createState() => _SignUpStudentScreen2State();
+  State<SignUpEmployeeScreen2> createState() => _SignUpEmployeeScreen2State();
 }
 
-class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
+class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TextEditingController _controller;
+  final TextEditingController _controller = TextEditingController();
   String initialCountry = 'PH';
   PhoneNumber number = PhoneNumber(isoCode: 'PH');
   bool _isFocused = false;
-  late FocusNode _focusNode;
+  late FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    final userData =
-        Provider.of<UserDataProvider>(context, listen: false).userData;
-    _controller = TextEditingController(text: userData.phoneNumber ?? '');
-    _focusNode = FocusNode()..addListener(_onFocusChange);
-
-    // Add listener to update the phone number in UserDataProvider
-    _controller.addListener(() {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(phoneNumber: _controller.text);
-    });
+    _focusNode.addListener(_onFocusChange);
   }
 
-  @override
   void dispose() {
-    _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -59,7 +46,9 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 28.h),
+              SizedBox(
+                height: 28.h,
+              ),
               Text(
                 "What’s your number?",
                 style: TextStyle(
@@ -68,7 +57,9 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 4.h),
+              SizedBox(
+                height: 4.h,
+              ),
               Text(
                 "This will serve as an additional means to notify you of any violations.",
                 style: TextStyle(
@@ -76,7 +67,9 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(
+                height: 32.h,
+              ),
               Form(
                 key: _formKey,
                 child: InternationalPhoneNumberInput(
@@ -85,7 +78,9 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   searchBoxDecoration: InputDecoration(
                     label: Text(
                       "Search for your country",
-                      style: TextStyle(fontSize: 14.r),
+                      style: TextStyle(
+                        fontSize: 14.r,
+                      ),
                     ),
                     contentPadding: EdgeInsets.all(10),
                     border: OutlineInputBorder(
@@ -98,9 +93,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   ),
                   focusNode: _focusNode,
                   onInputChanged: (PhoneNumber number) {
-                    // Update the phone number in the provider whenever it changes
-                    Provider.of<UserDataProvider>(context, listen: false)
-                        .updateUserData(phoneNumber: number.phoneNumber);
+                    print(number.phoneNumber);
                   },
                   onInputValidated: (bool value) {
                     print(value);

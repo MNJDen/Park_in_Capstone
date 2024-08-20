@@ -10,14 +10,14 @@ import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student5.d
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student6.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 
-class PageIndicator extends StatefulWidget {
-  const PageIndicator({super.key});
+class PageIndicatorStudent extends StatefulWidget {
+  const PageIndicatorStudent({super.key});
 
   @override
-  State<PageIndicator> createState() => _PageIndicatorState();
+  State<PageIndicatorStudent> createState() => _PageIndicatorStudentState();
 }
 
-class _PageIndicatorState extends State<PageIndicator> {
+class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
   final PageController _controller = PageController();
   int _currentPage = 0;
 

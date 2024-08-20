@@ -1,35 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:park_in/providers/user_data_provider.dart';
 import 'package:park_in/components/color_scheme.dart';
-import 'dart:io'; // Add this import
 
-class SignUpStudentScreen5 extends StatefulWidget {
-  const SignUpStudentScreen5({super.key});
+class SignUpEmployeeScreen6 extends StatefulWidget {
+  const SignUpEmployeeScreen6({super.key});
 
   @override
-  State<SignUpStudentScreen5> createState() => _SignUpStudentScreen5State();
+  State<SignUpEmployeeScreen6> createState() => _SignUpEmployeeScreen6State();
 }
 
-class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      // Update the provider with the image URL
-      Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(imageUrl: image.path);
-    }
-  }
-
+class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
   @override
   Widget build(BuildContext context) {
-    final imageUrl = Provider.of<UserDataProvider>(context).userData.imageUrl;
-
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -39,7 +21,9 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 28.h),
+              SizedBox(
+                height: 28.h,
+              ),
               Text(
                 "What do you look like?",
                 style: TextStyle(
@@ -48,7 +32,9 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 4.h),
+              SizedBox(
+                height: 4.h,
+              ),
               Text(
                 "Upload an image with that charming face of yours.",
                 style: TextStyle(
@@ -56,7 +42,9 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(
+                height: 32.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -75,32 +63,25 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: _pickImage,
-                              child: imageUrl == null
-                                  ? IconButton.filled(
-                                      iconSize: 20.r,
-                                      onPressed: _pickImage,
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(blueColor),
-                                      ),
-                                      icon: Icon(
-                                        Icons.add_rounded,
-                                        color: whiteColor,
-                                      ),
-                                    )
-                                  : Image.file(File(imageUrl)),
+                            IconButton.filled(
+                              iconSize: 20.r,
+                              onPressed: () {},
+                              style: const ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll(blueColor),
+                              ),
+                              icon: const Icon(
+                                Icons.add_rounded,
+                                color: whiteColor,
+                              ),
                             ),
                             Text(
-                              imageUrl == null
-                                  ? "Upload a photo"
-                                  : "Change photo",
+                              "Upload a photo",
                               style: TextStyle(
                                 fontSize: 12.r,
                                 color: blackColor,
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
