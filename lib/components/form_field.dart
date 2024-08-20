@@ -11,6 +11,7 @@ class PRKFormField extends StatefulWidget {
   final bool? enable;
   final bool obscureText; // Add this property
   final TextInputType? keyboardType; // Add this property
+  final void Function(String)? onChanged;
 
   PRKFormField({
     required this.prefixIcon,
@@ -20,7 +21,8 @@ class PRKFormField extends StatefulWidget {
     this.validator,
     this.enable,
     this.obscureText = false, // Set default value to false
-    this.keyboardType, // Set default value to null
+    this.keyboardType,
+    this.onChanged, // Set default value to null
   });
 
   @override
@@ -37,7 +39,8 @@ class _PRKFormFieldState extends State<PRKFormField> {
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
-    _obscureText = widget.obscureText; // Initialize _obscureText with widget.obscureText
+    _obscureText =
+        widget.obscureText; // Initialize _obscureText with widget.obscureText
   }
 
   @override
@@ -71,7 +74,7 @@ class _PRKFormFieldState extends State<PRKFormField> {
         color: blackColor,
       ),
       decoration: InputDecoration(
-        filled: true, 
+        filled: true,
         fillColor: whiteColor,
         prefixIcon: Icon(
           size: 20,
