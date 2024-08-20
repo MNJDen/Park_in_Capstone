@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpStudentScreen2 extends StatefulWidget {
   const SignUpStudentScreen2({super.key});
@@ -12,19 +14,30 @@ class SignUpStudentScreen2 extends StatefulWidget {
 
 class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
   String initialCountry = 'PH';
   PhoneNumber number = PhoneNumber(isoCode: 'PH');
   bool _isFocused = false;
-  late FocusNode _focusNode = FocusNode();
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_onFocusChange);
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    _controller = TextEditingController(text: userData.phoneNumber ?? '');
+    _focusNode = FocusNode()..addListener(_onFocusChange);
+
+    // Add listener to update the phone number in UserDataProvider
+    _controller.addListener(() {
+      Provider.of<UserDataProvider>(context, listen: false)
+          .updateUserData(phoneNumber: _controller.text);
+    });
   }
 
+  @override
   void dispose() {
+    _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -45,9 +58,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Text(
                 "What’s your number?",
                 style: TextStyle(
@@ -56,9 +67,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
-                height: 4.h,
-              ),
+              SizedBox(height: 4.h),
               Text(
                 "This will serve as an additional means to notify you of any violations.",
                 style: TextStyle(
@@ -66,9 +75,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(
-                height: 32.h,
-              ),
+              SizedBox(height: 32.h),
               Form(
                 key: _formKey,
                 child: InternationalPhoneNumberInput(
@@ -77,9 +84,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   searchBoxDecoration: InputDecoration(
                     label: Text(
                       "Search for your country",
-                      style: TextStyle(
-                        fontSize: 14.r,
-                      ),
+                      style: TextStyle(fontSize: 14.r),
                     ),
                     contentPadding: EdgeInsets.all(10),
                     border: OutlineInputBorder(
@@ -92,7 +97,9 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   ),
                   focusNode: _focusNode,
                   onInputChanged: (PhoneNumber number) {
-                    print(number.phoneNumber);
+                    // Update the phone number in the provider whenever it changes
+                    Provider.of<UserDataProvider>(context, listen: false)
+                        .updateUserData(phoneNumber: number.phoneNumber);
                   },
                   onInputValidated: (bool value) {
                     print(value);
@@ -110,7 +117,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   keyboardType: TextInputType.numberWithOptions(
                       signed: true, decimal: true),
                   inputDecoration: InputDecoration(
-                    filled: true, 
+                    filled: true,
                     fillColor: whiteColor,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

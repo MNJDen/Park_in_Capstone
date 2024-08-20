@@ -1,21 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpStudentScreen3 extends StatefulWidget {
-  const SignUpStudentScreen3({super.key});
+  const SignUpStudentScreen3({Key? key}) : super(key: key);
 
   @override
-  State<SignUpStudentScreen3> createState() => _SignUpStudentScreen3State();
+  State<SignUpStudentScreen3> createState() => SignUpStudentScreen3State();
 }
 
-class _SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
+class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
   final List<TextEditingController> _stickerNumberCtrls =
       <TextEditingController>[];
   final List<TextEditingController> _plateNumberCtrls =
       <TextEditingController>[];
   final List<Widget> _stickerCards = <Widget>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeFields();
+  }
+
+  void _initializeFields() {
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+
+    // Debugging: Print the existing data
+    print("Sticker Numbers: ${userData.stickerNumber}");
+    print("Plate Numbers: ${userData.plateNumber}");
+
+    // Initialize controllers with existing data
+    if (userData.stickerNumber != null && userData.plateNumber != null) {
+      for (int i = 0; i < userData.stickerNumber!.length; i++) {
+        _stickerNumberCtrls
+            .add(TextEditingController(text: userData.stickerNumber![i]));
+        _plateNumberCtrls
+            .add(TextEditingController(text: userData.plateNumber![i]));
+        _stickerCards.add(
+          StickerFormField(
+            stickerNumberCtrl: _stickerNumberCtrls[i],
+            plateNumberCtrl: _plateNumberCtrls[i],
+            stickerIndex: i + 1,
+            onDelete: _removeSticker,
+            index: i,
+            onChanged: updateProviderData,
+          ),
+        );
+      }
+    }
+  }
+
+  void _addSticker() {
+    setState(() {
+      _stickerNumberCtrls.add(TextEditingController());
+      _plateNumberCtrls.add(TextEditingController());
+
+      _stickerCards.add(
+        StickerFormField(
+          stickerNumberCtrl: _stickerNumberCtrls.last,
+          plateNumberCtrl: _plateNumberCtrls.last,
+          stickerIndex: _stickerCards.length + 1,
+          onDelete: _removeSticker,
+          index: _stickerCards.length,
+          onChanged: updateProviderData,
+        ),
+      );
+    });
+
+    updateProviderData();
+  }
+
+  void _removeSticker(int index) {
+    setState(() {
+      _stickerNumberCtrls.removeAt(index);
+      _plateNumberCtrls.removeAt(index);
+      _stickerCards.removeAt(index);
+      _updateStickerIndices();
+    });
+
+    updateProviderData();
+  }
+
+  void _updateStickerIndices() {
+    _stickerCards.clear();
+    for (int i = 0; i < _stickerNumberCtrls.length; i++) {
+      _stickerCards.add(
+        StickerFormField(
+          stickerNumberCtrl: _stickerNumberCtrls[i],
+          plateNumberCtrl: _plateNumberCtrls[i],
+          stickerIndex: i + 1,
+          onDelete: _removeSticker,
+          index: i,
+          onChanged: updateProviderData,
+        ),
+      );
+    }
+  }
+
+  void updateProviderData() {
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+
+    // Extract values from the controllers
+    final stickers =
+        _stickerNumberCtrls.map((controller) => controller.text).toList();
+    final plates =
+        _plateNumberCtrls.map((controller) => controller.text).toList();
+
+    // Update the provider with the new values
+    userDataProvider.updateUserData(
+      stickerNumber: stickers,
+      plateNumber: plates,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +128,7 @@ class _SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Text(
                 "How many stickers do you have?",
                 style: TextStyle(
@@ -38,19 +137,15 @@ class _SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
-                height: 4.h,
-              ),
+              SizedBox(height: 4.h),
               Text(
-                "You may add another sticker based on your possession. The color indicates that you are a student. ",
+                "You may add another sticker based on your possession. The color indicates that you are a student.",
                 style: TextStyle(
                   color: blackColor,
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(
-                height: 32.h,
-              ),
+              SizedBox(height: 32.h),
               for (int i = 0; i < _stickerCards.length; i++) _stickerCards[i],
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,28 +153,8 @@ class _SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
                   IconButton.filled(
                     iconSize: 30.r,
                     onPressed: () {
-                      setState(
-                        () {
-                          _stickerNumberCtrls.add(TextEditingController());
-                          _plateNumberCtrls.add(TextEditingController());
-                          _stickerCards.add(
-                            StickerFormField(
-                              stickerNumberCtrl: _stickerNumberCtrls.last,
-                              plateNumberCtrl: _plateNumberCtrls.last,
-                              stickerIndex: _stickerCards.length + 1,
-                              onDelete: (index) {
-                                setState(() {
-                                  _stickerNumberCtrls.removeAt(index);
-                                  _plateNumberCtrls.removeAt(index);
-                                  _stickerCards.removeAt(index);
-                                  _updateStickerIndices();
-                                });
-                              },
-                              index: _stickerCards.length,
-                            ),
-                          );
-                        },
-                      );
+                      _addSticker();
+                      updateProviderData();
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(yellowColor),
@@ -97,36 +172,15 @@ class _SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
       ),
     );
   }
-
-  void _updateStickerIndices() {
-    _stickerCards.clear();
-    for (int i = 0; i < _stickerNumberCtrls.length; i++) {
-      _stickerCards.add(
-        StickerFormField(
-          stickerNumberCtrl: _stickerNumberCtrls[i],
-          plateNumberCtrl: _plateNumberCtrls[i],
-          stickerIndex: i + 1,
-          onDelete: (index) {
-            setState(() {
-              _stickerNumberCtrls.removeAt(index);
-              _plateNumberCtrls.removeAt(index);
-              _stickerCards.removeAt(index);
-              _updateStickerIndices();
-            });
-          },
-          index: i,
-        ),
-      );
-    }
-  }
 }
 
 class StickerFormField extends StatelessWidget {
   final TextEditingController stickerNumberCtrl;
   final TextEditingController plateNumberCtrl;
   final int stickerIndex;
-  final Function(int) onDelete; // Change the type of onDelete to Function(int)
+  final Function(int) onDelete;
   final int index;
+  final VoidCallback onChanged;
 
   StickerFormField({
     required this.stickerNumberCtrl,
@@ -134,6 +188,7 @@ class StickerFormField extends StatelessWidget {
     required this.stickerIndex,
     required this.onDelete,
     required this.index,
+    required this.onChanged,
   });
 
   @override
@@ -164,34 +219,33 @@ class StickerFormField extends StatelessWidget {
                     ),
                     Spacer(),
                     GestureDetector(
-                      child: Icon(Icons.highlight_remove_rounded, size: 25.r,),
-                      onTap:() => onDelete(index),
+                      child: Icon(
+                        Icons.highlight_remove_rounded,
+                        size: 25.r,
+                      ),
+                      onTap: () => onDelete(index),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 16.h,
-                ),
+                SizedBox(height: 16.h),
                 PRKFormField(
                   prefixIcon: Icons.tag_rounded,
                   labelText: "Sticker Number",
                   controller: stickerNumberCtrl,
+                  onChanged: (value) => onChanged(),
                 ),
-                SizedBox(
-                  height: 12.h,
-                ),
+                SizedBox(height: 12.h),
                 PRKFormField(
                   prefixIcon: Icons.pin_rounded,
                   labelText: "Plate Number",
                   controller: plateNumberCtrl,
+                  onChanged: (value) => onChanged(),
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(
-          height: 12.h,
-        )
+        SizedBox(height: 12.h),
       ],
     );
   }
