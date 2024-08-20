@@ -4,7 +4,6 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
-import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 
 class SignInAdminScreen extends StatefulWidget {
@@ -30,14 +29,21 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
         SnackBar(
           width: MediaQuery.of(context).size.width * 0.95,
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Color.fromRGBO(34, 109, 34, 1),
+          backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: const Color.fromRGBO(20, 255, 0, 1),
+            ),
+          ),
           content: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
                 Icons.check_circle_rounded,
-                color: Color.fromRGBO(49, 255, 49, 1),
+                color: const Color.fromRGBO(20, 255, 0, 1),
+                size: 24.r,
               ),
               SizedBox(
                 width: 4.w,
@@ -46,8 +52,9 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                 child: Text(
                   'Sign In Successful!', // Use the cleaned error message here
                   style: TextStyle(
-                    color: whiteColor,
-                    fontSize: 12.sp,
+                    color: blackColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.r,
                   ),
                 ),
               ),
@@ -68,14 +75,21 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
           SnackBar(
             width: MediaQuery.of(context).size.width * 0.95,
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color.fromRGBO(59, 23, 23, 1),
+            backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Color.fromRGBO(255, 0, 0, 1),
+              ),
+            ),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
                   Icons.error_rounded,
-                  color: Color.fromRGBO(255, 49, 49, 1),
+                  color: const Color.fromRGBO(255, 0, 0, 1),
+                  size: 24.r,
                 ),
                 SizedBox(
                   width: 4.w,
@@ -84,8 +98,9 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                   child: Text(
                     errorMessage, // Use the cleaned error message here
                     style: TextStyle(
-                      color: whiteColor,
-                      fontSize: 12.sp,
+                      color: blackColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.r,
                     ),
                   ),
                 ),
@@ -103,6 +118,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,27 +219,8 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
               PRKSecondaryBtn(
                 label: "Continue as a Student/Employee",
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pop(
                     context,
-                    PageRouteBuilder(
-                      pageBuilder: (BuildContext context,
-                          Animation<double> animation1,
-                          Animation<double> animation2) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(
-                              CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                          child: const Material(
-                            elevation: 5,
-                            child: SignInScreen(),
-                          ),
-                        );
-                      },
-                      transitionDuration: const Duration(milliseconds: 400),
-                    ),
                   );
                 },
               ),
