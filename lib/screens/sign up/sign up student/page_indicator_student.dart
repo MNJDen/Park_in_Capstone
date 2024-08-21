@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student1.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student2.dart';
@@ -7,6 +8,7 @@ import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student3.d
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student4.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student5.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student6.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class PageIndicatorStudent extends StatefulWidget {
   const PageIndicatorStudent({super.key});
@@ -19,13 +21,49 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
   final PageController _controller = PageController();
   int _currentPage = 0;
 
-  final List<Widget> _pages = [
-    SignUpStudentScreen1(),
-    SignUpStudentScreen2(),
-    SignUpStudentScreen3(),
-    SignUpStudentScreen4(),
-    SignUpStudentScreen5(),
-  ];
+  late final List<Widget> _pages;
+
+  // GlobalKey for SignUpStudentScreen3
+  final GlobalKey<SignUpStudentScreen3State> _signUpStudentScreen3Key =
+      GlobalKey<SignUpStudentScreen3State>();
+
+  final GlobalKey<SignUpStudentScreen4State> _signUpStudentScreen4Key =
+      GlobalKey<SignUpStudentScreen4State>();
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const SignUpStudentScreen1(),
+      const SignUpStudentScreen2(),
+      SignUpStudentScreen3(key: _signUpStudentScreen3Key),
+      SignUpStudentScreen4(key: _signUpStudentScreen4Key),
+      const SignUpStudentScreen5(),
+    ];
+  }
+
+  void _updateUserData() {
+    switch (_currentPage) {
+      case 0:
+        // SignUpStudentScreen1 automatically updates the provider
+        break;
+      case 1:
+        // SignUpStudentScreen2 automatically updates the provider
+        break;
+      case 2:
+        // Access the _updateProviderData method via the global key
+        final state = _signUpStudentScreen3Key.currentState;
+        state?.updateProviderData();
+        break;
+      case 3:
+        final state = _signUpStudentScreen4Key.currentState;
+        state?.updateProviderData();
+        break;
+      case 4:
+        break;
+      // Add cases for other screens as needed
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +80,14 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                   IconButton(
                     onPressed: _currentPage > 0
                         ? () {
+                            _updateUserData(); // Update before going back
                             _controller.previousPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.ease);
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
                           }
                         : () {
-                            Navigator.pop(
-                                context); // Go back to the previous page
+                            Navigator.pop(context);
                           },
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
@@ -64,9 +103,11 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                   IconButton(
                     onPressed: _currentPage < _pages.length - 1
                         ? () {
+                            _updateUserData(); // Update before going forward
                             _controller.nextPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.ease);
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
                           }
                         : () {
                             Navigator.push(
@@ -108,6 +149,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                   setState(() {
                     _currentPage = index;
                   });
+                  _updateUserData(); // Update user data when page changes
                 },
                 children: _pages,
               ),

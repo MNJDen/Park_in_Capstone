@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/primary_btn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 import 'package:park_in/components/student_eSticker.dart';
 
 class SignUpStudentScreen6 extends StatefulWidget {
@@ -12,6 +15,37 @@ class SignUpStudentScreen6 extends StatefulWidget {
 }
 
 class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
+  Future<void> _uploadData() async {
+    try {
+      final userDataProvider =
+          Provider.of<UserDataProvider>(context, listen: false);
+      final userData = userDataProvider.userData;
+
+      final userDocument = FirebaseFirestore.instance
+          .collection('User')
+          .doc(); // Create a new document
+
+      await userDocument.set({
+        'name': userData.name,
+        'userNumber': userData.userNumber,
+        'mobileNo': userData.phoneNumber,
+        'password': userData.password,
+        'profilePicture': userData.imageUrl,
+        'stickerNumber': userData.stickerNumber,
+        'plateNo': userData.plateNumber,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Data uploaded successfully!'),
+      ));
+      // Navigate to another screen or do additional processing here
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to upload data: $e'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +60,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 32.h,
-                  ),
+                  SizedBox(height: 32.h),
                   Text(
                     "Looks like you’re all set up!",
                     style: TextStyle(
@@ -37,9 +69,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
+                  SizedBox(height: 4.h),
                   Text(
                     "Since you're finished signing up, here’s your digital sticker!",
                     style: TextStyle(
@@ -50,9 +80,118 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  PRKStudenteSticker(
-                    stickerNumber: "2876",
-                    plateNumber: "NDA-1234",
+                  Container(
+                    width: 320.w,
+                    height: 175.h,
+                    decoration: BoxDecoration(
+                      color: yellowColor,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: -50,
+                          left: -60,
+                          child: Container(
+                            width: 200.w,
+                            height: 200.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: -50,
+                          right: -30,
+                          child: Container(
+                            width: 140.w,
+                            height: 140.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          left: 20,
+                          child: Text(
+                            '2876',
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontSize: 40.r,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 30,
+                          left: 20,
+                          child: Text(
+                            'NDA-1234',
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontSize: 40.r,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: -197,
+                          child: Transform.rotate(
+                            angle: -0.995398,
+                            child: Container(
+                              width: 400.w,
+                              height: 37.5.h,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: -293,
+                          child: Transform.rotate(
+                            angle: -0.995398,
+                            child: Container(
+                              width: 400.w,
+                              height: 37.5.h,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 13,
+                          right: 10,
+                          child: CircleAvatar(
+                            radius: 24,
+                            child: Image.asset(
+                              'assets/images/AdNU_Logo.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 10,
+                          left: 20,
+                          child: Text(
+                            '© 2024 Park-In. All Rights Reserved.',
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontSize: 10.r,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -60,7 +199,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
                 padding: EdgeInsets.only(bottom: 40.h),
                 child: PRKPrimaryBtn(
                   label: "Continue",
-                  onPressed: () {},
+                  onPressed: _uploadData,
                 ),
               ),
             ],
