@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:park_in/providers/user_data_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignUpStudentScreen2 extends StatefulWidget {
   const SignUpStudentScreen2({super.key});

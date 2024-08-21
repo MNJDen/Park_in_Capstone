@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student1.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student2.dart';
@@ -8,7 +7,6 @@ import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student3.d
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student4.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student5.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student6.dart';
-import 'package:park_in/providers/user_data_provider.dart';
 
 class PageIndicatorStudent extends StatefulWidget {
   const PageIndicatorStudent({super.key});
