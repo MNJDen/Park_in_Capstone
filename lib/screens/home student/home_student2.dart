@@ -49,7 +49,6 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     width: 4.w,
                   ),
                   Expanded(
-                    flex: 1,
                     child: Text(
                       "Hello, Den!",
                       style: TextStyle(
@@ -59,7 +58,6 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                       ),
                     ),
                   ),
-                  const Spacer(),
                   IconButton(
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
