@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/components/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
@@ -8,6 +9,7 @@ import 'package:park_in/components/secondary_btn.dart';
 import 'package:park_in/components/bottom_nav_bar_student.dart';
 import 'package:park_in/screens/sign%20in/sign_in_admin.dart';
 import 'package:park_in/screens/sign%20up/sign_up_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -20,6 +22,112 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _userNumberCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
 
+  Future<void> _signIn() async {
+    final userNumber = _userNumberCtrl.text.trim();
+    final password = _passwordCtrl.text.trim();
+
+    if (userNumber.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter both user number and password.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection('User')
+          .where('userNumber', isEqualTo: userNumber)
+          .where('password', isEqualTo: password)
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        // User authenticated
+        final userDoc = userSnapshot.docs.first;
+        final userType = userDoc['userType'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('userType', userType); // Save userType
+
+        // Navigate to appropriate page based on userType
+        if (userType == 'Student') {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation1,
+                  Animation<double> animation2) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                      .animate(animation1)),
+                  child: const Material(
+                    elevation: 5,
+                    child: BottomNavBarStudent(),
+                  ),
+                );
+              },
+              transitionDuration: const Duration(milliseconds: 400),
+            ),
+          );
+        } else if (userType == 'Employee') {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation1,
+                  Animation<double> animation2) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                      .animate(animation1)),
+                  child: const Material(
+                    elevation: 5,
+                    child: BottomNavBarEmployee(),
+                  ),
+                );
+              },
+              transitionDuration: const Duration(milliseconds: 400),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('User type not recognized.'),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid user number or password.'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign in: $e'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Redirect to the sign-in screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -44,9 +150,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 88.h,
-              ),
+              SizedBox(height: 88.h),
               Text(
                 "Hey There!",
                 style: TextStyle(
@@ -55,9 +159,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
-                height: 4.h,
-              ),
+              SizedBox(height: 4.h),
               Text(
                 "Enter your account credentials to continue.",
                 style: TextStyle(
@@ -65,17 +167,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(
-                height: 32.h,
-              ),
+              SizedBox(height: 32.h),
               PRKFormField(
                 prefixIcon: Icons.person_rounded,
                 labelText: "Student/Employee Number",
                 controller: _userNumberCtrl,
               ),
-              SizedBox(
-                height: 12.h,
-              ),
+              SizedBox(height: 12.h),
               PRKFormField(
                 prefixIcon: Icons.password_rounded,
                 labelText: "Password",
@@ -83,9 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 controller: _passwordCtrl,
                 obscureText: true,
               ),
-              SizedBox(
-                height: 8.h,
-              ),
+              SizedBox(height: 8.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -138,9 +234,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 204.h,
-              ),
+              SizedBox(height: 204.h),
               GestureDetector(
                 onLongPress: () {
                   Navigator.push(
@@ -168,35 +262,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
                 child: PRKPrimaryBtn(
                   label: "Sign In",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (BuildContext context,
-                            Animation<double> animation1,
-                            Animation<double> animation2) {
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(1, 0),
-                              end: Offset.zero,
-                            ).animate(CurveTween(
-                                    curve: Curves.fastEaseInToSlowEaseOut)
-                                .animate(animation1)),
-                            child: const Material(
-                              elevation: 5,
-                              child: BottomNavBarStudent(),
-                            ),
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 400),
-                      ),
-                    );
-                  },
+                  onPressed: _signIn,
                 ),
               ),
-              SizedBox(
-                height: 8.h,
-              ),
+              SizedBox(height: 8.h),
               Row(
                 children: [
                   const Expanded(
@@ -225,9 +294,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 8.h,
-              ),
+              SizedBox(height: 8.h),
               PRKSecondaryBtn(
                 label: "Continue as an Admin",
                 onPressed: () {
