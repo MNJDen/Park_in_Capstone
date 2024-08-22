@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AuthService {
   // Instance of auth & firestore
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -46,7 +48,7 @@ class AuthService {
 
       // Retrieve user data from Firestore
       DocumentSnapshot userDoc = await _firestore
-          .collection("Users")
+          .collection("Admin")
           .doc(userCredential.user!.uid)
           .get();
 
@@ -117,6 +119,8 @@ class AuthService {
 
   // Sign out
   Future<void> signOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     return await _auth.signOut();
   }
 }
