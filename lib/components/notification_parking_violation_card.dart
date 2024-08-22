@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
 
-class PRKNotificationCard extends StatelessWidget {
-  final String title;
+class PRKParkingViolationNotificationCard extends StatelessWidget {
   final String date;
-  final String description;
-  final IconData icon;
-  final Color iconColor;
 
-  PRKNotificationCard({
-    required this.title,
+  PRKParkingViolationNotificationCard({
     required this.date,
-    required this.description,
-    required this.icon,
-    required this.iconColor,
   });
 
   @override
@@ -37,8 +29,8 @@ class PRKNotificationCard extends StatelessWidget {
         children: [
           SizedBox(
             child: Icon(
-              icon,
-              color: iconColor,
+              Icons.priority_high_rounded,
+              color: parkingRedColor,
               size: 30.r,
             ),
           ),
@@ -53,7 +45,7 @@ class PRKNotificationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      title,
+                      "Parking Violation",
                       style: TextStyle(
                         fontSize: 16.r,
                         fontWeight: FontWeight.w700,
@@ -71,7 +63,7 @@ class PRKNotificationCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  description,
+                  "You just got cited a ticket. Check it on your record and settle it asap.",
                   style: TextStyle(
                     fontSize: 12.r,
                     color: blackColor,

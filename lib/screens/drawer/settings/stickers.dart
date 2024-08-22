@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/notification_announcement_card.dart';
-import 'package:park_in/components/notification_parking_violation_card.dart';
+import 'package:park_in/components/student_eSticker.dart';
 
-class NotificationStudentScreen extends StatefulWidget {
-  const NotificationStudentScreen({super.key});
+class StickersScreen extends StatefulWidget {
+  const StickersScreen({super.key});
 
   @override
-  State<NotificationStudentScreen> createState() =>
-      _NotificationStudentScreenState();
+  State<StickersScreen> createState() => _StickersScreennState();
 }
 
-class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
+class _StickersScreennState extends State<StickersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,17 +29,6 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                 alignment: Alignment.center,
                 children: [
                   Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.delete_outline_rounded,
-                        color: blackColor,
-                        size: 30.r,
-                      ),
-                    ),
-                  ),
-                  Align(
                     alignment: Alignment.centerLeft,
                     child: GestureDetector(
                       onTap: () {
@@ -56,7 +43,7 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                     ),
                   ),
                   Text(
-                    "Notifications",
+                    "Stickers",
                     style: TextStyle(
                       fontSize: 20.r,
                       color: blueColor,
@@ -66,30 +53,45 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: 28.h,
               ),
-              PRKParkingViolationNotificationCard(date: "06/27/24"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Owned Stickers",
+                    style: TextStyle(
+                      fontSize: 12.r,
+                      color: blackColor,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Add Sticker",
+                      style: TextStyle(
+                        fontSize: 12.r,
+                        color: blueColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              PRKStudenteSticker(
+                stickerNumber: "1234",
+                plateNumber: "NDA-1234",
+              ),
               SizedBox(
                 height: 12.h,
               ),
-              PRKParkingViolationNotificationCard(date: "06/26/24"),
-              SizedBox(
-                height: 12.h,
-              ),
-              PRKAnnouncementNotificationCard(
-                title: "Limitation on Parking",
-                date: "06/22/24",
-                description:
-                    "No parking on Alingal A, Alingal B, and Covered Court due to graduation rites.",
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              PRKAnnouncementNotificationCard(
-                title: "Sticker Renewal",
-                date: "06/22/24",
-                description:
-                    "After this intersession, gate pass stickers should be renewed.",
+              PRKStudenteSticker(
+                stickerNumber: "7894",
+                plateNumber: "NDA-4562",
               ),
             ],
           ),

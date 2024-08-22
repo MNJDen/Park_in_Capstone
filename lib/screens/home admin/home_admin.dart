@@ -2,19 +2,59 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/screens/home%20employee/notification_employee.dart';
-import 'package:park_in/screens/home%20employee/parking%20areas%20employee/parking_areas_4W_employee.dart';
-import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
+import 'package:park_in/screens/home%20admin/cite_ticket_admin.dart';
+import 'package:park_in/screens/home%20admin/announcement_admin.dart';
+import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_2W_admin.dart';
+import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_4W_admin.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
+import 'package:park_in/services/auth/Auth_Service.dart';
 
-class HomeEmployeeScreen1 extends StatefulWidget {
-  const HomeEmployeeScreen1({super.key});
+class HomeAdminScreen1 extends StatefulWidget {
+  const HomeAdminScreen1({super.key});
 
   @override
-  State<HomeEmployeeScreen1> createState() => _HomeEmployeeScreen1State();
+  State<HomeAdminScreen1> createState() => _HomeAdminScreen1State();
 }
 
-class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
+class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
   int value = 0;
+  bool _isLoading = false;
+
+  void logout(BuildContext context) async {
+    final authService = AuthService();
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await authService.signOut();
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                  .animate(animation1)),
+              child: const Material(
+                elevation: 5,
+                child: SignInScreen(),
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +78,9 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     borderRadius: BorderRadius.circular(100),
-                    onTap: () {},
+                    onTap: () {
+                      logout(context);
+                    },
                     child: Card(
                       elevation: 0,
                       shape: const CircleBorder(),
@@ -56,12 +98,78 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                   ),
                   Expanded(
                     child: Text(
-                      "Hello, Emmanuel!",
+                      "Hello, Admin!",
                       style: TextStyle(
                         fontSize: 20.r,
                         fontWeight: FontWeight.bold,
                         color: blackColor,
                       ),
+                    ),
+                  ),
+                  IconButton(
+                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: const Material(
+                                elevation: 5,
+                                child: CiteTicketAdminScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.receipt_outlined,
+                      color: blackColor,
+                      size: 30.r,
+                    ),
+                  ),
+                  IconButton(
+                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: const Material(
+                                elevation: 5,
+                                child: AnnouncementAdminScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.campaign_outlined,
+                      color: blackColor,
+                      size: 30.r,
                     ),
                   ),
                   IconButton(
@@ -97,39 +205,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                       size: 30.r,
                     ),
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: const Material(
-                                elevation: 5,
-                                child: NotificationEmployeeScreen(),
-                              ),
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.notifications_outlined,
-                      color: blackColor,
-                      size: 30.r,
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(
@@ -152,8 +227,8 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                     const ToggleStyle(indicatorColor: blueColor),
                 onChanged: (i) => setState(() => value = i),
               ),
-              if (value == 0) ParkingArea4WEmployee(),
-              if (value == 1) ParkingArea2W(),
+              if (value == 0) ParkingAreas4WAdmin(),
+              if (value == 1) ParkingAreas2WAdmin(),
             ],
           ),
         ),

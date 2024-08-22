@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/search_field.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';

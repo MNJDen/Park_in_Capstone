@@ -49,7 +49,6 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                     width: 4.w,
                   ),
                   Expanded(
-                    flex: 1,
                     child: Text(
                       "Hello, Emmanuel!",
                       style: TextStyle(
@@ -59,7 +58,39 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                       ),
                     ),
                   ),
-                  const Spacer(),
+                  IconButton(
+                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   PageRouteBuilder(
+                      //     pageBuilder: (BuildContext context,
+                      //         Animation<double> animation1,
+                      //         Animation<double> animation2) {
+                      //       return SlideTransition(
+                      //         position: Tween<Offset>(
+                      //           begin: const Offset(1, 0),
+                      //           end: Offset.zero,
+                      //         ).animate(CurveTween(
+                      //                 curve: Curves.fastEaseInToSlowEaseOut)
+                      //             .animate(animation1)),
+                      //         child: const Material(
+                      //           elevation: 5,
+                      //           child: NotificationEmployeeScreen(),
+                      //         ),
+                      //       );
+                      //     },
+                      //     transitionDuration: const Duration(milliseconds: 400),
+                      //   ),
+                      // );
+                    },
+                    icon: Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      color: blackColor,
+                      size: 30.r,
+                    ),
+                  ),
                   IconButton(
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
