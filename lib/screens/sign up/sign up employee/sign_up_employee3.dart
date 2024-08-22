@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:provider/provider.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpEmployeeScreen3 extends StatefulWidget {
   const SignUpEmployeeScreen3({super.key});
@@ -12,20 +14,26 @@ class SignUpEmployeeScreen3 extends StatefulWidget {
 
 class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
   final TextEditingController _searchController = TextEditingController();
-
   bool _isFocused = false;
-
-  late FocusNode _focusNode = FocusNode();
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_onFocusChange);
+
+    // Initialize focus node
+    _focusNode = FocusNode()..addListener(_onFocusChange);
+
+    // Get the stored department from the provider and set it in the search controller
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    _searchController.text = userData.department ?? '';
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -33,10 +41,6 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
-  }
-
-  void _onSuggestionTap(String suggestion) {
-    setState(() {});
   }
 
   @override
@@ -75,7 +79,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                 height: 32.h,
               ),
               Material(
-                child: SearchField(
+                child: SearchField<dynamic>(
                   focusNode: _focusNode,
                   searchInputDecoration: InputDecoration(
                     filled: true,
@@ -110,10 +114,11 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                     color: blackColor,
                   ),
                   suggestionsDecoration: SuggestionDecoration(
-                      elevation: 15,
-                      color: whiteColor,
-                      selectionColor: Color.fromRGBO(45, 49, 250, 0.2),
-                      borderRadius: BorderRadius.circular(10)),
+                    elevation: 15,
+                    color: whiteColor,
+                    selectionColor: Color.fromRGBO(45, 49, 250, 0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   searchStyle: TextStyle(
                     fontSize: 12.r,
                     color: blackColor,
@@ -139,8 +144,14 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                   ],
                   maxSuggestionsInViewPort: 6,
                   itemHeight: 40,
-                  onTap: () {
-                    _onSuggestionTap(_searchController.text);
+                  onSuggestionTap: (SearchFieldListItem<dynamic> item) {
+                    setState(() {
+                      _searchController.text = item.searchKey;
+                    });
+
+                    // Update the department in the provider
+                    Provider.of<UserDataProvider>(context, listen: false)
+                        .updateUserData(department: item.searchKey);
                   },
                 ),
               ),

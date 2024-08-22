@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpEmployeeScreen1 extends StatefulWidget {
   const SignUpEmployeeScreen1({super.key});
@@ -11,11 +13,36 @@ class SignUpEmployeeScreen1 extends StatefulWidget {
 }
 
 class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
-  final TextEditingController _nameCtrl = TextEditingController();
-  final TextEditingController _userNumberCtrl = TextEditingController();
+  late TextEditingController _nameCtrl;
+  late TextEditingController _userNumberCtrl;
 
-  bool positive = false;
   bool off = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    _nameCtrl = TextEditingController(text: userData.name ?? '');
+    _userNumberCtrl = TextEditingController(text: userData.userNumber ?? '');
+
+    _nameCtrl.addListener(() {
+      Provider.of<UserDataProvider>(context, listen: false)
+          .updateUserData(name: _nameCtrl.text);
+    });
+
+    _userNumberCtrl.addListener(() {
+      Provider.of<UserDataProvider>(context, listen: false)
+          .updateUserData(userNumber: _userNumberCtrl.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _userNumberCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +55,7 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Text(
                 "Who are you?",
                 style: TextStyle(
@@ -39,9 +64,7 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
-                height: 4.h,
-              ),
+              SizedBox(height: 4.h),
               Text(
                 "Feel free to enter your preferred nickname. This will be the name we will use to address you.",
                 style: TextStyle(
@@ -49,25 +72,19 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                   fontSize: 12.r,
                 ),
               ),
-              SizedBox(
-                height: 32.h,
-              ),
+              SizedBox(height: 32.h),
               PRKFormField(
                 prefixIcon: Icons.person_rounded,
                 labelText: "Name",
                 controller: _nameCtrl,
               ),
-              SizedBox(
-                height: 12.h,
-              ),
+              SizedBox(height: 12.h),
               PRKFormField(
                 prefixIcon: Icons.badge_rounded,
-                labelText: "Student Number",
+                labelText: "Employee Number",
                 controller: _userNumberCtrl,
               ),
-              SizedBox(
-                height: 12.h,
-              ),
+              SizedBox(height: 12.h),
               Row(
                 children: [
                   Switch(
@@ -77,16 +94,12 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                     activeTrackColor: blueColor,
                     activeColor: whiteColor,
                     onChanged: (bool value) {
-                      setState(
-                        () {
-                          off = value;
-                        },
-                      );
+                      setState(() {
+                        off = value;
+                      });
                     },
                   ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
+                  SizedBox(width: 12.w),
                   Text(
                     "I have a reserved parking space",
                     style: TextStyle(
@@ -95,7 +108,7 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -103,5 +116,3 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
     );
   }
 }
-
-const tappableTextStyle = TextStyle(color: Colors.blue);

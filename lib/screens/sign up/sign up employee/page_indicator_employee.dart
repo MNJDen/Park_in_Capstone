@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee1.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee2.dart';
@@ -8,6 +9,7 @@ import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee4
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee5.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee6.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee7.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class PageIndicatorEmployee extends StatefulWidget {
   const PageIndicatorEmployee({super.key});
@@ -20,19 +22,51 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
   final PageController _controller = PageController();
   int _currentPage = 0;
 
-  final List<Widget> _pages = [
-    SignUpEmployeeScreen1(),
-    SignUpEmployeeScreen2(),
-    SignUpEmployeeScreen3(),
-    SignUpEmployeeScreen4(),
-    SignUpEmployeeScreen5(),
-    SignUpEmployeeScreen6(),
-  ];
+  late final List<Widget> _pages;
+
+  // GlobalKey for specific screens where user data needs to be updated
+  final GlobalKey<SignUpEmployeeScreen5State> _signUpEmployeeScreen5Key =
+      GlobalKey<SignUpEmployeeScreen5State>();
+
+  final GlobalKey<SignUpEmployeeScreen4State> _signUpEmployeeScreen4Key =
+      GlobalKey<SignUpEmployeeScreen4State>();
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _pages = [
+      const SignUpEmployeeScreen1(),
+      const SignUpEmployeeScreen2(),
+      const SignUpEmployeeScreen3(),
+      SignUpEmployeeScreen4(key: _signUpEmployeeScreen4Key),
+      SignUpEmployeeScreen5(key: _signUpEmployeeScreen5Key),
+      const SignUpEmployeeScreen6(),
+    ];
+  }
+
+  void _updateUserData() {
+    switch (_currentPage) {
+      case 0:
+        // SignUpEmployeeScreen1 automatically updates the provider
+        break;
+      case 1:
+        // SignUpEmployeeScreen2 automatically updates the provider
+        break;
+      case 2:
+        // Access the _updateProviderData method via the global key
+        break;
+      case 3:
+        final state = _signUpEmployeeScreen4Key.currentState;
+        state?.updateProviderData();
+        break;
+      case 4:
+        final state = _signUpEmployeeScreen5Key.currentState;
+        state?.updateProviderData();
+        break;
+      case 5:
+        break;
+      // Add cases for other screens as needed
+    }
   }
 
   @override
@@ -50,9 +84,11 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
                   IconButton(
                     onPressed: _currentPage > 0
                         ? () {
+                            _updateUserData(); // Update before going back
                             _controller.previousPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.ease);
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
                           }
                         : () {
                             Navigator.pop(context);
@@ -71,9 +107,11 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
                   IconButton(
                     onPressed: _currentPage < _pages.length - 1
                         ? () {
+                            _updateUserData(); // Update before going forward
                             _controller.nextPage(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.ease);
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
                           }
                         : () {
                             Navigator.push(
@@ -115,6 +153,7 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
                   setState(() {
                     _currentPage = index;
                   });
+                  _updateUserData(); // Update user data when page changes
                 },
                 children: _pages,
               ),
@@ -134,7 +173,7 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       height: 10.h,
       width: isActive ? 20.w : 10.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
