@@ -4,7 +4,9 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/screens/test.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInAdminScreen extends StatefulWidget {
   const SignInAdminScreen({super.key});
@@ -25,6 +27,11 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
         _emailCtrl.text,
         _passwordCtrl.text,
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userType', 'Admin'); // Store user type
+      await prefs.setBool('isLoggedIn', true); // Store login status
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           width: MediaQuery.of(context).size.width * 0.95,
@@ -61,6 +68,11 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
             ],
           ),
         ),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => testScreen()),
       );
     } catch (e) {
       if (mounted) {
@@ -179,9 +191,10 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                 height: 228.h,
               ),
               PRKPrimaryBtn(
-                label: "Sign In",
-                onPressed: () => login(context),
-              ),
+                  label: "Sign In",
+                  onPressed: () {
+                    login(context);
+                  }),
               SizedBox(
                 height: 8.h,
               ),
