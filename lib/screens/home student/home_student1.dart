@@ -13,6 +13,8 @@ import 'package:park_in/screens/home%20student/parking%20areas%20student/parking
 import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
+import 'package:park_in/services/auth/Auth_Service.dart';
 
 class HomeStudentScreen1 extends StatefulWidget {
   const HomeStudentScreen1({super.key});
@@ -25,6 +27,44 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
   int value = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _isLoading = false;
+
+  void logout(BuildContext context) async {
+    final authService = AuthService();
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await authService.signOut();
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                  .animate(animation1)),
+              child: const Material(
+                elevation: 5,
+                child: SignInScreen(),
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +75,12 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
         child: Column(
           children: <Widget>[
             DrawerHeader(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bg1.png",),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Center(
                 child: Column(
                   children: [
@@ -61,7 +107,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                       "202100153",
                       style: TextStyle(
                         fontSize: 12.r,
-                        color: const Color.fromRGBO(27, 27, 27, 0.5),
+                        color: blackColor,
                       ),
                     ),
                   ],
@@ -235,9 +281,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: ReportScreen(),
@@ -270,9 +316,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: FaqsScreen(),
@@ -305,9 +351,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: AboutScreen(),
@@ -326,7 +372,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: PRKPrimaryBtn(
                 label: "Sign Out",
-                onPressed: () {},
+                onPressed: () {
+                  logout(context);
+                },
               ),
             ),
           ],
