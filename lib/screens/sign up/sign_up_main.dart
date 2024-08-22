@@ -6,6 +6,8 @@ import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/page_indicator_employee.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/page_indicator_student.dart';
+import 'package:provider/provider.dart';
+import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpMainScreen extends StatelessWidget {
   const SignUpMainScreen({super.key});
@@ -55,6 +57,8 @@ class SignUpMainScreen extends StatelessWidget {
                   PRKPrimaryBtn(
                     label: "I'm a Student",
                     onPressed: () {
+                      Provider.of<UserDataProvider>(context, listen: false)
+                          .updateUserData(usertype: "Student");
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -85,6 +89,8 @@ class SignUpMainScreen extends StatelessWidget {
                   PRKSecondaryBtn(
                     label: "I'm an Employee",
                     onPressed: () {
+                      Provider.of<UserDataProvider>(context, listen: false)
+                          .updateUserData(usertype: "Employee");
                       Navigator.push(
                         context,
                         PageRouteBuilder(
