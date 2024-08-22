@@ -4,10 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/primary_btn.dart';
+import 'package:park_in/screens/drawer/about.dart';
+import 'package:park_in/screens/drawer/faqs.dart';
+import 'package:park_in/screens/drawer/report.dart';
 import 'package:park_in/screens/home%20student/notification_student.dart';
 import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
 import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_4W_student.dart';
-import 'package:park_in/screens/account_settings.dart';
+import 'package:park_in/screens/drawer/settings/change_password.dart';
+import 'package:park_in/screens/drawer/settings/personal_details.dart';
+import 'package:park_in/screens/drawer/settings/stickers.dart';
 
 class HomeStudentScreen1 extends StatefulWidget {
   const HomeStudentScreen1({super.key});
@@ -26,6 +31,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
       key: _scaffoldKey,
       backgroundColor: bgColor,
       drawer: Drawer(
+        backgroundColor: whiteColor,
         child: Column(
           children: <Widget>[
             DrawerHeader(
@@ -64,17 +70,159 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
             ),
             Expanded(
               child: ListView(
+                physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 children: <Widget>[
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      dividerColor: Colors.transparent,
+                    ),
+                    child: ExpansionTile(
+                      childrenPadding: EdgeInsets.only(left: 12.w),
+                      expansionAnimationStyle:
+                          AnimationStyle(curve: Curves.fastLinearToSlowEaseIn),
+                      leading: Icon(
+                        Icons.manage_accounts_outlined,
+                        color: blackColor,
+                        size: 24.r,
+                      ),
+                      title: Text(
+                        'Account Settings',
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            Icons.account_box_outlined,
+                            color: blackColor,
+                            size: 24.r,
+                          ),
+                          title: Text(
+                            "Personal Details",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: blackColor,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation1,
+                                    Animation<double> animation2) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurveTween(
+                                            curve:
+                                                Curves.fastEaseInToSlowEaseOut)
+                                        .animate(animation1)),
+                                    child: const Material(
+                                      elevation: 5,
+                                      child: PersonalDetailsScreen(),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.shield_outlined,
+                            color: blackColor,
+                            size: 24.r,
+                          ),
+                          title: Text(
+                            "Change Password",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: blackColor,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation1,
+                                    Animation<double> animation2) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurveTween(
+                                            curve:
+                                                Curves.fastEaseInToSlowEaseOut)
+                                        .animate(animation1)),
+                                    child: const Material(
+                                      elevation: 5,
+                                      child: ChangePasswordScreen(),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.confirmation_num_outlined,
+                            color: blackColor,
+                            size: 24.r,
+                          ),
+                          title: Text(
+                            "Stickers",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: blackColor,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation1,
+                                    Animation<double> animation2) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurveTween(
+                                            curve:
+                                                Curves.fastEaseInToSlowEaseOut)
+                                        .animate(animation1)),
+                                    child: const Material(
+                                      elevation: 5,
+                                      child: StickersScreen(),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   ListTile(
                     leading: Icon(
-                      Icons.manage_accounts_rounded,
+                      Icons.flag_outlined,
                       color: blackColor,
                       size: 24.r,
                     ),
                     title: Text(
-                      'Account Settings',
-                      style: TextStyle(fontSize: 14.r),
+                      'Report',
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                     onTap: () {
                       Navigator.push(
@@ -87,12 +235,12 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
+                              ).animate(
+                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                      .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
-                                child: AccountSettingsScreen(),
+                                child: ReportScreen(),
                               ),
                             );
                           },
@@ -103,72 +251,37 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                   ),
                   ListTile(
                     leading: Icon(
-                      Icons.flag_rounded,
-                      color: blackColor,
-                      size: 24.r,
-                    ),
-                    title: Text(
-                      'Report',
-                      style: TextStyle(fontSize: 14.r),
-                    ),
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(
-                      //             CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                      //                 .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: AccountSettingsScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.question_mark_rounded,
+                      Icons.question_answer_outlined,
                       color: blackColor,
                       size: 24.r,
                     ),
                     title: Text(
                       'FAQs',
-                      style: TextStyle(fontSize: 14.r),
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(
-                      //             CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                      //                 .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: AccountSettingsScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(
+                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                      .animate(animation1)),
+                              child: const Material(
+                                elevation: 5,
+                                child: FaqsScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
@@ -179,31 +292,31 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                     ),
                     title: Text(
                       'About Park-in',
-                      style: TextStyle(fontSize: 14.r),
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(
-                      //             CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                      //                 .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: AccountSettingsScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(
+                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                      .animate(animation1)),
+                              child: const Material(
+                                elevation: 5,
+                                child: AboutScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
                     },
                   ),
                 ],
