@@ -25,6 +25,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
           .doc(); // Create a new document
 
       await userDocument.set({
+        'userType': userData.usertype,
         'name': userData.name,
         'userNumber': userData.userNumber,
         'mobileNo': userData.phoneNumber,

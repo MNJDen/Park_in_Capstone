@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 import 'package:park_in/components/color_scheme.dart';
-import 'dart:io'; // Add this import
+import 'dart:io';
 
 class SignUpStudentScreen5 extends StatefulWidget {
   const SignUpStudentScreen5({super.key});
