@@ -28,44 +28,40 @@ class _NotificationStudeEmployeenState
               SizedBox(
                 height: 32.h,
               ),
-              Row(
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(
-                        context,
-                      );
-                    },
-                    child: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: blackColor,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.delete_outline_rounded,
+                        color: blackColor,
+                        size: 30.r,
+                      ),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 28.h,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(
+                          context,
+                        );
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: blackColor,
+                      ),
+                    ),
+                  ),
                   Text(
                     "Notifications",
                     style: TextStyle(
-                      fontSize: 24.r,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20.r,
                       color: blueColor,
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.delete_outline_rounded,
-                      color: blackColor,
-                      size: 30,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
