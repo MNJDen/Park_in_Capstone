@@ -29,7 +29,17 @@ class SignUpMainScreen extends StatelessWidget {
                   SizedBox(
                     height: 32.h,
                   ),
-                  const PRKBackBtn(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(
+                        context,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: blackColor,
+                    ),
+                  ),
                   SizedBox(
                     height: 28.h,
                   ),
