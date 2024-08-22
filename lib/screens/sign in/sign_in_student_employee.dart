@@ -29,7 +29,39 @@ class _SignInScreenState extends State<SignInScreen> {
     if (userNumber.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please enter both user number and password.'),
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 24.r,
+              ),
+              SizedBox(
+                width: 4.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Please fill out the fields.",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       return;
@@ -97,14 +129,78 @@ class _SignInScreenState extends State<SignInScreen> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('User type not recognized.'),
+              width: MediaQuery.of(context).size.width * 0.95,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(
+                  color: Color.fromRGBO(255, 0, 0, 1),
+                ),
+              ),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_rounded,
+                    color: const Color.fromRGBO(255, 0, 0, 1),
+                    size: 24.r,
+                  ),
+                  SizedBox(
+                    width: 4.w,
+                  ),
+                  Flexible(
+                    child: Text(
+                      'User type not recognized.',
+                      style: TextStyle(
+                        color: blackColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Invalid user number or password.'),
+            width: MediaQuery.of(context).size.width * 0.95,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Color.fromRGBO(255, 0, 0, 1),
+              ),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_rounded,
+                  color: const Color.fromRGBO(255, 0, 0, 1),
+                  size: 24.r,
+                ),
+                SizedBox(
+                  width: 4.w,
+                ),
+                Flexible(
+                  child: Text(
+                    'Invalid user number or password.',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }
