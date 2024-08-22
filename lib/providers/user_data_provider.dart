@@ -7,6 +7,8 @@ class UserData {
   String? phoneNumber;
   String? password;
   String? imageUrl;
+  String? usertype;
+  String? department;
   List<String> stickerNumber;
   List<String> plateNumber;
 
@@ -16,8 +18,10 @@ class UserData {
     this.phoneNumber,
     this.password,
     this.imageUrl,
+    this.department,
     List<String>? stickerNumber,
     List<String>? plateNumber,
+    this.usertype,
   })  : stickerNumber = stickerNumber ?? [],
         plateNumber = plateNumber ?? [];
 
@@ -27,6 +31,8 @@ class UserData {
     String? phoneNumber,
     String? password,
     String? imageUrl,
+    String? usertype,
+    String? department,
     List<String>? stickerNumber,
     List<String>? plateNumber,
   }) {
@@ -36,6 +42,8 @@ class UserData {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       imageUrl: imageUrl ?? this.imageUrl,
+      usertype: usertype ?? this.usertype,
+      department: department ?? this.department,
       // Deep copy the lists to ensure immutability
       stickerNumber: stickerNumber ?? List<String>.from(this.stickerNumber),
       plateNumber: plateNumber ?? List<String>.from(this.plateNumber),
@@ -55,6 +63,8 @@ class UserDataProvider extends ChangeNotifier {
     String? phoneNumber,
     String? password,
     String? imageUrl,
+    String? usertype,
+    String? department,
     List<String>? stickerNumber,
     List<String>? plateNumber,
   }) {
@@ -64,6 +74,8 @@ class UserDataProvider extends ChangeNotifier {
       phoneNumber: phoneNumber,
       password: password,
       imageUrl: imageUrl,
+      usertype: usertype,
+      department: department,
       stickerNumber: stickerNumber,
       plateNumber: plateNumber,
     );
