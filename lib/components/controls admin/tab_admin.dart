@@ -52,6 +52,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
           Controls4WStudentAdmin(),
           Controls4WEmployeeAdmin(),
         ],
+        onChange: (index) => print(index),
       ),
     );
   }
