@@ -13,6 +13,8 @@ import 'package:park_in/screens/home%20student/parking%20areas%20student/parking
 import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeStudentScreen1 extends StatefulWidget {
   const HomeStudentScreen1({super.key});
@@ -24,6 +26,18 @@ class HomeStudentScreen1 extends StatefulWidget {
 class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
   int value = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Redirect to the sign-in screen and remove all previous routes
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+      (Route<dynamic> route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,9 +249,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: ReportScreen(),
@@ -270,9 +284,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: FaqsScreen(),
@@ -305,9 +319,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                               position: Tween<Offset>(
                                 begin: const Offset(1, 0),
                                 end: Offset.zero,
-                              ).animate(
-                                  CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                      .animate(animation1)),
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
                                 child: AboutScreen(),
@@ -326,7 +340,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: PRKPrimaryBtn(
                 label: "Sign Out",
-                onPressed: () {},
+                onPressed: () {
+                  _logout();
+                },
               ),
             ),
           ],
@@ -402,7 +418,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                   .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
-                                child: NotificationStudentScreen(),
+                                child: NotificationStudentScreen(
+                                  userType: 'Student',
+                                ),
                               ),
                             );
                           },

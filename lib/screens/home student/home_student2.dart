@@ -77,7 +77,9 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                   .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
-                                child: NotificationStudentScreen(),
+                                child: NotificationStudentScreen(
+                                  userType: 'Student',
+                                ),
                               ),
                             );
                           },
