@@ -29,7 +29,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
 
     try {
       await authService.signOut();
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         PageRouteBuilder(
           pageBuilder: (BuildContext context, Animation<double> animation1,
@@ -48,6 +48,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
           },
           transitionDuration: const Duration(milliseconds: 400),
         ),
+        (Route<dynamic> route) => false,
       );
     } finally {
       setState(() {
