@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:park_in/components/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/bottom_nav_bar_student.dart';
-import 'package:park_in/components/bottom_nav_bar_admin.dart';
-import 'package:park_in/screens/home%20admin/home_admin1.dart';
+import 'package:park_in/screens/home%20admin/home_admin.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +37,7 @@ class _AuthGateState extends State<AuthGate> {
     if (_userType == null) {
       return const SignInScreen(); // Or another initial screen
     } else if (_userType == 'Admin') {
-      return const testScreen();
+      return const HomeAdminScreen1();
     } else if (_userType == 'Student') {
       return const BottomNavBarStudent();
     } else if (_userType == 'Employee') {
