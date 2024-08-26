@@ -135,7 +135,7 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Radio(
-                            value: "Employees",
+                            value: "Employee",
                             groupValue: _selectedRadio,
                             onChanged: (value) {
                               setState(() {
