@@ -132,6 +132,9 @@ class _NotificationStudeEmployeenState
                   }
                 },
               ),
+              SizedBox(
+                height: 100.h,
+              )
             ],
           ),
         ),
