@@ -4,6 +4,7 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/screens/home%20admin/home_admin.dart';
 import 'package:park_in/screens/test.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,7 +73,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => testScreen()),
+        MaterialPageRoute(builder: (context) => HomeAdminScreen1()),
       );
     } catch (e) {
       if (mounted) {
