@@ -6,6 +6,7 @@ import 'package:park_in/components/bottom_nav_bar_student.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/firebase_options.dart';
 import 'package:park_in/providers/user_data_provider.dart';
+import 'package:park_in/screens/home%20admin/home_admin.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/screens/test.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ void main() async {
   if (isLoggedIn && userType != null) {
     switch (userType) {
       case 'Admin':
-        initialScreen = const testScreen();
+        initialScreen = const HomeAdminScreen1();
         break;
       case 'Student':
         initialScreen = const BottomNavBarStudent();
