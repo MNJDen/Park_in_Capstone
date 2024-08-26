@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/components/bottom_nav_bar_employee.dart';
+import 'package:park_in/components/bottom_nav_bar_student.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/secondary_btn.dart';
-import 'package:park_in/components/bottom_nav_bar_student.dart';
 import 'package:park_in/screens/sign%20in/sign_in_admin.dart';
 import 'package:park_in/screens/sign%20up/sign_up_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,7 +43,6 @@ class _SignInScreenState extends State<SignInScreen> {
           .get();
 
       if (userSnapshot.docs.isNotEmpty) {
-        // User authenticated
         final userDoc = userSnapshot.docs.first;
         final userType = userDoc['userType'];
 
@@ -52,55 +51,41 @@ class _SignInScreenState extends State<SignInScreen> {
         await prefs.setString('userType', userType); // Save userType
 
         // Navigate to appropriate page based on userType
+        Widget destination;
+
         if (userType == 'Student') {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (BuildContext context, Animation<double> animation1,
-                  Animation<double> animation2) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1, 0),
-                    end: Offset.zero,
-                  ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                      .animate(animation1)),
-                  child: const Material(
-                    elevation: 5,
-                    child: BottomNavBarStudent(),
-                  ),
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 400),
-            ),
-          );
+          destination = BottomNavBarStudent();
         } else if (userType == 'Employee') {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (BuildContext context, Animation<double> animation1,
-                  Animation<double> animation2) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1, 0),
-                    end: Offset.zero,
-                  ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                      .animate(animation1)),
-                  child: const Material(
-                    elevation: 5,
-                    child: BottomNavBarEmployee(),
-                  ),
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 400),
-            ),
-          );
+          destination = BottomNavBarEmployee();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('User type not recognized.'),
             ),
           );
+          return;
         }
+
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation1,
+                Animation<double> animation2) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                    .animate(animation1)),
+                child: Material(
+                  elevation: 5,
+                  child: destination,
+                ),
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 400),
+          ),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -122,9 +107,10 @@ class _SignInScreenState extends State<SignInScreen> {
     await prefs.clear();
 
     // Redirect to the sign-in screen
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => SignInScreen()),
+      (Route<dynamic> route) => false,
     );
   }
 
