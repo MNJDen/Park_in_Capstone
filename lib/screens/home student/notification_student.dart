@@ -113,6 +113,9 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                   }
                 },
               ),
+              SizedBox(
+                height: 100.h,
+              )
             ],
           ),
         ),
