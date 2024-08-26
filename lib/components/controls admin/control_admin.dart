@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:park_in/components/color_scheme.dart';
 
 class PRKControlsAdmin extends StatefulWidget {
@@ -10,7 +11,7 @@ class PRKControlsAdmin extends StatefulWidget {
   const PRKControlsAdmin({
     super.key,
     required this.parkingArea,
-    required this.count,
+    this.count = 0, // Ensure a default value if count is not provided
     required this.dotColor,
   });
 
@@ -19,6 +20,58 @@ class PRKControlsAdmin extends StatefulWidget {
 }
 
 class _PRKControlsAdminState extends State<PRKControlsAdmin> {
+  late int _currentCount;
+  late DatabaseReference _databaseReference;
+
+  // Define maximum counts for each parking area
+  final Map<String, int> _maxCounts = {
+    'Alingal': 30,
+    'Phelan': 30,
+    'Alingal A': 35,
+    'Alingal B': 13,
+    'Burns': 15,
+    'Coko Cafe': 16,
+    'Covered Court': 19,
+    'Library': 9,
+    'Alingal (M)': 80,
+    'Dolan (M)': 50,
+    'Library (M)': 80,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _currentCount = widget.count;
+    _databaseReference = FirebaseDatabase.instance
+        .ref()
+        .child('parkingAreas')
+        .child(widget.parkingArea);
+  }
+
+  void _updateCount(int change) {
+    // Calculate the new count
+    int newCount = _currentCount + change;
+
+    // Get the maximum allowed count for the parking area
+    int maxCount = _maxCounts[widget.parkingArea] ?? 0;
+
+    // Ensure count is within bounds
+    if (newCount < 0) {
+      newCount = 0; // Prevent negative counts
+    } else if (newCount > maxCount) {
+      newCount = maxCount; // Prevent exceeding max count
+    }
+
+    setState(() {
+      _currentCount = newCount;
+    });
+
+    // Update the count in the Realtime Database
+    _databaseReference.update({
+      'count': _currentCount,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,11 +107,11 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
                 icon: Icon(Icons.remove_circle_outline),
                 iconSize: 30,
                 color: blueColor,
-                onPressed: () {},
+                onPressed: () => _updateCount(-1),
               ),
               SizedBox(width: 5.w),
               Text(
-                "${widget.count}",
+                "$_currentCount",
                 style: TextStyle(
                   fontSize: 16.r,
                   color: blackColor,
@@ -70,7 +123,7 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
                 icon: Icon(Icons.add_circle_outline),
                 iconSize: 30,
                 color: blueColor,
-                onPressed: () {},
+                onPressed: () => _updateCount(1),
               ),
             ],
           ),
