@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
@@ -5,7 +6,8 @@ import 'package:park_in/components/notification_announcement_card.dart';
 import 'package:park_in/components/notification_parking_violation_card.dart';
 
 class NotificationEmployeeScreen extends StatefulWidget {
-  const NotificationEmployeeScreen({super.key});
+  final String userType;
+  const NotificationEmployeeScreen({super.key, required this.userType});
 
   @override
   State<NotificationEmployeeScreen> createState() =>
@@ -90,11 +92,49 @@ class _NotificationStudeEmployeenState
               SizedBox(
                 height: 12.h,
               ),
-              PRKAnnouncementNotificationCard(
-                title: "Sticker Renewal",
-                date: "06/22/24",
-                description:
-                    "After this intersession, gate pass stickers should be renewed.",
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Announcement')
+                    .snapshots(), // Listen to real-time updates
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error fetching announcements'));
+                  } else if (snapshot.hasData) {
+                    final announcements = snapshot.data!.docs
+                        .map((doc) => doc.data() as Map<String, dynamic>)
+                        .where((announcement) {
+                      String announcementUserType = announcement['userType'];
+                      return announcementUserType == widget.userType ||
+                          announcementUserType == 'Everyone';
+                    }).toList();
+
+                    if (announcements.isEmpty) {
+                      return Center(child: Text('No announcements available'));
+                    } else {
+                      return Column(
+                        children: announcements.map((announcement) {
+                          return Column(
+                            children: [
+                              PRKAnnouncementNotificationCard(
+                                title: announcement['title'],
+                                date: announcement['createdAt']
+                                    .toDate()
+                                    .toString()
+                                    .split(' ')[0],
+                                description: announcement['details'],
+                              ),
+                              SizedBox(height: 12.h),
+                            ],
+                          );
+                        }).toList(),
+                      );
+                    }
+                  } else {
+                    return Center(child: Text('No announcements available'));
+                  }
+                },
               ),
             ],
           ),
