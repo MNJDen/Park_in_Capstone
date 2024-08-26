@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/four%20wheels%20student/alingal_a.dart';
 import 'package:park_in/components/four%20wheels%20student/alingal_b.dart';
@@ -7,7 +8,6 @@ import 'package:park_in/components/four%20wheels%20student/burns.dart';
 import 'package:park_in/components/four%20wheels%20student/coko_cafe.dart';
 import 'package:park_in/components/four%20wheels%20student/covered_court.dart';
 import 'package:park_in/components/four%20wheels%20student/library.dart';
-
 
 class ParkingArea4WStudent extends StatefulWidget {
   const ParkingArea4WStudent({super.key});
@@ -17,6 +17,108 @@ class ParkingArea4WStudent extends StatefulWidget {
 }
 
 class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref().child('parkingAreas');
+
+  int _alingalAAvailableSpace = 0;
+  int _alingalBAvailableSpace = 0;
+  int _burnsAvailableSpace = 0;
+  int _cokoCafeAvailableSpace = 0;
+  int _coveredCourtAvailableSpace = 0;
+  int _libraryAvailableSpace = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    // Alingal A
+    _databaseReference.child('Alingal A').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _alingalAAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Alingal B
+    _databaseReference.child('Alingal B').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _alingalBAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Burns
+    _databaseReference.child('Burns').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _burnsAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Coko Cafe
+    _databaseReference.child('Coko Cafe').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _cokoCafeAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Covered Court
+    _databaseReference.child('Covered Court').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _coveredCourtAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Library
+    _databaseReference.child('Library').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _libraryAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,60 +142,72 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PRKAlingalA4WStundent(
-              parkingArea: "Alingal A",
-              availableSpace: "11",
-              image: "assets/building_images/AlingalA-4W-S.png",
-              dotColor: parkingGreenColor,
+            Expanded(
+              child: PRKAlingalA4WStundent(
+                parkingArea: "Alingal A",
+                availableSpace: _alingalAAvailableSpace.toString(),
+                image: "assets/building_images/AlingalA-4W-S.png",
+                dotColor: parkingGreenColor,
+              ),
             ),
-            PRKAlingalB4WStundent(
-              parkingArea: "Alingal B",
-              availableSpace: "28",
-              image: "assets/building_images/AlingalB-4W-S.png",
-              dotColor: parkingGreenColor,
+            Expanded(
+              child: PRKAlingalB4WStundent(
+                parkingArea: "Alingal B",
+                availableSpace: _alingalBAvailableSpace.toString(),
+                image: "assets/building_images/AlingalB-4W-S.png",
+                dotColor: parkingGreenColor,
+              ),
             ),
           ],
         ),
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PRKBurns4WStundent(
-              parkingArea: "Burns",
-              availableSpace: "01",
-              image: "assets/building_images/Burns-4W-S.png",
-              dotColor: parkingYellowColor,
+            Expanded(
+              child: PRKBurns4WStundent(
+                parkingArea: "Burns",
+                availableSpace: _burnsAvailableSpace.toString(),
+                image: "assets/building_images/Burns-4W-S.png",
+                dotColor: parkingYellowColor,
+              ),
             ),
-            PRKCoko4WStundent(
-              parkingArea: "Coko Cafe",
-              availableSpace: "20",
-              image: "assets/building_images/Coko-4W-S.png",
-              dotColor: parkingYellowColor,
+            Expanded(
+              child: PRKCoko4WStundent(
+                parkingArea: "Coko Cafe",
+                availableSpace: _cokoCafeAvailableSpace.toString(),
+                image: "assets/building_images/Coko-4W-S.png",
+                dotColor: parkingYellowColor,
+              ),
             ),
           ],
         ),
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PRKCC4WStundent(
-              parkingArea: "Covered Court",
-              availableSpace: "13",
-              image: "assets/building_images/CC-4W-S.png",
-              dotColor: parkingRedColor,
+            Expanded(
+              child: PRKCC4WStundent(
+                parkingArea: "Covered Court",
+                availableSpace: _coveredCourtAvailableSpace.toString(),
+                image: "assets/building_images/CC-4W-S.png",
+                dotColor: parkingRedColor,
+              ),
             ),
-            PRKLibrary4WStundent(
-              parkingArea: "Library",
-              availableSpace: "7",
-              image: "assets/building_images/Library-4W-S.png",
-              dotColor: parkingRedColor,
+            Expanded(
+              child: PRKLibrary4WStundent(
+                parkingArea: "Library",
+                availableSpace: _libraryAvailableSpace.toString(),
+                image: "assets/building_images/Library-4W-S.png",
+                dotColor: parkingRedColor,
+              ),
             ),
           ],
         ),

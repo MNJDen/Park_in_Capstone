@@ -1,12 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/two%20wheels/alingal.dart';
 import 'package:park_in/components/two%20wheels/dolan.dart';
 import 'package:park_in/components/two%20wheels/library.dart';
 
-class ParkingArea2W extends StatelessWidget {
+class ParkingArea2W extends StatefulWidget {
   const ParkingArea2W({super.key});
+
+  @override
+  State<ParkingArea2W> createState() => _ParkingArea2WState();
+}
+
+class _ParkingArea2WState extends State<ParkingArea2W> {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref().child('parkingAreas');
+
+  int _alingalAvailableSpace = 0;
+  int _dolanAvailableSpace = 0;
+  int _libraryAvailableSpace = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    // Alingal
+    _databaseReference.child('Alingal (M)').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _alingalAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Dolan
+    _databaseReference.child('Dolan (M)').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _dolanAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+
+    // Library
+    _databaseReference.child('Library (M)').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _libraryAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,46 +94,46 @@ class ParkingArea2W extends StatelessWidget {
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           children: [
             Expanded(
               child: PRKAlingal2W(
                 parkingArea: "Alingal",
-                availableSpace: "11",
+                availableSpace: _alingalAvailableSpace.toString(),
                 image: "assets/building_images/Alingal-2W.png",
                 dotColor: parkingGreenColor,
               ),
-            )
+            ),
           ],
         ),
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           children: [
             Expanded(
               child: PRKDolan2W(
                 parkingArea: "Dolan",
-                availableSpace: "11",
+                availableSpace: _dolanAvailableSpace.toString(),
                 image: "assets/building_images/Dolan-2W.png",
                 dotColor: parkingYellowColor,
               ),
-            )
+            ),
           ],
         ),
         SizedBox(
           height: 12.h,
         ),
-        const Row(
+        Row(
           children: [
             Expanded(
               child: PRKLibrary2W(
                 parkingArea: "Library",
-                availableSpace: "11",
+                availableSpace: _libraryAvailableSpace.toString(),
                 image: "assets/building_images/Library-2W.png",
                 dotColor: parkingRedColor,
               ),
-            )
+            ),
           ],
         ),
         SizedBox(
