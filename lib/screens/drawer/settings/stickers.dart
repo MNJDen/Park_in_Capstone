@@ -85,6 +85,7 @@ class _StickersScreennState extends State<StickersScreen> {
               PRKStudenteSticker(
                 stickerNumber: "1234",
                 plateNumber: "NDA-1234",
+                heroTag: 'a',
               ),
               SizedBox(
                 height: 12.h,
@@ -92,6 +93,7 @@ class _StickersScreennState extends State<StickersScreen> {
               PRKStudenteSticker(
                 stickerNumber: "7894",
                 plateNumber: "NDA-4562",
+                heroTag: 'b',
               ),
             ],
           ),
