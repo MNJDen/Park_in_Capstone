@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
@@ -18,6 +19,30 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
   final TextEditingController _descriptionCtrl = TextEditingController();
 
   String? _selectedRadio;
+
+  void postAnnouncement({
+    required String title,
+    required String userType,
+    required String details,
+  }) async {
+    try {
+      await FirebaseFirestore.instance.collection('Announcement').add({
+        'title': title,
+        'userType': userType,
+        'details': details,
+        'createdAt': Timestamp.now(),
+      });
+      print('Announcement posted successfully');
+      // Clear form fields after posting
+      _titleCtrl.clear();
+      _descriptionCtrl.clear();
+      setState(() {
+        _selectedRadio = null; // Reset selected radio button
+      });
+    } catch (e) {
+      print('Failed to post announcement: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +188,20 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                 padding: EdgeInsets.only(bottom: 40.h),
                 child: PRKPrimaryBtn(
                   label: "Post",
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_titleCtrl.text.isNotEmpty &&
+                        _descriptionCtrl.text.isNotEmpty &&
+                        _selectedRadio != null) {
+                      String userType = _selectedRadio!;
+                      postAnnouncement(
+                        title: _titleCtrl.text,
+                        userType: userType,
+                        details: _descriptionCtrl.text,
+                      );
+                    } else {
+                      print('Please fill in all fields');
+                    }
+                  },
                 ),
               )
             ],
