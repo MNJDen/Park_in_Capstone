@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/employee_eSticker.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpEmployeeScreen7 extends StatefulWidget {
   const SignUpEmployeeScreen7({super.key});
@@ -37,19 +39,33 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
         'plateNo': userData.plateNumber,
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Data uploaded successfully!'),
-      ));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('userType', userData.usertype ?? 'Employee');
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavBarEmployee()),
+        );
+      }
       // Navigate to another screen or do additional processing here
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to upload data: $e'),
+        behavior: SnackBarBehavior.fixed,
       ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final userDataProvider = Provider.of<UserDataProvider>(context);
+    final userData = userDataProvider.userData;
+
+    final stickers = userData.stickerNumber;
+    final plates = userData.plateNumber;
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -82,8 +98,24 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  PRKEmployeeeSticker(
-                      stickerNumber: "1234", plateNumber: "NDA-1234")
+                  Column(
+                    children: List.generate(
+                      stickers.length,
+                      (index) => Column(
+                        children: [
+                          PRKEmployeeeSticker(
+                            stickerNumber: stickers[index],
+                            plateNumber: plates[index],
+                            heroTag:
+                                'sticker_${stickers[index]}_${plates[index]}',
+                          ),
+                          if (index < stickers.length - 1)
+                            SizedBox(
+                                height: 16.h), // Add space between stickers
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Padding(
