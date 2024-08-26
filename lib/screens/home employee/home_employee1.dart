@@ -5,6 +5,8 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/screens/home%20employee/notification_employee.dart';
 import 'package:park_in/screens/home%20employee/parking%20areas%20employee/parking_areas_4W_employee.dart';
 import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
+import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeEmployeeScreen1 extends StatefulWidget {
   const HomeEmployeeScreen1({super.key});
@@ -15,6 +17,18 @@ class HomeEmployeeScreen1 extends StatefulWidget {
 
 class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
   int value = 0;
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Redirect to the sign-in screen and remove all previous routes
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+      (Route<dynamic> route) => false, // Removes all previous routes
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +52,9 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     borderRadius: BorderRadius.circular(100),
-                    onTap: () {},
+                    onTap: () {
+                      _logout();
+                    },
                     child: Card(
                       elevation: 0,
                       shape: const CircleBorder(),
@@ -116,7 +132,9 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                   .animate(animation1)),
                               child: const Material(
                                 elevation: 5,
-                                child: NotificationEmployeeScreen(),
+                                child: NotificationEmployeeScreen(
+                                  userType: 'Employee',
+                                ),
                               ),
                             );
                           },
