@@ -25,6 +25,7 @@ class HomeEmployeeScreen1 extends StatefulWidget {
 
 class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
   int value = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -347,7 +348,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
               child: PRKPrimaryBtn(
                 label: "Sign Out",
                 onPressed: () {
-                  logout(context);
+                  _logout();
                 },
               ),
             ),
