@@ -49,6 +49,14 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
         child: Column(
           children: <Widget>[
             DrawerHeader(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/images/bg1.png",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Center(
                 child: Column(
                   children: [
@@ -75,7 +83,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                       "202100153",
                       style: TextStyle(
                         fontSize: 12.r,
-                        color: const Color.fromRGBO(27, 27, 27, 0.5),
+                        color: blackColor,
                       ),
                     ),
                   ],

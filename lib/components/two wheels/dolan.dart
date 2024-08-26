@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/screens/parking%20areas/two%20wheels/dolan_2W.dart';
 
 class PRKDolan2W extends StatefulWidget {
   final String parkingArea;
@@ -51,9 +52,34 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
       onTap: () {
         if (!_animationController.isAnimating) {
           _animationController.forward(from: 0);
-          Timer(Duration(milliseconds: 350), () {
-            _animationController.reverse();
-          });
+          Timer(
+            Duration(milliseconds: 350),
+            () {
+              _animationController.reverse();
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation1,
+                      Animation<double> animation2) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(1, 0),
+                        end: Offset.zero,
+                      ).animate(
+                          CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                              .animate(animation1)),
+                      child: const Material(
+                        elevation: 5,
+                        child: Dolan2w(),
+                      ),
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 400),
+                ),
+              );
+            },
+          );
         }
       },
       child: AnimatedBuilder(
