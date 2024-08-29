@@ -10,6 +10,7 @@ import 'package:park_in/screens/drawer/report.dart';
 import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
+import 'package:park_in/screens/group_chat.dart';
 import 'package:park_in/screens/home%20employee/notification_employee.dart';
 import 'package:park_in/screens/home%20employee/parking%20areas%20employee/parking_areas_4W_employee.dart';
 import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
@@ -412,28 +413,29 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(CurveTween(
-                      //                 curve: Curves.fastEaseInToSlowEaseOut)
-                      //             .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: NotificationEmployeeScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: Material(
+                                elevation: 5,
+                                child: ChatScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
+                      NavbarNotifier.hideBottomNavBar = true;
                     },
                     icon: Icon(
                       Icons.chat_bubble_outline_rounded,
