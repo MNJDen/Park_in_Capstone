@@ -21,7 +21,7 @@ class ChatService {
 
     // check if the user is an employee, dai ni nag gagana try mo si sa providers mo igdi
     DocumentSnapshot userDoc =
-        await _firestore.collection('Users').doc(uid).get();
+        await _firestore.collection('User').doc(uid).get();
     if (userDoc.exists) {
       return userDoc['userType'];
     }
