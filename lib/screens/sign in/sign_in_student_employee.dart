@@ -77,10 +77,12 @@ class _SignInScreenState extends State<SignInScreen> {
       if (userSnapshot.docs.isNotEmpty) {
         final userDoc = userSnapshot.docs.first;
         final userType = userDoc['userType'];
+        final userId = userDoc.id;
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
-        await prefs.setString('userType', userType); // Save userType
+        await prefs.setString('userType', userType);
+        await prefs.setString('userId', userId);
 
         // Navigate to appropriate page based on userType
         Widget destination;
