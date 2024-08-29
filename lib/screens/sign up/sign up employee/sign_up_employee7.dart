@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/bottom_nav_bar_employee.dart';
@@ -23,9 +24,25 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
           Provider.of<UserDataProvider>(context, listen: false);
       final userData = userDataProvider.userData;
 
-      final userDocument = FirebaseFirestore.instance
-          .collection('User') // Use 'Employee' collection for employees
-          .doc(); // Create a new document
+      // Upload the image and get the download URL (if any)
+      String? downloadUrl;
+      if (userData.imageFile != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('User Profile Pictures')
+            .child('${userData.userNumber}.jpg');
+
+        final uploadTask = storageRef.putFile(userData.imageFile!);
+        final snapshot = await uploadTask.whenComplete(() {});
+        downloadUrl = await snapshot.ref.getDownloadURL();
+
+        // Update the userData with the download URL
+        userDataProvider.updateUserData(imageUrl: downloadUrl);
+      }
+
+      // Create a new user document in Firestore
+      final userDocument = FirebaseFirestore.instance.collection('User').doc();
+      final newUserId = userDocument.id; // Get the new user's ID
 
       await userDocument.set({
         'userType': userData.usertype,
@@ -34,13 +51,15 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
         'mobileNo': userData.phoneNumber,
         'department': userData.department,
         'password': userData.password,
-        'profilePicture': userData.imageUrl,
+        'profilePicture': downloadUrl, // Use the downloadUrl
         'stickerNumber': userData.stickerNumber,
         'plateNo': userData.plateNumber,
       });
 
+      // Save the new userId and userType in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('userId', newUserId); // Save new userId
       await prefs.setString('userType', userData.usertype ?? 'Employee');
 
       if (mounted) {
@@ -49,7 +68,6 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
           MaterialPageRoute(builder: (context) => BottomNavBarEmployee()),
         );
       }
-      // Navigate to another screen or do additional processing here
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to upload data: $e'),
