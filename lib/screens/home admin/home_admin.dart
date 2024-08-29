@@ -1,7 +1,9 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/screens/group_chat.dart';
 import 'package:park_in/screens/home%20admin/cite_ticket_admin.dart';
 import 'package:park_in/screens/home%20admin/announcement_admin.dart';
 import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_2W_admin.dart';
@@ -177,28 +179,29 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(CurveTween(
-                      //                 curve: Curves.fastEaseInToSlowEaseOut)
-                      //             .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: NotificationEmployeeScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: Material(
+                                elevation: 5,
+                                child: ChatScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
+                      NavbarNotifier.hideBottomNavBar = true;
                     },
                     icon: Icon(
                       Icons.chat_bubble_outline_rounded,
