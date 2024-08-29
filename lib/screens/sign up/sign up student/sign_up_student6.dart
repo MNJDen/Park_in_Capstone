@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/bottom_nav_bar_student.dart';
@@ -23,26 +24,44 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
           Provider.of<UserDataProvider>(context, listen: false);
       final userData = userDataProvider.userData;
 
-      final userDocument = FirebaseFirestore.instance
-          .collection('User')
-          .doc(); // Create a new document
+      // Upload the image and get the download URL (if any)
+      String? downloadUrl;
+      if (userData.imageFile != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('User Profile Pictures')
+            .child('${userData.userNumber}.jpg');
+
+        final uploadTask = storageRef.putFile(userData.imageFile!);
+        final snapshot = await uploadTask.whenComplete(() {});
+        downloadUrl = await snapshot.ref.getDownloadURL();
+
+        // Update the userData with the download URL
+        userDataProvider.updateUserData(imageUrl: downloadUrl);
+      }
+
+      // Create a new user document in Firestore
+      final userDocument = FirebaseFirestore.instance.collection('User').doc();
+      final newUserId = userDocument.id; // Get the new user's ID
 
       await userDocument.set({
         'userType': userData.usertype,
         'name': userData.name,
         'userNumber': userData.userNumber,
         'mobileNo': userData.phoneNumber,
+        'department': userData.department,
         'password': userData.password,
-        'profilePicture': userData.imageUrl,
+        'profilePicture': downloadUrl, // Use the downloadUrl
         'stickerNumber': userData.stickerNumber,
         'plateNo': userData.plateNumber,
       });
 
+      // Save the new userId and userType in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('userType', userData.usertype ?? 'Student');
+      await prefs.setString('userId', newUserId); // Save new userId
+      await prefs.setString('userType', userData.usertype ?? 'Employee');
 
-      // Check if context is still valid before navigating
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -50,10 +69,9 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
         );
       }
     } catch (e) {
-      print('Error during data upload: $e'); // Debugging statement
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to upload data: $e'),
-        behavior: SnackBarBehavior.fixed, // Disable Hero animation
+        behavior: SnackBarBehavior.fixed,
       ));
     }
   }
