@@ -46,14 +46,17 @@ class PRKAnnouncementNotificationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 16.r,
-                        fontWeight: FontWeight.w700,
-                        color: blackColor,
+                    Flexible(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16.r,
+                          fontWeight: FontWeight.w700,
+                          color: blackColor,
+                        ),
                       ),
                     ),
                     Text(
