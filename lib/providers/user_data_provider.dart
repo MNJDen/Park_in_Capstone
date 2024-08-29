@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // Assuming UserData is a data class with default values and a copyWith method.
@@ -7,6 +9,7 @@ class UserData {
   String? phoneNumber;
   String? password;
   String? imageUrl;
+  File? imageFile;
   String? usertype;
   String? department;
   List<String> stickerNumber;
@@ -18,6 +21,7 @@ class UserData {
     this.phoneNumber,
     this.password,
     this.imageUrl,
+    this.imageFile,
     this.department,
     List<String>? stickerNumber,
     List<String>? plateNumber,
@@ -31,6 +35,7 @@ class UserData {
     String? phoneNumber,
     String? password,
     String? imageUrl,
+    File? imageFile,
     String? usertype,
     String? department,
     List<String>? stickerNumber,
@@ -42,6 +47,7 @@ class UserData {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       imageUrl: imageUrl ?? this.imageUrl,
+      imageFile: imageFile ?? this.imageFile,
       usertype: usertype ?? this.usertype,
       department: department ?? this.department,
       // Deep copy the lists to ensure immutability
@@ -63,6 +69,7 @@ class UserDataProvider extends ChangeNotifier {
     String? phoneNumber,
     String? password,
     String? imageUrl,
+    File? imageFile,
     String? usertype,
     String? department,
     List<String>? stickerNumber,
@@ -74,6 +81,7 @@ class UserDataProvider extends ChangeNotifier {
       phoneNumber: phoneNumber,
       password: password,
       imageUrl: imageUrl,
+      imageFile: imageFile,
       usertype: usertype,
       department: department,
       stickerNumber: stickerNumber,

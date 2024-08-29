@@ -39,6 +39,11 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
     );
   }
 
+  Future<String?> _getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -407,40 +412,58 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                       ),
                     ),
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: const Material(
-                                elevation: 5,
-                                child: NotificationStudentScreen(
-                                  userType: 'Student',
-                                ),
+                  FutureBuilder<String?>(
+                    future: _getUserId(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Icon(Icons.error, color: blackColor);
+                      } else if (snapshot.hasData) {
+                        final userId = snapshot.data;
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation1,
+                                    Animation<double> animation2) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurveTween(
+                                            curve:
+                                                Curves.fastEaseInToSlowEaseOut)
+                                        .animate(animation1)),
+                                    child: Material(
+                                      elevation: 5,
+                                      child: NotificationStudentScreen(
+                                        userType: 'Student',
+                                        userId: userId!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
                               ),
                             );
                           },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
+                      } else {
+                        return Icon(Icons.error, color: blackColor);
+                      }
                     },
-                    icon: const Icon(
-                      Icons.notifications_outlined,
-                      color: blackColor,
-                      size: 30,
-                    ),
                   ),
                 ],
               ),

@@ -20,15 +20,14 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      // Update the provider with the image URL
       Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(imageUrl: image.path);
+          .updateUserData(imageFile: File(image.path));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = Provider.of<UserDataProvider>(context).userData.imageUrl;
+    final imageUrl = Provider.of<UserDataProvider>(context).userData.imageFile;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -90,7 +89,7 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
                                         color: whiteColor,
                                       ),
                                     )
-                                  : Image.file(File(imageUrl)),
+                                  : Image.file(imageUrl),
                             ),
                             Text(
                               imageUrl == null
