@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/total_available_card.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/total_available_card.dart';
 import 'package:park_in/screens/home%20admin/controls%20admin/2W_controls_admin.dart';
 
 class ParkingAreas2WAdmin extends StatefulWidget {

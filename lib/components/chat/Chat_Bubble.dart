@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 
 class ChatBubble extends StatelessWidget {
   final String message;
@@ -52,14 +52,16 @@ class ChatBubble extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isCurrentUser
                         ? blueColor
-                        : Color.fromRGBO(70, 70, 70, 1),
+                        : Color.fromRGBO(240, 240, 240, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     message,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: whiteColor,
+                      color: isCurrentUser
+                          ? whiteColor
+                          : blackColor,
                     ),
                   ),
                 ),

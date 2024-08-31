@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/form_field.dart';
-import 'package:park_in/components/primary_btn.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});

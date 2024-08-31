@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/Chat_Bubble.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/chat/Chat_Bubble.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/models/Message.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:park_in/services/chat/chat_service.dart';
@@ -171,7 +171,14 @@ class _ChatScreenState extends State<ChatScreen> {
             // body, the convo, tig rretrieve niya si messages from firebase
             Expanded(
               child: Container(
-                color: whiteColor,
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  border: Border(
+                    top: BorderSide(width: 0.1.w, color: borderBlack),
+                    bottom: BorderSide(width: 0.1.w, color: borderBlack),
+                  ),
+                ),
                 child: StreamBuilder<QuerySnapshot>(
                   stream: _chatService
                       .getGroupMessagesStream(), //using this function in chat_service.dart tig rretrive niya si messages
@@ -233,7 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
-                            width: 0.5.w,
+                            width: 0.1.w,
                             color: borderBlack,
                           ),
                         ),

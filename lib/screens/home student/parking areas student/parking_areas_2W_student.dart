@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/two%20wheels/alingal.dart';
 import 'package:park_in/components/two%20wheels/dolan.dart';
 import 'package:park_in/components/two%20wheels/library.dart';
@@ -105,7 +106,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 100)),
         SizedBox(
           height: 12.h,
         ),
@@ -120,7 +121,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 120)),
         SizedBox(
           height: 12.h,
         ),
@@ -135,7 +136,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 140)),
         SizedBox(
           height: 8.h,
         ),
@@ -153,7 +154,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 160)),
         SizedBox(
           height: 100.h,
         ),

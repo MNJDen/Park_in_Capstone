@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/screens/home%20employee/home_employee1.dart';
 import 'package:park_in/screens/home%20employee/home_employee2.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee1.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee2.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/sign_up_employee3.dart';

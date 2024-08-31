@@ -2,8 +2,8 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/screens/group_chat.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/screens/chat/group_chat.dart';
 import 'package:park_in/screens/home%20admin/cite_ticket_admin.dart';
 import 'package:park_in/screens/home%20admin/announcement_admin.dart';
 import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_2W_admin.dart';
@@ -25,38 +25,83 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
   void logout(BuildContext context) async {
     final authService = AuthService();
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await authService.signOut();
-      Navigator.pushAndRemoveUntil(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation1,
-              Animation<double> animation2) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                  .animate(animation1)),
-              child: const Material(
-                elevation: 5,
-                child: SignInScreen(),
+    // Show confirmation modal
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: Text(
+            'Confirm Sign Out',
+            style: TextStyle(
+              fontSize: 20.r,
+              fontWeight: FontWeight.w500,
+              color: blackColor,
+            ),
+          ),
+          content: Container(
+            height: 40.h,
+            child: Text('Are you sure you want to exit?'),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: blueColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+              child: Text(
+                'Sign Out',
+                style: TextStyle(color: whiteColor),
+              ),
+              onPressed: () async {
+                try {
+                  await authService.signOut();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation1,
+                          Animation<double> animation2) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                              CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                          child: const Material(
+                            elevation: 5,
+                            child: SignInScreen(),
+                          ),
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                } finally {
+                  setState(
+                    () {
+                      _isLoading = false;
+                    },
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -78,22 +123,17 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
+                    enableFeedback: true,
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     borderRadius: BorderRadius.circular(100),
                     onTap: () {
                       logout(context);
                     },
-                    child: Card(
-                      elevation: 0,
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.asset(
-                        "assets/images/AdNU_Logo.png",
-                        fit: BoxFit.fill,
-                        height: 40.h,
-                        width: 40.w,
-                      ),
+                    child: CircleAvatar(
+                      backgroundImage:
+                          AssetImage("assets/images/AdNU_Logo.png"),
+                      radius: 20.r,
                     ),
                   ),
                   SizedBox(

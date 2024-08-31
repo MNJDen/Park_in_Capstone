@@ -2,8 +2,8 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/screens/drawer/about.dart';
 import 'package:park_in/screens/drawer/faqs.dart';
 import 'package:park_in/screens/drawer/report.dart';
@@ -34,7 +34,23 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
     // Redirect to the sign-in screen and remove all previous routes
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
+      PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation1,
+            Animation<double> animation2) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                .animate(animation1)),
+            child: const Material(
+              elevation: 5,
+              child: SignInScreen(),
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+      ),
       (Route<dynamic> route) => false,
     );
   }
@@ -97,7 +113,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
             ),
             Expanded(
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   Theme(
@@ -380,6 +396,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
+                    enableFeedback: true,
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     borderRadius: BorderRadius.circular(100),
@@ -391,11 +408,10 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                       elevation: 0,
                       shape: const CircleBorder(),
                       clipBehavior: Clip.antiAlias,
-                      child: Image.asset(
-                        "assets/images/AdNU_Logo.png",
-                        fit: BoxFit.fill,
-                        height: 40.h,
-                        width: 40.w,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/images/AdNU_Logo.png"),
+                        radius: 20.r,
                       ),
                     ),
                   ),
@@ -416,9 +432,29 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
                         return IconButton(
@@ -461,7 +497,17 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                           ),
                         );
                       } else {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       }
                     },
                   ),

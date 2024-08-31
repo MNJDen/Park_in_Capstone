@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:park_in/components/controls%20admin/tab_admin.dart';
-import 'package:park_in/components/total_available_card.dart';
+import 'package:park_in/components/ui/total_available_card.dart';
 
 class ParkingAreas4WAdmin extends StatefulWidget {
   const ParkingAreas4WAdmin({super.key});
@@ -75,7 +75,7 @@ class _ParkingAreas4WAdminState extends State<ParkingAreas4WAdmin> {
           SizedBox(
             height: 12.h,
           ),
-          PRKTabAdmin(), // Use Expanded here
+          PRKTabAdmin(),
         ],
       ),
     );

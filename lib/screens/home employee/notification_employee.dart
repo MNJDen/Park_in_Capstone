@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/notification_announcement_card.dart';
-import 'package:park_in/components/notification_parking_violation_card.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/notification_announcement_card.dart';
+import 'package:park_in/components/ui/notification_parking_violation_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationEmployeeScreen extends StatefulWidget {
@@ -75,7 +75,15 @@ class _NotificationStudeEmployeenState
       backgroundColor: bgColor,
       body: SafeArea(
         child: _plateNumbers == null
-            ? Center(child: CircularProgressIndicator())
+            ? Center(
+                child: Text(
+                  "Loading",
+                  style: TextStyle(
+                    fontSize: 12.r,
+                    color: const Color.fromARGB(129, 27, 27, 10),
+                  ),
+                ),
+              )
             : SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -124,7 +132,7 @@ class _NotificationStudeEmployeenState
                       ],
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 32.h,
                     ),
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
@@ -168,9 +176,9 @@ class _NotificationStudeEmployeenState
                         }
                       },
                     ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
+                    // SizedBox(
+                    //   height: 12.h,
+                    // ),
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('Announcement')

@@ -1,14 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/bottom_nav_bar_employee.dart';
-import 'package:park_in/components/bottom_nav_bar_student.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
+import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/firebase_options.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 import 'package:park_in/screens/home%20admin/home_admin.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
-import 'package:park_in/screens/test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

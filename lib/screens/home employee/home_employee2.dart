@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/violation_card.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/violation_card.dart';
+import 'package:park_in/screens/chat/group_chat.dart';
 import 'package:park_in/screens/drawer/about.dart';
 import 'package:park_in/screens/drawer/faqs.dart';
 import 'package:park_in/screens/drawer/report.dart';
 import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
-import 'package:park_in/screens/home%20student/notification_student.dart';
+import 'package:park_in/screens/home%20employee/notification_employee.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
-import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeEmployeeScreen2 extends StatefulWidget {
@@ -25,42 +25,32 @@ class HomeEmployeeScreen2 extends StatefulWidget {
 class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool _isLoading = false;
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
 
-  void logout(BuildContext context) async {
-    final authService = AuthService();
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await authService.signOut();
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation1,
-              Animation<double> animation2) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                  .animate(animation1)),
-              child: const Material(
-                elevation: 5,
-                child: SignInScreen(),
-              ),
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
-        ),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    // Redirect to the sign-in screen and remove all previous routes
+    Navigator.pushAndRemoveUntil(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation1,
+            Animation<double> animation2) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                .animate(animation1)),
+            child: const Material(
+              elevation: 5,
+              child: SignInScreen(),
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+      ),
+      (Route<dynamic> route) => false,
+    );
   }
 
   Future<String?> _getUserId() async {
@@ -378,7 +368,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
               child: PRKPrimaryBtn(
                 label: "Sign Out",
                 onPressed: () {
-                  logout(context);
+                  _logout();
                 },
               ),
             ),
@@ -414,11 +404,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                       elevation: 0,
                       shape: const CircleBorder(),
                       clipBehavior: Clip.antiAlias,
-                      child: Image.asset(
-                        "assets/images/AdNU_Logo.png",
-                        fit: BoxFit.fill,
-                        height: 40.h,
-                        width: 40.w,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/images/AdNU_Logo.png"),
+                        radius: 20.r,
                       ),
                     ),
                   ),
@@ -439,28 +428,28 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (BuildContext context,
-                      //         Animation<double> animation1,
-                      //         Animation<double> animation2) {
-                      //       return SlideTransition(
-                      //         position: Tween<Offset>(
-                      //           begin: const Offset(1, 0),
-                      //           end: Offset.zero,
-                      //         ).animate(CurveTween(
-                      //                 curve: Curves.fastEaseInToSlowEaseOut)
-                      //             .animate(animation1)),
-                      //         child: const Material(
-                      //           elevation: 5,
-                      //           child: NotificationEmployeeScreen(),
-                      //         ),
-                      //       );
-                      //     },
-                      //     transitionDuration: const Duration(milliseconds: 400),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurveTween(
+                                      curve: Curves.fastEaseInToSlowEaseOut)
+                                  .animate(animation1)),
+                              child: Material(
+                                elevation: 5,
+                                child: ChatScreen(),
+                              ),
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 400),
+                        ),
+                      );
                     },
                     icon: Icon(
                       Icons.chat_bubble_outline_rounded,
@@ -472,9 +461,29 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
                         return IconButton(
@@ -498,8 +507,8 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                         .animate(animation1)),
                                     child: Material(
                                       elevation: 5,
-                                      child: NotificationStudentScreen(
-                                        userType: 'Student',
+                                      child: NotificationEmployeeScreen(
+                                        userType: 'Employee',
                                         userId: userId!,
                                       ),
                                     ),
@@ -517,7 +526,17 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           ),
                         );
                       } else {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       }
                     },
                   ),

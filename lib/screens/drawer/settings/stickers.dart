@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/student_eSticker.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/student_eSticker.dart';
 
 class StickersScreen extends StatefulWidget {
   const StickersScreen({super.key});
