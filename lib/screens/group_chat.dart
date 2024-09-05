@@ -47,34 +47,39 @@ class _ChatScreenState extends State<ChatScreen> {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser != null) {
+      // if may value ang currentUser ibig sabihon admin ang nakalog in
       setState(() {
-        currentUserID = currentUser.uid; // Store the uid in currentUserID
+        currentUserID = currentUser.uid; // Store the uid ng admin
       });
 
       _fetchUserData(); // Fetch user's data from 'User' collection
+    } else if (currentUser == null) {
+      //if nag null siya ibig sabihon bakong admin ang nakalog in
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        currentUserID = prefs.getString('userId'); // Store uid ng employee
+      });
     } else {
-      print('No user is currently logged in');
+      print("No user found");
     }
   }
 
   Future<void> _fetchUserData() async {
-    if (currentUserID != null) {
-      try {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('User')
-            .doc(
-                currentUserID) // Use currentUserID to fetch data from 'User' collection
-            .get();
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('User')
+          .doc(
+              currentUserID) // Use currentUserID to fetch data from 'User' collection
+          .get();
 
-        if (userDoc.exists) {
-          print('User data: ${userDoc.data()}');
-          // Process the userDoc data if needed
-        } else {
-          print('User not found');
-        }
-      } catch (e) {
-        print('Error fetching user data: $e');
+      if (userDoc.exists) {
+        print('User data: ${userDoc.data()}');
+        // Process the userDoc data if needed
+      } else {
+        print('Admin Account');
       }
+    } catch (e) {
+      print('Error fetching user data: $e');
     }
   }
 
@@ -105,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     final message = Message(
       senderID: currentUserID!,
-      name: name ?? 'Unknown', // unknown ang name if not found
+      name: name ?? 'Admin', // unknown ang name if not found
       message: content,
       timestamp: Timestamp.now(),
       userType: userType,
