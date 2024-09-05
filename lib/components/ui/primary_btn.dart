@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 
 class PRKPrimaryBtn extends StatelessWidget {
   final String label;
@@ -16,11 +16,12 @@ class PRKPrimaryBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 50.h,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: blueColor,
           foregroundColor: whiteColor,
-          padding: EdgeInsets.symmetric(vertical: 16.h),
+          // padding: EdgeInsets.symmetric(vertical: 12.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -29,7 +30,7 @@ class PRKPrimaryBtn extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 12.r,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w500,
           ),
         ),

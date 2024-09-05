@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/four%20wheels%20employee/alingal.dart';
 import 'package:park_in/components/four%20wheels%20employee/phelan.dart';
 
@@ -89,7 +90,7 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 100)),
         SizedBox(
           height: 12.h,
         ),
@@ -104,7 +105,7 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 120)),
         SizedBox(
           height: 8.h,
         ),
@@ -122,7 +123,7 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
               ),
             ),
           ],
-        ),
+        ).animate().fade(delay: const Duration(milliseconds: 140)),
       ],
     );
   }

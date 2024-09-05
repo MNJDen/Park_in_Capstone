@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/screens/drawer/about.dart';
 import 'package:park_in/screens/drawer/faqs.dart';
 import 'package:park_in/screens/drawer/report.dart';
 import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
-import 'package:park_in/screens/group_chat.dart';
+import 'package:park_in/screens/chat/group_chat.dart';
 import 'package:park_in/screens/home%20employee/notification_employee.dart';
 import 'package:park_in/screens/home%20employee/parking%20areas%20employee/parking_areas_4W_employee.dart';
 import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
@@ -45,8 +45,24 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
     // Redirect to the sign-in screen and remove all previous routes
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
-      (Route<dynamic> route) => false, // Removes all previous routes
+      PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation1,
+            Animation<double> animation2) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                .animate(animation1)),
+            child: const Material(
+              elevation: 5,
+              child: SignInScreen(),
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+      ),
+      (Route<dynamic> route) => false,
     );
   }
 
@@ -603,9 +619,29 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
                         return IconButton(
@@ -648,7 +684,17 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                           ),
                         );
                       } else {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       }
                     },
                   ),

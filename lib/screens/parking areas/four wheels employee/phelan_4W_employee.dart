@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 
 class Phelan4wEmployee extends StatefulWidget {
   const Phelan4wEmployee({super.key});

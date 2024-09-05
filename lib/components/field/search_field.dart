@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:searchfield/searchfield.dart';
 
 class PRKSearchField extends StatefulWidget {
@@ -48,6 +48,7 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: whiteColor,
       child: SearchField(
         focusNode: _focusNode,
         searchInputDecoration: InputDecoration(
@@ -68,7 +69,7 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              width: 0.5.w,
+              width: 0.1.w,
               color: borderBlack,
             ),
           ),
@@ -79,8 +80,10 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
           ),
         ),
         suggestionStyle: TextStyle(
+          backgroundColor: whiteColor,
           fontSize: 12.r,
           color: blackColor,
+          overflow: TextOverflow.visible,
         ),
         suggestionsDecoration: SuggestionDecoration(
           elevation: 15,
@@ -102,7 +105,7 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
         controller: widget.controller,
         suggestions: widget.searchFieldListItems,
         maxSuggestionsInViewPort: 6,
-        itemHeight: 40,
+        itemHeight: 60,
         onTap: () {
           widget.onTap(widget.controller.text);
         },

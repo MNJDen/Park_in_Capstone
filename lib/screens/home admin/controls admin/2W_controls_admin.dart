@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/controls%20admin/control_admin.dart';
 
 class Controls2WAdmin extends StatefulWidget {

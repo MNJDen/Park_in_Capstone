@@ -5,10 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/form_field.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/text_area.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/field/text_area.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 
 class PRKTextArea extends StatefulWidget {
   final String labelText;
@@ -61,7 +61,7 @@ class _PRKTextAreaState extends State<PRKTextArea> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            width: 0.5.w,
+            width: 0.1.w,
             color: borderBlack,
           ),
         ),

@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/violation_card.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/violation_card.dart';
+import 'package:park_in/screens/chat/group_chat.dart';
 import 'package:park_in/screens/drawer/about.dart';
 import 'package:park_in/screens/drawer/faqs.dart';
 import 'package:park_in/screens/drawer/report.dart';
@@ -12,7 +13,7 @@ import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
 import 'package:park_in/screens/group_chat.dart';
-import 'package:park_in/screens/home%20student/notification_student.dart';
+import 'package:park_in/screens/home%20employee/notification_employee.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -626,9 +627,29 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
                         return IconButton(
@@ -652,7 +673,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                         .animate(animation1)),
                                     child: Material(
                                       elevation: 5,
-                                      child: NotificationStudentScreen(
+                                      child: NotificationEmployeeScreen(
                                         userType: 'Employee',
                                         userId: userId!,
                                       ),
@@ -671,7 +692,17 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           ),
                         );
                       } else {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       }
                     },
                   ),

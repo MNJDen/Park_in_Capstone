@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/employee_eSticker.dart';
-import 'package:park_in/components/student_eSticker.dart';
+import 'package:park_in/components/ui/student_eSticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StickersScreen extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/bottom_nav_bar_student.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
+import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/providers/user_data_provider.dart';
-import 'package:park_in/components/student_eSticker.dart';
+import 'package:park_in/components/ui/student_eSticker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

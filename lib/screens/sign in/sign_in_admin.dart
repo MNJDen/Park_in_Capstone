@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/form_field.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/secondary_btn.dart';
 import 'package:park_in/screens/home%20admin/home_admin.dart';
-import 'package:park_in/screens/test.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,7 +40,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(
-              color: const Color.fromRGBO(20, 255, 0, 1),
+              color: Color.fromRGBO(20, 255, 0, 1),
             ),
           ),
           content: Row(
@@ -51,10 +50,10 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
               Icon(
                 Icons.check_circle_rounded,
                 color: const Color.fromRGBO(20, 255, 0, 1),
-                size: 24.r,
+                size: 20.r,
               ),
               SizedBox(
-                width: 4.w,
+                width: 8.w,
               ),
               Flexible(
                 child: Text(
@@ -62,7 +61,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                   style: TextStyle(
                     color: blackColor,
                     fontWeight: FontWeight.w500,
-                    fontSize: 12.r,
+                    fontSize: 12.sp,
                   ),
                 ),
               ),
@@ -88,7 +87,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
           SnackBar(
             width: MediaQuery.of(context).size.width * 0.95,
             behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+            backgroundColor: const Color.fromARGB(255, 255, 235, 235),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: const BorderSide(
@@ -102,18 +101,18 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                 Icon(
                   Icons.error_rounded,
                   color: const Color.fromRGBO(255, 0, 0, 1),
-                  size: 24.r,
+                  size: 20.r,
                 ),
                 SizedBox(
-                  width: 4.w,
+                  width: 8.w,
                 ),
                 Flexible(
                   child: Text(
                     errorMessage, // Use the cleaned error message here
                     style: TextStyle(
                       color: blackColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12.r,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
                     ),
                   ),
                 ),

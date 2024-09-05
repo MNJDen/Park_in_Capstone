@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:park_in/components/bottom_nav_bar_employee.dart';
-import 'package:park_in/components/bottom_nav_bar_student.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/form_field.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
+import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/secondary_btn.dart';
 import 'package:park_in/screens/sign%20in/sign_in_admin.dart';
 import 'package:park_in/screens/sign%20up/sign_up_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
         SnackBar(
           width: MediaQuery.of(context).size.width * 0.95,
           behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+          backgroundColor: const Color.fromARGB(255, 255, 235, 235),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(
@@ -45,17 +45,17 @@ class _SignInScreenState extends State<SignInScreen> {
               Icon(
                 Icons.error_rounded,
                 color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 24.r,
+                size: 20.r,
               ),
               SizedBox(
-                width: 4.w,
+                width: 8.w,
               ),
               Flexible(
                 child: Text(
-                  "Please fill out the fields.",
+                  "Please fill out the fields",
                   style: TextStyle(
                     color: blackColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     fontSize: 12.sp,
                   ),
                 ),
@@ -96,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
             SnackBar(
               width: MediaQuery.of(context).size.width * 0.95,
               behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+              backgroundColor: const Color.fromARGB(255, 255, 235, 235),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
                 side: const BorderSide(
@@ -110,17 +110,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   Icon(
                     Icons.error_rounded,
                     color: const Color.fromRGBO(255, 0, 0, 1),
-                    size: 24.r,
+                    size: 20.r,
                   ),
                   SizedBox(
-                    width: 4.w,
+                    width: 8.w,
                   ),
                   Flexible(
                     child: Text(
-                      'User type not recognized.',
+                      'User type not recognized',
                       style: TextStyle(
                         color: blackColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                         fontSize: 12.sp,
                       ),
                     ),
@@ -157,7 +157,7 @@ class _SignInScreenState extends State<SignInScreen> {
           SnackBar(
             width: MediaQuery.of(context).size.width * 0.95,
             behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromRGBO(255, 214, 214, 1),
+            backgroundColor: const Color.fromARGB(255, 255, 235, 235),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: const BorderSide(
@@ -171,17 +171,17 @@ class _SignInScreenState extends State<SignInScreen> {
                 Icon(
                   Icons.error_rounded,
                   color: const Color.fromRGBO(255, 0, 0, 1),
-                  size: 24.r,
+                  size: 20.r,
                 ),
                 SizedBox(
-                  width: 4.w,
+                  width: 8.w,
                 ),
                 Flexible(
                   child: Text(
-                    'Invalid user number or password.',
+                    'Invalid user number or password',
                     style: TextStyle(
                       color: blackColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                     ),
                   ),
@@ -198,18 +198,6 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       );
     }
-  }
-
-  Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    // Redirect to the sign-in screen
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
-      (Route<dynamic> route) => false,
-    );
   }
 
   @override

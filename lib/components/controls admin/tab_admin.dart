@@ -1,7 +1,7 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/screens/home%20admin/controls%20admin/4W_employee_controls_admin.dart';
 import 'package:park_in/screens/home%20admin/controls%20admin/4W_student_controls_admin.dart';
 
@@ -16,7 +16,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 350.h,
+      height: 370.h,
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(10),

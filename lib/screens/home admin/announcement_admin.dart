@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/form_field.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/text_area.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/field/text_area.dart';
 
 class AnnouncementAdminScreen extends StatefulWidget {
   const AnnouncementAdminScreen({super.key});
@@ -48,6 +48,7 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -60,34 +61,35 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  Row(
+                  Stack(
+                    alignment: Alignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(
-                            context,
-                          );
-                        },
-                        child: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: blackColor,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(
+                              context,
+                            );
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Create an Announcement",
+                        style: TextStyle(
+                          fontSize: 20.r,
+                          color: blueColor,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 28.h,
-                  ),
-                  Text(
-                    "Create an Announcement",
-                    style: TextStyle(
-                      fontSize: 24.r,
-                      color: blueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
+                    height: 32.h,
                   ),
                   PRKFormField(
                     prefixIcon: Icons.campaign_rounded,

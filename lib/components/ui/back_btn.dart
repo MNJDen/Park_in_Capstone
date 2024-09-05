@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
 
 class PRKBackBtn extends StatelessWidget {
   const PRKBackBtn({super.key});

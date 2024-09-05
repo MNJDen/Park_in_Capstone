@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/violation_card.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/violation_card.dart';
 import 'package:park_in/screens/drawer/about.dart';
 import 'package:park_in/screens/drawer/faqs.dart';
 import 'package:park_in/screens/drawer/report.dart';
@@ -591,9 +591,29 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
                         return IconButton(
@@ -636,7 +656,17 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           ),
                         );
                       } else {
-                        return Icon(Icons.error, color: blackColor);
+                        return IconButton(
+                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                          highlightColor:
+                              const Color.fromRGBO(45, 49, 250, 0.5),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_outlined,
+                            color: blackColor,
+                            size: 30,
+                          ),
+                        );
                       }
                     },
                   ),

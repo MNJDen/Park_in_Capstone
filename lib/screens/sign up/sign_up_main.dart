@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/back_btn.dart';
-import 'package:park_in/components/color_scheme.dart';
-import 'package:park_in/components/primary_btn.dart';
-import 'package:park_in/components/secondary_btn.dart';
+import 'package:park_in/components/ui/back_btn.dart';
+import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
+import 'package:park_in/components/ui/secondary_btn.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20employee/page_indicator_employee.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/page_indicator_student.dart';
 import 'package:provider/provider.dart';
