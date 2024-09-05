@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
+import 'package:park_in/components/employee_eSticker.dart';
 import 'package:park_in/components/student_eSticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StickersScreen extends StatefulWidget {
   const StickersScreen({super.key});
@@ -11,6 +14,41 @@ class StickersScreen extends StatefulWidget {
 }
 
 class _StickersScreennState extends State<StickersScreen> {
+  List<String> stickerNumbers = [];
+  List<String> plateNumbers = [];
+  String userType = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserStickers();
+  }
+
+  Future<String?> _getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
+  Future<void> _fetchUserStickers() async {
+    final userId = await _getUserId();
+    if (userId != null) {
+      final userDoc =
+          await FirebaseFirestore.instance.collection('User').doc(userId).get();
+
+      // fetch stickerNumber and plateNo lists from Firestore
+      List<dynamic> fetchedStickerNumbers =
+          userDoc.data()?['stickerNumber'] ?? [];
+      List<dynamic> fetchedPlateNumbers = userDoc.data()?['plateNo'] ?? [];
+      String fetchedUserType = userDoc.data()?['userType'] ?? '';
+
+      setState(() {
+        stickerNumbers = List<String>.from(fetchedStickerNumbers);
+        plateNumbers = List<String>.from(fetchedPlateNumbers);
+        userType = fetchedUserType;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,18 +120,31 @@ class _StickersScreennState extends State<StickersScreen> {
               SizedBox(
                 height: 4.h,
               ),
-              PRKStudenteSticker(
-                stickerNumber: "1234",
-                plateNumber: "NDA-1234",
-                heroTag: 'a',
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              PRKStudenteSticker(
-                stickerNumber: "7894",
-                plateNumber: "NDA-4562",
-                heroTag: 'b',
+              // display stickers dynamically based on the fetched data
+              Column(
+                children: List.generate(
+                  stickerNumbers.length,
+                  (index) => Column(
+                    children: [
+                      // based on the user type, display the stickers
+                      if (userType == 'Student')
+                        PRKStudenteSticker(
+                          stickerNumber: stickerNumbers[index],
+                          plateNumber: plateNumbers[index],
+                          heroTag: index.toString(),
+                        )
+                      else if (userType == 'Employee')
+                        PRKEmployeeeSticker(
+                          stickerNumber: stickerNumbers[index],
+                          plateNumber: plateNumbers[index],
+                          heroTag: index.toString(),
+                        ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
