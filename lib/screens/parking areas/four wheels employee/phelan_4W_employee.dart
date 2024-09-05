@@ -1,9 +1,40 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
 
-class Phelan4wEmployee extends StatelessWidget {
+class Phelan4wEmployee extends StatefulWidget {
   const Phelan4wEmployee({super.key});
+  @override
+  _Phelan4wEmployee createState() => _Phelan4wEmployee();
+}
+
+class _Phelan4wEmployee extends State<Phelan4wEmployee> {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref().child('parkingAreas');
+
+  int _phelanAvailableSpace = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    _databaseReference.child('Phelan').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _phelanAvailableSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +108,9 @@ class Phelan4wEmployee extends StatelessWidget {
                             width: 7.w,
                             height: 7.w,
                             decoration: BoxDecoration(
-                              color: parkingGreenColor,
+                              color: _phelanAvailableSpace > 0
+                                  ? parkingGreenColor
+                                  : Colors.red,
                               borderRadius: BorderRadius.circular(100),
                             ),
                           ),
@@ -87,7 +120,7 @@ class Phelan4wEmployee extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    "11",
+                    "$_phelanAvailableSpace",
                     style: TextStyle(
                       fontSize: 52.sp,
                       color: blackColor,
