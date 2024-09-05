@@ -3,6 +3,7 @@ import 'package:park_in/components/color_scheme.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/screens/home%20employee/home_employee1.dart';
 import 'package:park_in/screens/home%20employee/home_employee2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomNavBarEmployee extends StatefulWidget {
   const BottomNavBarEmployee({super.key});
@@ -12,14 +13,25 @@ class BottomNavBarEmployee extends StatefulWidget {
 }
 
 class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
-  final Map<int, Map<String, Widget>> _routes = {
-    0: {
-      '/': HomeEmployeeScreen1(),
-    },
-    1: {
-      '/': HomeEmployeeScreen2(),
-    },
-  };
+  String? _userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+  }
+
+  Future<String?> _getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
+  Future<void> _loadUserId() async {
+    final userId = await _getUserId();
+    setState(() {
+      _userId = userId;
+    });
+  }
 
   List<NavbarItem> items = [
     const NavbarItem(
@@ -44,6 +56,24 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    if (_userId == null) {
+      return Scaffold(
+        body: Center(
+          child:
+              CircularProgressIndicator(), // Display a loading indicator until _userId is available
+        ),
+      );
+    }
+
+    final Map<int, Map<String, Widget>> routes = {
+      0: {
+        '/': HomeEmployeeScreen1(),
+      },
+      1: {
+        '/': HomeEmployeeScreen2(userId: _userId!, userType: 'Student'),
+      },
+    };
+
     return NavbarRouter(
       type: NavbarType.floating,
       errorBuilder: (context) {
@@ -55,7 +85,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
       destinationAnimationCurve: Curves.fastOutSlowIn,
       destinationAnimationDuration: 500,
       decoration: FloatingNavbarDecoration(
-        backgroundColor: whiteColor,  
+        backgroundColor: whiteColor,
         showSelectedLabels: false,
         selectedIconColor: blueColor,
         unselectedIconColor: const Color.fromRGBO(45, 49, 250, 0.4),
@@ -67,13 +97,13 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
           DestinationRouter(
             navbarItem: items[i],
             destinations: [
-              for (int j = 0; j < _routes[i]!.keys.length; j++)
+              for (int j = 0; j < routes[i]!.keys.length; j++)
                 Destination(
-                  route: _routes[i]!.keys.elementAt(j),
-                  widget: _routes[i]!.values.elementAt(j),
+                  route: routes[i]!.keys.elementAt(j),
+                  widget: routes[i]!.values.elementAt(j),
                 ),
             ],
-            initialRoute: _routes[i]!.keys.first,
+            initialRoute: routes[i]!.keys.first,
           ),
       ],
     );
