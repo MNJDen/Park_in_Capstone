@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:park_in/components/color_scheme.dart';
 import 'package:park_in/components/form_field.dart';
 import 'package:park_in/components/primary_btn.dart';
 import 'package:park_in/components/text_area.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -15,8 +21,143 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _plateNumberCtrl = TextEditingController();
   final TextEditingController _descriptionCtrl = TextEditingController();
-
   String? _selectedRadio;
+  File? _selectedImage;
+
+  Future<String?> _getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+  // Method to clear the selected image
+  void _clearImage() {
+    setState(() {
+      _selectedImage = null; // Clear the selected image
+    });
+  }
+
+  Future<String?> _uploadImage(File image) async {
+    try {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('Incident Report Attachments')
+          .child('${DateTime.now().toIso8601String()}.jpg');
+      await ref.putFile(image);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      // Handle error, e.g., show a Snackbar or log the error
+      return null;
+    }
+  }
+
+  Future<void> _citeReport() async {
+    if (_selectedRadio == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Select one if you want to anonymously report or no.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    } else if (_plateNumberCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Plate Number is required.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    } else if (_descriptionCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Description is required.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    } else if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Attachment is required.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Fetch current user's details if the selected radio is "No"
+    String? name;
+    String? userNumber;
+    String? userType;
+    if (_selectedRadio == 'No') {
+      final userId = await _getUserId();
+      if (userId != null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('User')
+            .doc(userId)
+            .get();
+        name = userDoc['name'];
+        userNumber = userDoc['userNumber'];
+        userType = userDoc['userType'];
+      }
+    }
+
+    // Handle image upload if an image is selected
+    String? imageUrl;
+    if (_selectedImage != null) {
+      imageUrl = await _uploadImage(_selectedImage!);
+    }
+
+    // Prepare the report data
+    final reportData = {
+      'reportedPlateNumber': _plateNumberCtrl.text,
+      'reportDescription': _descriptionCtrl.text,
+      'image_url': imageUrl,
+      'anonymous': _selectedRadio ?? 'No',
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    // Include user details if the report is not anonymous
+    if (_selectedRadio == 'No' &&
+        name != null &&
+        userNumber != null &&
+        userType != null) {
+      reportData.addAll({
+        'universityRole': userType,
+        'reporterName': name,
+        'reporterUserNumber': userNumber,
+      });
+    }
+
+    // Add the report to Firestore
+    await FirebaseFirestore.instance
+        .collection('Incident Report')
+        .add(reportData);
+
+    _plateNumberCtrl.clear();
+    _descriptionCtrl.clear();
+    _clearImage();
+    setState(() {
+      _selectedRadio = null; // Reset selected radio button
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Incident report submitted successfully!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +291,9 @@ class _ReportScreenState extends State<ReportScreen> {
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          _pickImage();
+                        },
                         child: Icon(
                           Icons.attachment_rounded,
                           color: blackColor,
@@ -159,13 +302,24 @@ class _ReportScreenState extends State<ReportScreen> {
                       )
                     ],
                   ),
+                  if (_selectedImage != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Image.file(
+                        _selectedImage!,
+                        height: 100.h,
+                        width: 100.h,
+                      ),
+                    ),
                 ],
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 40.h),
                 child: PRKPrimaryBtn(
                   label: "Confirm",
-                  onPressed: () {},
+                  onPressed: () {
+                    _citeReport();
+                  },
                 ),
               )
             ],
