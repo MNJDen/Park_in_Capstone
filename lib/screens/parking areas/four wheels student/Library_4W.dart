@@ -1,9 +1,39 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/color_scheme.dart';
 
-class Library4w extends StatelessWidget {
+class Library4w extends StatefulWidget {
   const Library4w({super.key});
+  _Library4w createState() => _Library4w();
+}
+
+class _Library4w extends State<Library4w> {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref().child('parkingAreas');
+
+  int _libraryAvailbaleSpace = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    _databaseReference.child('Library').onValue.listen((event) {
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        final Map<String, dynamic>? data =
+            (snapshot.value as Map?)?.cast<String, dynamic>();
+        if (mounted) {
+          setState(() {
+            _libraryAvailbaleSpace = data?['count'] ?? 0;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +107,9 @@ class Library4w extends StatelessWidget {
                             width: 7.w,
                             height: 7.w,
                             decoration: BoxDecoration(
-                              color: parkingRedColor,
+                              color: _libraryAvailbaleSpace > 0
+                                  ? parkingGreenColor
+                                  : Colors.red,
                               borderRadius: BorderRadius.circular(100),
                             ),
                           ),
@@ -87,7 +119,7 @@ class Library4w extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    "11",
+                    "$_libraryAvailbaleSpace",
                     style: TextStyle(
                       fontSize: 52.sp,
                       color: blackColor,
