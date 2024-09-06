@@ -74,7 +74,7 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 32.h),
+                    SizedBox(height: 20.h),
                     Stack(
                       alignment: Alignment.center,
                       children: [
