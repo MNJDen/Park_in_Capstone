@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/employee_eSticker.dart';
 import 'package:park_in/components/ui/student_eSticker.dart';
@@ -14,6 +15,8 @@ class StickersScreen extends StatefulWidget {
 }
 
 class _StickersScreennState extends State<StickersScreen> {
+  final TextEditingController _stickerNumberCtrl = TextEditingController();
+  final TextEditingController _plateNumberCtrl = TextEditingController();
   List<String> stickerNumbers = [];
   List<String> plateNumbers = [];
   String userType = '';
@@ -105,7 +108,9 @@ class _StickersScreennState extends State<StickersScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showAddStickerModal(context);
+                    },
                     child: Text(
                       "Add Sticker",
                       style: TextStyle(
@@ -149,6 +154,65 @@ class _StickersScreennState extends State<StickersScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showAddStickerModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: whiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title: Text(
+          'Adding a Sticker',
+          style: TextStyle(
+            fontSize: 20.r,
+            fontWeight: FontWeight.w500,
+            color: blackColor,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PRKFormField(
+              prefixIcon: Icons.tag_rounded,
+              labelText: "Sticker Number",
+              controller: _stickerNumberCtrl,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            PRKFormField(
+              prefixIcon: Icons.pin_rounded,
+              labelText: "Plate Number",
+              controller: _plateNumberCtrl,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: blueColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              'Add',
+              style: TextStyle(color: whiteColor),
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
