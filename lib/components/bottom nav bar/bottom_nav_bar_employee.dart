@@ -83,7 +83,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
         return isExiting;
       },
       destinationAnimationCurve: Curves.fastOutSlowIn,
-      destinationAnimationDuration: 500,
+      destinationAnimationDuration: 0,
       decoration: FloatingNavbarDecoration(
         backgroundColor: whiteColor,
         showSelectedLabels: false,
