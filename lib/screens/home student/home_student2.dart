@@ -175,17 +175,32 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                   child: Center(
                     child: Column(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
+                        ClipOval(
                           child: Image.network(
                             profilePicture,
                             height: 70.h,
-                            width: 70.w,
+                            width: 70.h,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    value: progress.expectedTotalBytes != null
+                                        ? progress.cumulativeBytesLoaded /
+                                            (progress.expectedTotalBytes ?? 1)
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
                             errorBuilder: (context, error, stackTrace) {
                               return Image.asset(
                                 "assets/images/AdNU_Logo.png",
                                 height: 70.h,
-                                width: 70.w,
+                                width: 70.h,
                               );
                             },
                           ),
@@ -214,7 +229,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                 ),
                 Expanded(
                   child: ListView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: <Widget>[
                       Theme(
@@ -469,6 +484,9 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     ],
                   ),
                 ),
+                Divider(
+                  thickness: 0.5.w,
+                ),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -496,59 +514,22 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 32.h,
+                height: 20.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
+                  IconButton(
                     splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
                     highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {
+                    onPressed: () {
                       _scaffoldKey.currentState?.openDrawer();
                       NavbarNotifier.hideBottomNavBar = true;
                     },
-                    child: Card(
-                      elevation: 0,
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.antiAlias,
-                      child: FutureBuilder<String?>(
-                        future: _getUserId(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasData) {
-                            return StreamBuilder<
-                                DocumentSnapshot<Map<String, dynamic>>>(
-                              stream: userSubject.stream,
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                } else if (snapshot.hasError) {
-                                  return Icon(Icons.error, color: blackColor);
-                                } else if (snapshot.hasData) {
-                                  final profilePicUrl =
-                                      snapshot.data?['profilePicture'] ??
-                                          "assets/images/default_profile.png";
-                                  return Image.network(
-                                    profilePicUrl,
-                                    fit: BoxFit.fill,
-                                    height: 40.h,
-                                    width: 40.w,
-                                  );
-                                } else {
-                                  return Icon(Icons.error, color: blackColor);
-                                }
-                              },
-                            );
-                          } else {
-                            return Icon(Icons.error, color: blackColor);
-                          }
-                        },
-                      ),
+                    icon: const Icon(
+                      Icons.menu_rounded,
+                      color: blackColor,
+                      size: 30,
                     ),
                   ),
                   SizedBox(
@@ -561,22 +542,49 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasData && snapshot.data != null) {
-                          final userData = snapshot.data!;
-                          final String name =
-                              userData['name'] ?? 'Hello, User!';
                           return Text(
-                            "Hello, $name!",
+                            'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
                               fontWeight: FontWeight.bold,
                               color: blackColor,
                             ),
                           );
+                        } else if (snapshot.hasData && snapshot.data != null) {
+                          final userData = snapshot.data!;
+                          final String name =
+                              userData['name'] ?? 'Hello, User!';
+                          return Wrap(
+                            children: [
+                              Text(
+                                "Hello, ",
+                                style: TextStyle(
+                                  fontSize: 20.r,
+                                  fontWeight: FontWeight.bold,
+                                  color: blackColor,
+                                ),
+                              ),
+                              Text(
+                                "$name",
+                                style: TextStyle(
+                                  fontSize: 20.r,
+                                  fontWeight: FontWeight.bold,
+                                  color: blueColor,
+                                ),
+                              ),
+                              Text(
+                                "!",
+                                style: TextStyle(
+                                  fontSize: 20.r,
+                                  fontWeight: FontWeight.bold,
+                                  color: blackColor,
+                                ),
+                              ),
+                            ],
+                          );
                         } else {
                           return Text(
-                            'Hello, User!',
+                            'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
                               fontWeight: FontWeight.bold,
@@ -673,7 +681,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                 ],
               ),
               SizedBox(
-                height: 28.h,
+                height: 20.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -684,7 +692,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     style: TextStyle(
                       color: blackColor,
                       fontSize: 16.r,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
