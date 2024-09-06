@@ -64,33 +64,157 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> _citeReport() async {
     if (_selectedRadio == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Select one if you want to anonymously report or no.'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Select one if you want to anonymously report or no",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       return;
     } else if (_plateNumberCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Plate Number is required.'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Provide the vehicle's plate number for the report",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       return;
     } else if (_descriptionCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Description is required.'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Describe what is being reported",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       return;
     } else if (_selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Attachment is required.'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Upload images for evidence",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       return;
