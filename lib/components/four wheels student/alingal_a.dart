@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/screens/parking%20areas/four%20wheels%20student/alingal_A_4W.dart';
-import 'package:park_in/screens/sign%20up/sign_up_main.dart';
 
 class PRKAlingalA4WStundent extends StatefulWidget {
   final String parkingArea;
