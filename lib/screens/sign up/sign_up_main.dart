@@ -141,7 +141,7 @@ class SignUpMainScreen extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "This cannot be altered after signing up.",
+                        "The selected type of user cannot be modified after completing the signing-up process.",
                         softWrap: true,
                         style: TextStyle(
                           color: blackColor,
