@@ -67,7 +67,7 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                 "Violation:",
                 style: TextStyle(
                   fontSize: 12.r,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: const Color.fromRGBO(27, 27, 27, 0.5),
                 ),
               ),
@@ -78,6 +78,7 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                 widget.violation,
                 style: TextStyle(
                   fontSize: 12.r,
+                  fontWeight: FontWeight.w500,
                   color: blackColor,
                 ),
               ),
