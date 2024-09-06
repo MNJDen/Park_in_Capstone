@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
@@ -244,6 +245,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 prefixIcon: Icons.person_rounded,
                 labelText: "Student/Employee Number",
                 controller: _userNumberCtrl,
+                keyboardType: TextInputType.number,
               ),
               SizedBox(height: 12.h),
               PRKFormField(
@@ -299,6 +301,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: TextStyle(
                             color: blueColor,
                             fontSize: 12.r,
+                            decoration: TextDecoration.underline,
+                            decorationColor: blueColor
                           ),
                         ),
                       ),
