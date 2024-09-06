@@ -243,10 +243,8 @@ class _FaqsScreenState extends State<FaqsScreen> {
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: parkingGreenColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w500, // replace with your app's font weight
+                                  fontFamily: 'General Sans',
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               TextSpan(
@@ -255,10 +253,8 @@ class _FaqsScreenState extends State<FaqsScreen> {
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: blackColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w400, // replace with your app's font weight
+                                  fontFamily: 'General Sans',
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
