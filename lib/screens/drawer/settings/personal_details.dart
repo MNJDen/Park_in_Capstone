@@ -213,12 +213,11 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                           "assets/images/default_profile.png";
                       return Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
+                          ClipOval(
                             child: Image.network(
                               profilePicUrl,
                               height: 100.h,
-                              width: 100.w,
+                              width: 100.h,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -302,6 +301,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 labelText: "Student Number",
                 controller: _userNumberCtrl,
                 enable: _isEditing,
+                keyboardType: TextInputType.number,
               ),
               SizedBox(
                 height: 12.h,
@@ -311,53 +311,8 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 labelText: "Phone Number",
                 controller: _phoneNumberCtrl,
                 enable: _isEditing,
+                keyboardType: TextInputType.phone,
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     TextButton(
-              //       onPressed: () {},
-              //       child: Text(
-              //         "Change Your Password?",
-              //         style: TextStyle(
-              //           fontSize: 12.r,
-              //           fontWeight: FontWeight.w500,
-              //           color: blueColor,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(
-              //   height: 20.h,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       "Owned Stickers",
-              //       style: TextStyle(
-              //         fontSize: 12.r,
-              //         color: blackColor,
-              //       ),
-              //     ),
-              //     Text(
-              //       "Add New Sticker",
-              //       style: TextStyle(
-              //         fontSize: 12.r,
-              //         color: blueColor,
-              //         fontWeight: FontWeight.w500,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(
-              //   height: 12.h,
-              // ),
-              // PRKStudenteSticker(
-              //   stickerNumber: "1234",
-              //   plateNumber: "NDA-1234",
-              // ),
             ],
           ),
         ),
