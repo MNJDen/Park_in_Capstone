@@ -125,9 +125,10 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
     return Column(
       children: [
         SizedBox(
-          height: 16.h,
+          height: 12.h,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -138,6 +139,26 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            Tooltip(
+              padding: EdgeInsets.all(12.r),
+              enableFeedback: true,
+              showDuration: const Duration(seconds: 3),
+              textStyle: TextStyle(
+                fontSize: 12.r,
+                color: whiteColor,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: BoxDecoration(
+                color: blackColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              message:
+                  "The numbers indicate the available \nparking spaces in the parking area.",
+              triggerMode: TooltipTriggerMode.tap,
+              child: const Icon(
+                Icons.help_outline_rounded,
+              ),
+            )
           ],
         ),
         SizedBox(
