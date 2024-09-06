@@ -74,7 +74,7 @@ class _PRKFormFieldState extends State<PRKFormField> {
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor: whiteColor,
+        fillColor: widget.enable ?? true ? whiteColor : Colors.grey[100],
         prefixIcon: Icon(
           size: 20,
           widget.prefixIcon,
@@ -105,6 +105,12 @@ class _PRKFormFieldState extends State<PRKFormField> {
           borderSide: BorderSide(
             width: 0.1.w,
             color: borderBlack,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            width: 0.1,
           ),
         ),
         labelText: widget.labelText,
