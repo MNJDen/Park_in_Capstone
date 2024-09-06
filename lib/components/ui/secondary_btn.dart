@@ -13,7 +13,7 @@ class PRKSecondaryBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 50.h,
+      height: 45.h,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: blueColor),
