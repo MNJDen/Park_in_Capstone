@@ -26,42 +26,179 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
   void _checkUpdatePassword() async {
     final userId = await _getUserId();
     if (userId != null) {
-      final docSnapshot =
-          await FirebaseFirestore.instance.collection('User').doc(userId).get();
-      String oldPassword = docSnapshot['password'];
-
-      if (oldPassword == _oldPasswordCtrl.text &&
-          _newPasswordCtrl.text == _confirmPasswordCtrl.text) {
-        await FirebaseFirestore.instance
-            .collection('User')
-            .doc(userId)
-            .update({'password': _confirmPasswordCtrl.text});
-
+      if (_oldPasswordCtrl.text.isEmpty ||
+          _newPasswordCtrl.text.isEmpty ||
+          _confirmPasswordCtrl.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password updated successfully!'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            width: MediaQuery.of(context).size.width * 0.95,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Color.fromRGBO(255, 0, 0, 1),
+              ),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: const Color.fromRGBO(255, 0, 0, 1),
+                  size: 20.r,
+                ),
+                SizedBox(
+                  width: 8.w,
+                ),
+                Flexible(
+                  child: Text(
+                    "Fill out all the forms",
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
-
-        _oldPasswordCtrl.clear();
-        _newPasswordCtrl.clear();
-        _confirmPasswordCtrl.clear();
       } else {
-        if (oldPassword != _oldPasswordCtrl.text) {
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .doc(userId)
+            .get();
+        String oldPassword = docSnapshot['password'];
+
+        if (oldPassword == _oldPasswordCtrl.text &&
+            _newPasswordCtrl.text == _confirmPasswordCtrl.text) {
+          await FirebaseFirestore.instance
+              .collection('User')
+              .doc(userId)
+              .update({'password': _confirmPasswordCtrl.text});
+
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Old password is incorrect.'),
-              backgroundColor: Colors.red,
+            SnackBar(
+              width: MediaQuery.of(context).size.width * 0.95,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(
+                  color: Color.fromRGBO(20, 255, 0, 1),
+                ),
+              ),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline_rounded,
+                    color: const Color.fromRGBO(20, 255, 0, 1),
+                    size: 20.r,
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Flexible(
+                    child: Text(
+                      "Password changed successfully",
+                      style: TextStyle(
+                        color: blackColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
-        } else if (_newPasswordCtrl.text != _confirmPasswordCtrl.text) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('New password does not match.'),
-              backgroundColor: Colors.red,
-            ),
-          );
+
+          _oldPasswordCtrl.clear();
+          _newPasswordCtrl.clear();
+          _confirmPasswordCtrl.clear();
+        } else {
+          if (oldPassword != _oldPasswordCtrl.text) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                width: MediaQuery.of(context).size.width * 0.95,
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 0, 0, 1),
+                  ),
+                ),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline_rounded,
+                      color: const Color.fromRGBO(255, 0, 0, 1),
+                      size: 20.r,
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Flexible(
+                      child: Text(
+                        "Old password is incorrect",
+                        style: TextStyle(
+                          color: blackColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (_newPasswordCtrl.text != _confirmPasswordCtrl.text) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                width: MediaQuery.of(context).size.width * 0.95,
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 0, 0, 1),
+                  ),
+                ),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline_rounded,
+                      color: const Color.fromRGBO(255, 0, 0, 1),
+                      size: 20.r,
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Flexible(
+                      child: Text(
+                        "New password does not match",
+                        style: TextStyle(
+                          color: blackColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
         }
       }
     } else {
@@ -129,6 +266,8 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
                     prefixIcon: Icons.password_rounded,
                     labelText: "Old Password",
                     controller: _oldPasswordCtrl,
+                    suffixIcon: Icons.visibility_off_rounded,
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: 12.h,
@@ -137,6 +276,8 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
                     prefixIcon: Icons.password_rounded,
                     labelText: "New Password",
                     controller: _newPasswordCtrl,
+                    suffixIcon: Icons.visibility_off_rounded,
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: 12.h,
@@ -145,6 +286,8 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
                     prefixIcon: Icons.password_rounded,
                     labelText: "Confirm New Password",
                     controller: _confirmPasswordCtrl,
+                    suffixIcon: Icons.visibility_off_rounded,
+                    obscureText: true,
                   ),
                 ],
               ),
