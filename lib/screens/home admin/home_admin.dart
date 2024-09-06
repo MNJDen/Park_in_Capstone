@@ -1,11 +1,10 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:navbar_router/navbar_router.dart';
+import 'package:park_in/components/controls%20admin/announcement_btn.dart';
+import 'package:park_in/components/controls%20admin/chat_btn.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
-import 'package:park_in/screens/chat/group_chat.dart';
-import 'package:park_in/screens/home%20admin/cite_ticket_admin.dart';
-import 'package:park_in/screens/home%20admin/announcement_admin.dart';
+import 'package:park_in/components/controls%20admin/ticket_btn.dart';
 import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_2W_admin.dart';
 import 'package:park_in/screens/home%20admin/parking%20areas%20admin/parking_areas_4W_admin.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
@@ -25,11 +24,11 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
   void logout(BuildContext context) async {
     final authService = AuthService();
 
-    // Show confirmation modal
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: whiteColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -116,7 +115,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 32.h,
+                height: 20.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,12 +131,12 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                     },
                     child: CircleAvatar(
                       backgroundImage:
-                          AssetImage("assets/images/AdNU_Logo.png"),
+                          const AssetImage("assets/images/AdNU_Logo.png"),
                       radius: 20.r,
                     ),
                   ),
                   SizedBox(
-                    width: 4.w,
+                    width: 8.w,
                   ),
                   Expanded(
                     child: Text(
@@ -149,110 +148,32 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                       ),
                     ),
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: const Material(
-                                elevation: 5,
-                                child: CiteTicketAdminScreen(),
-                              ),
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.receipt_outlined,
-                      color: blackColor,
-                      size: 30.r,
-                    ),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                children: [
+                  const Expanded(
+                    child: PRKTicket(),
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: const Material(
-                                elevation: 5,
-                                child: AnnouncementAdminScreen(),
-                              ),
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.campaign_outlined,
-                      color: blackColor,
-                      size: 30.r,
-                    ),
+                  SizedBox(
+                    width: 12.w,
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: Material(
-                                elevation: 5,
-                                child: ChatScreen(),
-                              ),
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
-                      NavbarNotifier.hideBottomNavBar = true;
-                    },
-                    icon: Icon(
-                      Icons.chat_bubble_outline_rounded,
-                      color: blackColor,
-                      size: 30.r,
-                    ),
+                  const Expanded(
+                    child: PRKAnnouncement(),
+                  ),
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  const Expanded(
+                    child: PRKChat(),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 28,
+              SizedBox(
+                height: 16.h,
               ),
               AnimatedToggleSwitch<int>.size(
                 current: value,
@@ -273,6 +194,9 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
               ),
               if (value == 0) ParkingAreas4WAdmin(),
               if (value == 1) ParkingAreas2WAdmin(),
+              SizedBox(
+                height: 25.h,
+              ),
             ],
           ),
         ),
