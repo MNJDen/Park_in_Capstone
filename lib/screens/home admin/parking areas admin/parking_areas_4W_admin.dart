@@ -69,7 +69,7 @@ class _ParkingAreas4WAdminState extends State<ParkingAreas4WAdmin> {
       child: Column(
         children: [
           SizedBox(
-            height: 16.h,
+            height: 12.h,
           ),
           PRKTotalAvailableCard(value: _totalCount.toString()),
           SizedBox(
