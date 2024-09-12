@@ -6,12 +6,14 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final String userName;
   final bool isCurrentUser;
+  final String? profilePictureUrl;
 
   const ChatBubble({
     super.key,
     required this.message,
     required this.userName,
     required this.isCurrentUser,
+    required this.profilePictureUrl,
   });
 
   @override
@@ -31,13 +33,14 @@ class ChatBubble extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!isCurrentUser)
-              CircleAvatar(
-                radius: 14.w,
-              ),
-              SizedBox(
-                  width: isCurrentUser
-                      ? 0
-                      : 8.w), 
+                CircleAvatar(
+                  radius: 14.w,
+                  backgroundImage: profilePictureUrl != null
+                      ? NetworkImage(profilePictureUrl!)
+                      : const AssetImage("assets/images/default_pic.png")
+                          as ImageProvider, // Fallback to default image
+                ),
+              SizedBox(width: isCurrentUser ? 0 : 8.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: isCurrentUser
