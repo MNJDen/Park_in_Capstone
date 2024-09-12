@@ -22,6 +22,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   String? currentUserID;
   Color _sendButtonColor = blackColor;
+  String? _profilePictureUrl;
+
+  Map<String, String?> _profilePictureCache = {};
 
   @override
   void initState() {
@@ -76,12 +79,43 @@ class _ChatScreenState extends State<ChatScreen> {
 
         if (userDoc.exists) {
           print('User data: ${userDoc.data()}');
-          // Process the userDoc data if needed
+          // para kuhaon si profile picture
+          String? profilePictureUrl = userDoc.get('profilePicture') ?? null;
+          setState(() {
+            _profilePictureUrl = profilePictureUrl;
+          });
         } else {
           print('User not found');
         }
       } catch (e) {
         print('Error fetching user data: $e');
+      }
+    }
+  }
+
+  //fetch si profile picture kang kada sender
+  Future<void> _preloadProfilePictures(
+      List<QueryDocumentSnapshot> messages) async {
+    for (var message in messages) {
+      final data = message.data() as Map<String, dynamic>;
+      final senderID = data['senderID'] as String;
+
+      if (!_profilePictureCache.containsKey(senderID)) {
+        try {
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection('User')
+              .doc(senderID)
+              .get();
+
+          if (userDoc.exists) {
+            String? profilePictureUrl = userDoc.get('profilePicture');
+            setState(() {
+              _profilePictureCache[senderID] = profilePictureUrl;
+            });
+          }
+        } catch (e) {
+          print('Error fetching profile picture: $e');
+        }
       }
     }
   }
@@ -180,30 +214,38 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: _chatService
-                      .getGroupMessagesStream(), //using this function in chat_service.dart tig rretrive niya si messages
+                  stream: _chatService.getGroupMessagesStream(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     }
                     final messages = snapshot.data!.docs;
-                    List<Widget> messageWidgets = messages.map((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
-                      final messageText = data['message'] as String;
-                      final messageSender = data['name'] as String;
-                      final isCurrentUser = currentUserID == data['senderID'];
 
-                      // si values tig papasa niya ki ChatBubble (Chat_Bubble.dart). basically si Chat_Bubble sa UI man lang siya
-                      return ChatBubble(
-                        message: messageText,
-                        userName: messageSender,
-                        isCurrentUser: isCurrentUser,
-                      );
-                    }).toList();
+                    //fetch si profile picture
+                    _preloadProfilePictures(messages);
 
-                    return ListView(
+                    return ListView.builder(
                       reverse: true,
-                      children: messageWidgets.reversed.toList(),
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        final data = messages[messages.length - 1 - index]
+                            .data() as Map<String, dynamic>;
+                        final messageText = data['message'] as String;
+                        final messageSender = data['name'] as String;
+                        final senderID = data['senderID'] as String;
+                        final isCurrentUser = currentUserID == senderID;
+
+                        // Fetch cached profile picture URL
+                        final profilePictureUrl =
+                            _profilePictureCache[senderID];
+
+                        return ChatBubble(
+                          message: messageText,
+                          userName: messageSender,
+                          isCurrentUser: isCurrentUser,
+                          profilePictureUrl: profilePictureUrl,
+                        );
+                      },
                     );
                   },
                 ),
