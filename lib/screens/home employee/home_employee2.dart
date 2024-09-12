@@ -96,7 +96,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
           .doc(widget.userId) // Get the document with the current user's ID
           .get();
 
-      final plateNoField = userDoc['plateNo']; // This might be a List or String
+      final plateNoField = userDoc['plateNo'];
 
       setState(() {
         if (plateNoField is List) {
