@@ -24,7 +24,7 @@ class _StickersScreennState extends State<StickersScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchUserStickers();
+    _listenToUserStickers();
   }
 
   Future<String?> _getUserId() async {
@@ -32,22 +32,30 @@ class _StickersScreennState extends State<StickersScreen> {
     return prefs.getString('userId');
   }
 
-  Future<void> _fetchUserStickers() async {
+  void _listenToUserStickers() async {
     final userId = await _getUserId();
+
     if (userId != null) {
-      final userDoc =
-          await FirebaseFirestore.instance.collection('User').doc(userId).get();
+      FirebaseFirestore.instance
+          .collection('User')
+          .doc(userId)
+          .snapshots()
+          .listen((userDocSnapshot) {
+        if (userDocSnapshot.exists) {
+          // Fetch stickerNumber and plateNo lists from Firestore
+          List<dynamic> fetchedStickerNumbers =
+              userDocSnapshot.data()?['stickerNumber'] ?? [];
+          List<dynamic> fetchedPlateNumbers =
+              userDocSnapshot.data()?['plateNo'] ?? [];
+          String fetchedUserType = userDocSnapshot.data()?['userType'] ?? '';
 
-      // fetch stickerNumber and plateNo lists from Firestore
-      List<dynamic> fetchedStickerNumbers =
-          userDoc.data()?['stickerNumber'] ?? [];
-      List<dynamic> fetchedPlateNumbers = userDoc.data()?['plateNo'] ?? [];
-      String fetchedUserType = userDoc.data()?['userType'] ?? '';
-
-      setState(() {
-        stickerNumbers = List<String>.from(fetchedStickerNumbers);
-        plateNumbers = List<String>.from(fetchedPlateNumbers);
-        userType = fetchedUserType;
+          // Update the local state
+          setState(() {
+            stickerNumbers = List<String>.from(fetchedStickerNumbers);
+            plateNumbers = List<String>.from(fetchedPlateNumbers);
+            userType = fetchedUserType;
+          });
+        }
       });
     }
   }
@@ -158,6 +166,33 @@ class _StickersScreennState extends State<StickersScreen> {
     );
   }
 
+  // Future<void> _addSticker() async {
+  //   final userId = await _getUserId();
+  //   DocumentSnapshot userDoc =
+  //       await FirebaseFirestore.instance.collection('User').doc(userId).get();
+
+  //   // Check if user document exists
+  //   if (userDoc.exists) {
+  //     Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+  //     // Retrieve existing arrays or create empty lists if fields are missing
+  //     List<dynamic> existingStickerNumbers = userData?['stickerNumber'] ?? [];
+  //     List<dynamic> existingPlateNumbers = userData?['plateNo'] ?? [];
+
+  //     // Add the new values from the controllers
+  //     existingStickerNumbers.add(_stickerNumberCtrl.text);
+  //     existingPlateNumbers.add(_plateNumberCtrl.text);
+
+  //     // Update the Firestore document with the new arrays
+  //     await FirebaseFirestore.instance.collection('User').doc(userId).update({
+  //       'stickerNumber': existingStickerNumbers,
+  //       'plateNo': existingPlateNumbers,
+  //     });
+
+  //     // Close the dialog
+  //     Navigator.of(context).pop();
+  //   }
+  // }
+
   void _showAddStickerModal(BuildContext context) {
     showDialog(
       context: context,
@@ -210,7 +245,39 @@ class _StickersScreennState extends State<StickersScreen> {
               'Add',
               style: TextStyle(color: whiteColor),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final userId = await _getUserId();
+              DocumentSnapshot userDoc = await FirebaseFirestore.instance
+                  .collection('User')
+                  .doc(userId)
+                  .get();
+
+              // Check if user document exists
+              if (userDoc.exists) {
+                Map<String, dynamic>? userData =
+                    userDoc.data() as Map<String, dynamic>?;
+                // Retrieve existing arrays or create empty lists if fields are missing
+                List<dynamic> existingStickerNumbers =
+                    userData?['stickerNumber'] ?? [];
+                List<dynamic> existingPlateNumbers = userData?['plateNo'] ?? [];
+
+                // Add the new values from the controllers
+                existingStickerNumbers.add(_stickerNumberCtrl.text);
+                existingPlateNumbers.add(_plateNumberCtrl.text);
+
+                // Update the Firestore document with the new arrays
+                await FirebaseFirestore.instance
+                    .collection('User')
+                    .doc(userId)
+                    .update({
+                  'stickerNumber': existingStickerNumbers,
+                  'plateNo': existingPlateNumbers,
+                });
+
+                // Close the dialog
+                Navigator.of(context).pop();
+              }
+            },
           ),
         ],
       ),
