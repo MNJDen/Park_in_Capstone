@@ -104,9 +104,11 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
             }
           }
 
-          setState(() {
-            _isEditing = false; // Exit editing mode after saving
-          });
+          if (mounted) {
+            setState(() {
+              _isEditing = false; // Exit editing mode after saving
+            });
+          }
         } else {
           // Handle the case where the new image URL could not be retrieved
           print("Failed to upload new image.");
@@ -135,7 +137,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
 
   void _loadUserData() async {
     final userData = await _getUserData();
-    if (userData != null) {
+    if (userData != null && mounted) {
       setState(() {
         _nameCtrl.text = userData['name'] ?? '';
         _userNumberCtrl.text = userData['userNumber'] ?? '';
