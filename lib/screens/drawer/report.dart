@@ -56,7 +56,6 @@ class _ReportScreenState extends State<ReportScreen> {
       await ref.putFile(image);
       return await ref.getDownloadURL();
     } catch (e) {
-      // Handle error, e.g., show a Snackbar or log the error
       return null;
     }
   }
