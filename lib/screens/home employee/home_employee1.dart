@@ -468,17 +468,27 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      _scaffoldKey.currentState?.openDrawer();
-                      NavbarNotifier.hideBottomNavBar = true;
-                    },
-                    icon: const Icon(
-                      Icons.menu_rounded,
+                  Tooltip(
+                    triggerMode: TooltipTriggerMode.longPress,
+                    message: "Menu",
+                    textStyle: const TextStyle(
+                      color: whiteColor,
+                    ),
+                    decoration: BoxDecoration(
                       color: blackColor,
-                      size: 30,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      highlightColor: blueColor.withOpacity(0.2),
+                      onPressed: () {
+                        _scaffoldKey.currentState?.openDrawer();
+                        NavbarNotifier.hideBottomNavBar = true;
+                      },
+                      icon: const Icon(
+                        Icons.menu_rounded,
+                        color: blackColor,
+                        size: 30,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -544,118 +554,165 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                       },
                     ),
                   ),
-                  IconButton(
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(CurveTween(
-                                      curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                              child: Material(
-                                elevation: 5,
-                                child: ChatScreen(),
-                              ),
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 400),
-                        ),
-                      );
-                      NavbarNotifier.hideBottomNavBar = true;
-                    },
-                    icon: Icon(
-                      Icons.message_outlined,
+                  Tooltip(
+                    triggerMode: TooltipTriggerMode.longPress,
+                    message: "Chat",
+                    textStyle: const TextStyle(
+                      color: whiteColor,
+                    ),
+                    decoration: BoxDecoration(
                       color: blackColor,
-                      size: 30.r,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      highlightColor: blueColor.withOpacity(0.2),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (BuildContext context,
+                                Animation<double> animation1,
+                                Animation<double> animation2) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1, 0),
+                                  end: Offset.zero,
+                                ).animate(CurveTween(
+                                        curve: Curves.fastEaseInToSlowEaseOut)
+                                    .animate(animation1)),
+                                child: Material(
+                                  elevation: 5,
+                                  child: ChatScreen(),
+                                ),
+                              );
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 400),
+                          ),
+                        );
+                        NavbarNotifier.hideBottomNavBar = true;
+                      },
+                      icon: Icon(
+                        Icons.message_outlined,
+                        color: blackColor,
+                        size: 30.r,
+                      ),
                     ),
                   ),
                   FutureBuilder<String?>(
                     future: _getUserId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return IconButton(
-                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                          highlightColor:
-                              const Color.fromRGBO(45, 49, 250, 0.5),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.notifications_outlined,
+                        return Tooltip(
+                          triggerMode: TooltipTriggerMode.longPress,
+                          message: "Notifications",
+                          textStyle: const TextStyle(
+                            color: whiteColor,
+                          ),
+                          decoration: BoxDecoration(
                             color: blackColor,
-                            size: 30,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            highlightColor: blueColor.withOpacity(0.2),
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.notifications_outlined,
+                              color: blackColor,
+                              size: 30,
+                            ),
                           ),
                         );
                       } else if (snapshot.hasError) {
-                        return IconButton(
-                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                          highlightColor:
-                              const Color.fromRGBO(45, 49, 250, 0.5),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.notifications_outlined,
+                        return Tooltip(
+                          triggerMode: TooltipTriggerMode.longPress,
+                          message: "Notifications",
+                          textStyle: const TextStyle(
+                            color: whiteColor,
+                          ),
+                          decoration: BoxDecoration(
                             color: blackColor,
-                            size: 30,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            highlightColor: blueColor.withOpacity(0.2),
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.notifications_outlined,
+                              color: blackColor,
+                              size: 30,
+                            ),
                           ),
                         );
                       } else if (snapshot.hasData) {
                         final userId = snapshot.data;
-                        return IconButton(
-                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                          highlightColor:
-                              const Color.fromRGBO(45, 49, 250, 0.5),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder: (BuildContext context,
-                                    Animation<double> animation1,
-                                    Animation<double> animation2) {
-                                  return SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(1, 0),
-                                      end: Offset.zero,
-                                    ).animate(CurveTween(
-                                            curve:
-                                                Curves.fastEaseInToSlowEaseOut)
-                                        .animate(animation1)),
-                                    child: Material(
-                                      elevation: 5,
-                                      child: NotificationEmployeeScreen(
-                                        userType: 'Employee',
-                                        userId: userId!,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                transitionDuration:
-                                    const Duration(milliseconds: 400),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.notifications_outlined,
+                        return Tooltip(
+                          triggerMode: TooltipTriggerMode.longPress,
+                          message: "Notifications",
+                          textStyle: const TextStyle(
+                            color: whiteColor,
+                          ),
+                          decoration: BoxDecoration(
                             color: blackColor,
-                            size: 30,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            highlightColor: blueColor.withOpacity(0.2),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (BuildContext context,
+                                      Animation<double> animation1,
+                                      Animation<double> animation2) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1, 0),
+                                        end: Offset.zero,
+                                      ).animate(CurveTween(
+                                              curve: Curves
+                                                  .fastEaseInToSlowEaseOut)
+                                          .animate(animation1)),
+                                      child: Material(
+                                        elevation: 5,
+                                        child: NotificationEmployeeScreen(
+                                          userType: 'Employee',
+                                          userId: userId!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.notifications_outlined,
+                              color: blackColor,
+                              size: 30,
+                            ),
                           ),
                         );
                       } else {
-                        return IconButton(
-                          splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                          highlightColor:
-                              const Color.fromRGBO(45, 49, 250, 0.5),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.notifications_outlined,
+                        return Tooltip(
+                          triggerMode: TooltipTriggerMode.longPress,
+                          message: "Notifications",
+                          textStyle: const TextStyle(
+                            color: whiteColor,
+                          ),
+                          decoration: BoxDecoration(
                             color: blackColor,
-                            size: 30,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            highlightColor: blueColor.withOpacity(0.2),
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.notifications_outlined,
+                              color: blackColor,
+                              size: 30,
+                            ),
                           ),
                         );
                       }
