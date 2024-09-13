@@ -16,7 +16,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 370.h,
+      height: MediaQuery.of(context).size.height * 0.43,
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(10),
@@ -30,7 +30,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
       ),
       child: ContainedTabBarView(
         tabBarProperties: TabBarProperties(
-          height: 50.h,
+          height: 45.h,
           indicatorSize: TabBarIndicatorSize.tab,
           indicatorWeight: 4.w,
           labelStyle: TextStyle(
@@ -44,7 +44,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
             color: const Color.fromRGBO(27, 27, 27, 0.5),
           ),
         ),
-        tabs: [
+        tabs: const [
           Text('Student'),
           Text('Employee'),
         ],
@@ -52,7 +52,6 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
           Controls4WStudentAdmin(),
           Controls4WEmployeeAdmin(),
         ],
-        onChange: (index) => print(index),
       ),
     );
   }
