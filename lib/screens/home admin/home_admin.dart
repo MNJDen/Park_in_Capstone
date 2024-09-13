@@ -115,35 +115,67 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 20.h,
+                height: 16.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    enableFeedback: true,
-                    splashColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    highlightColor: const Color.fromRGBO(45, 49, 250, 0.5),
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {
-                      logout(context);
-                    },
-                    child: CircleAvatar(
-                      backgroundImage:
-                          const AssetImage("assets/images/AdNU_Logo.png"),
-                      radius: 20.r,
-                    ),
+                  CircleAvatar(
+                    backgroundImage:
+                        const AssetImage("assets/images/AdNU_Logo.png"),
+                    radius: 17.r,
                   ),
                   SizedBox(
                     width: 8.w,
                   ),
                   Expanded(
-                    child: Text(
-                      "Hello, Admin!",
-                      style: TextStyle(
-                        fontSize: 20.r,
-                        fontWeight: FontWeight.bold,
+                    child: Wrap(
+                      children: [
+                        Text(
+                          "Hello, ",
+                          style: TextStyle(
+                            fontSize: 20.r,
+                            fontWeight: FontWeight.bold,
+                            color: blackColor,
+                          ),
+                        ),
+                        Text(
+                          "Admin",
+                          style: TextStyle(
+                            fontSize: 20.r,
+                            fontWeight: FontWeight.bold,
+                            color: blueColor,
+                          ),
+                        ),
+                        Text(
+                          "!",
+                          style: TextStyle(
+                            fontSize: 20.r,
+                            fontWeight: FontWeight.bold,
+                            color: blackColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Tooltip(
+                    triggerMode: TooltipTriggerMode.longPress,
+                    message: "Sign Out",
+                    textStyle: const TextStyle(
+                      color: whiteColor,
+                    ),
+                    decoration: BoxDecoration(
+                      color: blackColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      highlightColor: blueColor.withOpacity(0.2),
+                      onPressed: () {
+                        logout(context);
+                      },
+                      icon: const Icon(
+                        Icons.logout_outlined,
                         color: blackColor,
                       ),
                     ),
@@ -151,7 +183,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: 12.h,
               ),
               Row(
                 children: [
@@ -173,7 +205,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                 ],
               ),
               SizedBox(
-                height: 16.h,
+                height: 12.h,
               ),
               AnimatedToggleSwitch<int>.size(
                 current: value,
