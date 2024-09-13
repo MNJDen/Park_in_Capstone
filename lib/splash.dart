@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
       nextScreen = const SignInScreen();
     }
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation<double> animation1,
