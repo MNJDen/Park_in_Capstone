@@ -220,7 +220,7 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 32.h,
+                    height: 20.h,
                   ),
                   Stack(
                     alignment: Alignment.center,
