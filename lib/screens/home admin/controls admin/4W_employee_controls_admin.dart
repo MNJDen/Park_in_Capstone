@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/controls%20admin/control_admin.dart';
@@ -53,14 +52,10 @@ class _Controls4WEmployeeAdminState extends State<Controls4WEmployeeAdmin> {
   Widget build(BuildContext context) {
     return Column(
       children: _parkingAreas.map((parkingArea) {
-        return Padding(
-          padding:
-              EdgeInsets.symmetric(vertical: 2.h), // Reduced vertical padding
-          child: PRKControlsAdmin(
-            parkingArea: parkingArea['parkingArea'],
-            count: parkingArea['count'],
-            dotColor: parkingArea['dotColor'],
-          ),
+        return PRKControlsAdmin(
+          parkingArea: parkingArea['parkingArea'],
+          count: parkingArea['count'],
+          dotColor: parkingArea['dotColor'],
         );
       }).toList(),
     );
