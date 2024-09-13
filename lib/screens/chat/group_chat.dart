@@ -9,6 +9,8 @@ import 'package:park_in/models/Message.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:park_in/services/chat/chat_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 // ito tig ccall ito kang home_employee1.dart saka home_admin.dart
 class ChatScreen extends StatefulWidget {
@@ -29,22 +31,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    tz.initializeTimeZones();
     _getUserId();
   }
-
-  //cheking the who the current user is, and assigning uid to current user
-  // Future<void> _initializeUser() async {
-  //   final user = await _authService.getCurrentUser();
-  //   if (user != null) {
-  //     setState(() {
-  //       currentUserID = user.uid;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       currentUserID = 'unknown';
-  //     });
-  //   }
-  // }
 
   Future<void> _getUserId() async {
     // Get the current user from Firebase Auth
@@ -169,8 +158,8 @@ class _ChatScreenState extends State<ChatScreen> {
               height: 8.h,
             ),
             Container(
-              height: 60.h,
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              height: 50.h,
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -205,7 +194,6 @@ class _ChatScreenState extends State<ChatScreen> {
             // body, the convo, tig rretrieve niya si messages from firebase
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
                 decoration: BoxDecoration(
                   color: whiteColor,
                   border: Border(
@@ -235,6 +223,13 @@ class _ChatScreenState extends State<ChatScreen> {
                         final senderID = data['senderID'] as String;
                         final isCurrentUser = currentUserID == senderID;
 
+                        final Timestamp timestamp =
+                            data['timestamp'] as Timestamp;
+                        final DateTime utcTime = timestamp.toDate().toUtc();
+
+                        final DateTime localTime = tz.TZDateTime.from(
+                            utcTime, tz.getLocation('Asia/Manila'));
+
                         // Fetch cached profile picture URL
                         final profilePictureUrl =
                             _profilePictureCache[senderID];
@@ -244,6 +239,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           userName: messageSender,
                           isCurrentUser: isCurrentUser,
                           profilePictureUrl: profilePictureUrl,
+                          timestamp: localTime,
                         );
                       },
                     );
@@ -301,7 +297,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.send),
+                    icon: const Icon(Icons.send_rounded),
                     color: _sendButtonColor,
                     onPressed: () => sendMessage(_controller.text),
                   ),
