@@ -49,7 +49,7 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
               ),
               SizedBox(height: 4.h),
               Text(
-                "Upload an image with that charming face of yours.",
+                "Upload an image with that charming face of yours. Please upload images that are in 4:3 or 5:4 aspect ratios, or ensure that your face is centered for optimal results.",
                 style: TextStyle(
                   color: blackColor,
                   fontSize: 12.r,
@@ -59,53 +59,43 @@ class _SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 164.h,
-                    width: 154.h,
-                    child: Card(
-                      elevation: 15,
-                      shadowColor: Color.fromRGBO(27, 27, 27, 0.2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      color: whiteColor,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(12.w, 16.h, 12.w, 16.h),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: _pickImage,
-                              child: imageUrl == null
-                                  ? IconButton.filled(
-                                      iconSize: 20.r,
-                                      onPressed: _pickImage,
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(blueColor),
-                                      ),
-                                      icon: Icon(
-                                        Icons.add_rounded,
-                                        color: whiteColor,
-                                      ),
-                                    )
-                                  : Image.file(imageUrl),
+                  CircleAvatar(
+                    radius: 77.r,
+                    backgroundColor: whiteColor,
+                    child: imageUrl == null
+                        ? Icon(
+                            Icons.image_rounded,
+                            color: blackColor,
+                            size: 25.r,
+                          )
+                        : ClipOval(
+                            child: Image.file(
+                              imageUrl,
+                              width: 154.r,
+                              height: 154.r,
+                              fit: BoxFit.cover,
                             ),
-                            Text(
-                              imageUrl == null
-                                  ? "Upload a photo"
-                                  : "Change photo",
-                              style: TextStyle(
-                                fontSize: 12.r,
-                                color: blackColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: _pickImage,
+                  child: Text(
+                    imageUrl == null
+                        ? "Upload Profile Picture"
+                        : "Change Picture",
+                    style: TextStyle(
+                      color: blueColor,
+                      fontSize: 12.r,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
