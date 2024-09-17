@@ -640,6 +640,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
                             icon: const Icon(
                               Icons.notifications_outlined,
