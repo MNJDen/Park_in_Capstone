@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/notification_announcement_card.dart';
 import 'package:park_in/components/ui/notification_parking_violation_card.dart';
+import 'package:park_in/screens/misc/announcement_empty.dart';
+import 'package:park_in/screens/misc/violations_empty.dart';
 
 class NotificationStudentScreen extends StatefulWidget {
   final String userId; // Current logged-in user's ID
@@ -68,147 +71,187 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                   ),
                 ),
               )
-            : SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+            : DefaultTabController(
+                length: 2,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20.h),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Icon(
-                              Icons.delete_outline_rounded,
-                              color: blackColor,
-                              size: 30.r,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                Icons.delete_outline_rounded,
+                                color: blackColor,
+                                size: 30.r,
+                              ),
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: blackColor,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                                NavbarNotifier.hideBottomNavBar = false;
+                              },
+                              child: const Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                color: blackColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                          "Notifications",
-                          style: TextStyle(
-                            fontSize: 20.r,
-                            color: blueColor,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            "Notifications",
+                            style: TextStyle(
+                              fontSize: 20.r,
+                              color: blueColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                    ),
+                    TabBar(
+                      splashBorderRadius: BorderRadius.circular(10),
+                      enableFeedback: true,
+                      labelColor: blueColor,
+                      unselectedLabelColor: blackColor,
+                      tabs: const [
+                        Tab(text: 'Violations'),
+                        Tab(text: 'Announcements'),
                       ],
                     ),
-                    SizedBox(height: 32.h),
-                    // Fetch and display tickets that match the user's plate number
-                    StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('Violation Ticket')
-                          .where('plate_number', whereIn: _plateNumbers)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error fetching tickets'));
-                        } else if (snapshot.hasData) {
-                          final tickets = snapshot.data!.docs.map((doc) {
-                            return doc.data() as Map<String, dynamic>;
-                          }).toList();
+                    Flexible(
+                      child: TabBarView(
+                        children: [
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('Violation Ticket')
+                                .where('plate_number', whereIn: _plateNumbers)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                    child: Text('Error fetching tickets'));
+                              } else if (snapshot.hasData) {
+                                final tickets = snapshot.data!.docs.map((doc) {
+                                  return doc.data() as Map<String, dynamic>;
+                                }).toList();
 
-                          if (tickets.isEmpty) {
-                            return Center(
-                                child: Text('No violation tickets found'));
-                          } else {
-                            return Column(
-                              children: tickets.map((ticket) {
-                                return Column(
-                                  children: [
-                                    PRKParkingViolationNotificationCard(
-                                      date: (ticket['timestamp'] as Timestamp)
-                                          .toDate()
-                                          .toString()
-                                          .split(' ')[0],
-                                    ),
-                                    SizedBox(height: 12.h),
-                                  ],
+                                if (tickets.isEmpty) {
+                                  return Container(
+                                    margin: EdgeInsets.only(bottom: 80.h),
+                                    child: const ViolationsEmpty(),
+                                  );
+                                } else {
+                                  return ListView.builder(
+                                    itemCount: tickets.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(height: 6.h),
+                                            PRKParkingViolationNotificationCard(
+                                              date: (tickets[index]['timestamp']
+                                                      as Timestamp)
+                                                  .toDate()
+                                                  .toString()
+                                                  .split(' ')[0],
+                                            ),
+                                            SizedBox(height: 6.h),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 80.h),
+                                  child: const ViolationsEmpty(),
                                 );
-                              }).toList(),
-                            );
-                          }
-                        } else {
-                          return Center(
-                              child: Text('No violation tickets found'));
-                        }
-                      },
-                    ),
+                              }
+                            },
+                          ),
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('Announcement')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                    child:
+                                        Text('Error fetching announcements'));
+                              } else if (snapshot.hasData) {
+                                final announcements = snapshot.data!.docs
+                                    .map((doc) =>
+                                        doc.data() as Map<String, dynamic>)
+                                    .where((announcement) {
+                                  String announcementUserType =
+                                      announcement['userType'];
+                                  return announcementUserType ==
+                                          widget.userType ||
+                                      announcementUserType == 'Everyone';
+                                }).toList();
 
-                    // SizedBox(height: 12.h),
-                    // Fetch and display announcements
-                    StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('Announcement')
-                          .snapshots(), // Listen to real-time updates
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error fetching announcements'));
-                        } else if (snapshot.hasData) {
-                          final announcements = snapshot.data!.docs
-                              .map((doc) => doc.data() as Map<String, dynamic>)
-                              .where((announcement) {
-                            String announcementUserType =
-                                announcement['userType'];
-                            return announcementUserType == widget.userType ||
-                                announcementUserType == 'Everyone';
-                          }).toList();
-
-                          if (announcements.isEmpty) {
-                            return Center(
-                                child: Text('No announcements available'));
-                          } else {
-                            return Column(
-                              children: announcements.map((announcement) {
-                                return Column(
-                                  children: [
-                                    PRKAnnouncementNotificationCard(
-                                      title: announcement['title'],
-                                      date: announcement['createdAt']
-                                          .toDate()
-                                          .toString()
-                                          .split(' ')[0],
-                                      description: announcement['details'],
-                                    ),
-                                    SizedBox(height: 12.h),
-                                  ],
+                                if (announcements.isEmpty) {
+                                  return Container(
+                                    margin: EdgeInsets.only(bottom: 80.h),
+                                    child: const AnnouncementEmpty(),
+                                  );
+                                } else {
+                                  return ListView.builder(
+                                    itemCount: announcements.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(height: 6.h),
+                                            PRKAnnouncementNotificationCard(
+                                              title: announcements[index]
+                                                  ['title'],
+                                              date: announcements[index]
+                                                      ['createdAt']
+                                                  .toDate()
+                                                  .toString()
+                                                  .split(' ')[0],
+                                              description: announcements[index]
+                                                  ['details'],
+                                            ),
+                                            SizedBox(height: 6.h),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 80.h),
+                                  child: const AnnouncementEmpty(),
                                 );
-                              }).toList(),
-                            );
-                          }
-                        } else {
-                          return Center(
-                              child: Text('No announcements available'));
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 100.h,
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
