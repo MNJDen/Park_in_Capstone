@@ -54,6 +54,8 @@ dependencies:
   flutter_animate: ^4.5.0
   awesome_notifications: ^0.9.3+1
   firebase_messaging: ^15.1.1
+  intl: ^0.18.0
+  timezone: ^0.9.4
 
 dev_dependencies:
   flutter_test:

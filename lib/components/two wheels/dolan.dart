@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/screens/parking%20areas/two%20wheels/dolan_2W.dart';
 
@@ -78,6 +79,7 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
                   transitionDuration: const Duration(milliseconds: 400),
                 ),
               );
+              NavbarNotifier.hideBottomNavBar = true;
             },
           );
         }

@@ -177,7 +177,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
           ],
         ).animate().fade(delay: const Duration(milliseconds: 160)),
         SizedBox(
-          height: 100.h,
+          height: 95.h,
         ),
       ],
     );

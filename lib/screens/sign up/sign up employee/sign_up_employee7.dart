@@ -63,16 +63,91 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
       await prefs.setString('userType', userData.usertype ?? 'Employee');
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            // width: MediaQuery.of(context).size.width * 0.95,
+            margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Color.fromRGBO(20, 255, 0, 1),
+              ),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: const Color.fromRGBO(20, 255, 0, 1),
+                  size: 20.r,
+                ),
+                SizedBox(
+                  width: 8.w,
+                ),
+                Flexible(
+                  child: Text(
+                    'Sign Up Successful!',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BottomNavBarEmployee()),
+          MaterialPageRoute(
+            builder: (context) => BottomNavBarEmployee(),
+          ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Failed to upload data: $e'),
-        behavior: SnackBarBehavior.fixed,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          margin: EdgeInsets.only(bottom: 60.h),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Error Occured: $e",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 

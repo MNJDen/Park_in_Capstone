@@ -71,14 +71,14 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 32.h, 5.w, 0),
+              padding: EdgeInsets.fromLTRB(5.w, 20.h, 5.w, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     onPressed: _currentPage > 0
                         ? () {
-                            _updateUserData(); // Update before going back
+                            _updateUserData();
                             _controller.previousPage(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.ease,
@@ -89,6 +89,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                           },
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
+                      color: blackColor,
                     ),
                   ),
                   Row(
@@ -101,7 +102,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                   IconButton(
                     onPressed: _currentPage < _pages.length - 1
                         ? () {
-                            _updateUserData(); // Update before going forward
+                            _updateUserData(); 
                             _controller.nextPage(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.ease,
@@ -135,6 +136,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                           },
                     icon: const Icon(
                       Icons.arrow_forward_ios_rounded,
+                      color: blackColor,
                     ),
                   ),
                 ],
@@ -167,13 +169,13 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       height: 10.h,
       width: isActive ? 20.w : 10.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
       decoration: BoxDecoration(
-        color: isActive ? blueColor : Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(5.r)),
+        color: isActive ? blueColor : blackColor.withOpacity(0.3),
+        borderRadius: BorderRadius.all(Radius.circular(100.r)),
       ),
     );
   }

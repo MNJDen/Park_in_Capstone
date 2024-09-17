@@ -32,15 +32,88 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
         'details': details,
         'createdAt': Timestamp.now(),
       });
-      print('Announcement posted successfully');
-      // Clear form fields after posting
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(20, 255, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle_outline_rounded,
+                color: const Color.fromRGBO(20, 255, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Announcement successfully posted",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
       _titleCtrl.clear();
       _descriptionCtrl.clear();
       setState(() {
-        _selectedRadio = null; // Reset selected radio button
+        _selectedRadio = null;
       });
     } catch (e) {
-      print('Failed to post announcement: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          width: MediaQuery.of(context).size.width * 0.95,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+            ),
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: const Color.fromRGBO(255, 0, 0, 1),
+                size: 20.r,
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Error Occured: $e",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 
@@ -59,7 +132,7 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 32.h,
+                    height: 20.h,
                   ),
                   Stack(
                     alignment: Alignment.center,
@@ -201,7 +274,44 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                         details: _descriptionCtrl.text,
                       );
                     } else {
-                      print('Please fill in all fields');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 226, 226),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: Color.fromRGBO(255, 0, 0, 1),
+                            ),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outline_rounded,
+                                color: const Color.fromRGBO(255, 0, 0, 1),
+                                size: 20.r,
+                              ),
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  "Fill out all of the fields",
+                                  style: TextStyle(
+                                    color: blackColor,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     }
                   },
                 ),

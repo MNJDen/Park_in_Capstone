@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/screens/parking%20areas/two%20wheels/alingal_2W.dart';
 
@@ -79,6 +80,7 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
                   transitionDuration: const Duration(milliseconds: 400),
                 ),
               );
+              NavbarNotifier.hideBottomNavBar = true;
             },
           );
         }

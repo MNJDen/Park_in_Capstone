@@ -180,7 +180,9 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 32.h),
+              SizedBox(
+                height: 20.h,
+              ),
               Stack(
                 alignment: Alignment.center,
                 children: [

@@ -77,14 +77,14 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 32.h, 5.w, 0),
+              padding: EdgeInsets.fromLTRB(5.w, 20.h, 5.w, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     onPressed: _currentPage > 0
                         ? () {
-                            _updateUserData(); // Update before going back
+                            _updateUserData(); 
                             _controller.previousPage(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.ease,
@@ -95,6 +95,7 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
                           },
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
+                      color: blackColor,
                     ),
                   ),
                   Row(
@@ -141,6 +142,7 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
                           },
                     icon: const Icon(
                       Icons.arrow_forward_ios_rounded,
+                      color: blackColor,
                     ),
                   ),
                 ],
@@ -178,8 +180,8 @@ class Indicator extends StatelessWidget {
       width: isActive ? 20.w : 10.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
       decoration: BoxDecoration(
-        color: isActive ? blueColor : Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(5.r)),
+        color: isActive ? blueColor : blackColor.withOpacity(0.3),
+        borderRadius: BorderRadius.all(Radius.circular(100.r)),
       ),
     );
   }
