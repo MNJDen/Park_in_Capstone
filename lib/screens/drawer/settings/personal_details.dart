@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,10 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
   final TextEditingController _phoneNumberCtrl = TextEditingController();
   bool _isEditing = false;
   bool _isUpdatingImage = false;
+  bool _isPickingImage = false;
   File? _selectedImage;
+  Map<String, dynamic>? _userData; // igdi ma store si userdata after ma fetch
+  String? _profilePicUrl; // igdi ma store si profilepicurl after ma fetch
 
   @override
   void initState() {
@@ -30,25 +32,79 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
     _loadUserData();
   }
 
+  //get user id of currently logged in user
   Future<String?> _getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('userId');
   }
 
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  //load/fetch si mga data from db
+  Future<void> _loadUserData() async {
+    final userId = await _getUserId();
+    if (userId != null) {
+      final docSnapshot =
+          await FirebaseFirestore.instance.collection('User').doc(userId).get();
 
-    if (image != null) {
+      if (docSnapshot.exists && mounted) {
+        setState(() {
+          _userData = docSnapshot
+              .data(); // after ma fetch gamit ang docsnapshot is i-assign si mga data sa _userData var
+          //i-assign sa mga text controller si mga na fetch na data
+          _nameCtrl.text = _userData?['name'] ?? '';
+          _userNumberCtrl.text = _userData?['userNumber'] ?? '';
+          _phoneNumberCtrl.text = _userData?['mobileNo'] ?? '';
+          _profilePicUrl = _userData?['profilePicture'] ??
+              "assets/images/default_pic.png"; // assign si na fetch na pfp sa _profilePicUrl
+        });
+      }
+    }
+  }
+
+  //update si mga values once nag edit
+  Future<void> _updateUserData() async {
+    final userId = await _getUserId();
+    if (userId != null) {
+      await FirebaseFirestore.instance.collection('User').doc(userId).update({
+        'name': _nameCtrl.text,
+        'userNumber': _userNumberCtrl.text,
+        'mobileNo': _phoneNumberCtrl.text,
+      });
+      if (mounted) {
+        setState(() {
+          _isEditing = false; // exit editing state after updating
+        });
+      }
+    }
+  }
+
+  //pick image para mag replace pfp
+  Future<void> _pickImage() async {
+    if (_isPickingImage) return; // Avoid opening multiple image pickers
+    setState(() {
+      _isPickingImage = true; // Set to true when picker is activated
+    });
+
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    } catch (e) {
+      print("Error picking image: $e");
+    } finally {
       setState(() {
-        _selectedImage = File(image.path);
+        _isPickingImage = false; // Reset flag after image is picked
       });
     }
   }
 
+  //once mag pick image upload image to db
   Future<String?> _uploadImage(File image) async {
-    final userData = await _getUserData();
-    String? userNumber = userData?['userNumber'];
+    String? userNumber = _userData?['userNumber'];
 
     if (userNumber != null) {
       try {
@@ -62,7 +118,6 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
         final snapshot = await uploadTask.whenComplete(() {});
         return await snapshot.ref.getDownloadURL();
       } catch (e) {
-        // Handle error
         print('Error uploading image: $e');
         return null;
       }
@@ -70,20 +125,17 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
     return null;
   }
 
+  //update si value kang pfp link sa db and delete si old pfp for storage optimization
   Future<void> _updateProfilePicture() async {
     if (_selectedImage != null) {
-      final userData = await _getUserData();
       final userId = await _getUserId();
 
-      if (userData != null && userId != null) {
-        // Get the old profile picture URL
-        final oldProfilePicUrl = userData['profilePicture'];
+      if (_userData != null && userId != null) {
+        final oldProfilePicUrl = _userData?['profilePicture'];
 
-        // Upload the new image
         final newImageUrl = await _uploadImage(_selectedImage!);
 
         if (newImageUrl != null) {
-          // Update Firestore with the new image URL
           await FirebaseFirestore.instance
               .collection('User')
               .doc(userId)
@@ -91,72 +143,29 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
             'profilePicture': newImageUrl,
           });
 
-          // Delete the old image from Firebase Storage if it exists
           if (oldProfilePicUrl != null &&
-              oldProfilePicUrl != "assets/images/default_profile.png") {
+              oldProfilePicUrl != "assets/images/default_pic.png") {
             try {
               final oldImageRef =
                   FirebaseStorage.instance.refFromURL(oldProfilePicUrl);
               await oldImageRef.delete();
             } catch (e) {
-              // Log or handle the error if deletion fails
               print("Failed to delete old image: $e");
             }
           }
 
           if (mounted) {
             setState(() {
-              _isEditing = false; // Exit editing mode after saving
+              _profilePicUrl = newImageUrl; // Update the profile picture URL
+              _isUpdatingImage = false; // Exit image update mode
             });
           }
         } else {
-          // Handle the case where the new image URL could not be retrieved
           print("Failed to upload new image.");
         }
       } else {
-        // Handle the case where userData or userId is null
         print("User data or user ID is missing.");
       }
-    }
-  }
-
-  Future<Map<String, dynamic>?> _getUserData() async {
-    final userId = await _getUserId();
-
-    if (userId != null) {
-      final docSnapshot =
-          await FirebaseFirestore.instance.collection('User').doc(userId).get();
-
-      if (docSnapshot.exists) {
-        return docSnapshot.data();
-      }
-    }
-
-    return null;
-  }
-
-  void _loadUserData() async {
-    final userData = await _getUserData();
-    if (userData != null && mounted) {
-      setState(() {
-        _nameCtrl.text = userData['name'] ?? '';
-        _userNumberCtrl.text = userData['userNumber'] ?? '';
-        _phoneNumberCtrl.text = userData['mobileNo'] ?? '';
-      });
-    }
-  }
-
-  void _updateUserData() async {
-    final userId = await _getUserId();
-    if (userId != null) {
-      await FirebaseFirestore.instance.collection('User').doc(userId).update({
-        'name': _nameCtrl.text,
-        'userNumber': _userNumberCtrl.text,
-        'mobileNo': _phoneNumberCtrl.text,
-      });
-      setState(() {
-        _isEditing = false; // Exit editing mode after saving
-      });
     }
   }
 
@@ -171,9 +180,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 32.h,
-              ),
+              SizedBox(height: 32.h),
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -199,35 +206,32 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Center(
-                child: FutureBuilder<Map<String, dynamic>?>(
-                  future: _getUserData(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error loading profile picture');
-                    } else if (snapshot.hasData) {
-                      final profilePicUrl = snapshot.data?['profilePicture'] ??
-                          "assets/images/default_profile.png";
-                      return Column(
-                        children: [
-                          ClipOval(
-                            child: Image.network(
-                              profilePicUrl,
+                child: Column(
+                  children: [
+                    ClipOval(
+                      child: _profilePicUrl != null &&
+                              _profilePicUrl!.startsWith('http')
+                          ? Image.network(
+                              _profilePicUrl!,
+                              height: 100.h,
+                              width: 100.h,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "assets/images/default_pic.png",
                               height: 100.h,
                               width: 100.h,
                               fit: BoxFit.cover,
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {
+                    ),
+                    TextButton(
+                      onPressed: _isPickingImage
+                          ? null // Disable button while picking image
+                          : () {
                               if (_isUpdatingImage) {
                                 _updateProfilePicture();
-                                // Save changes
                               } else {
                                 _pickImage();
                               }
@@ -235,26 +239,19 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                                 _isUpdatingImage = !_isUpdatingImage;
                               });
                             },
-                            child: Text(
-                              _isUpdatingImage ? "Save" : "Upload New Picture",
-                              style: TextStyle(
-                                fontSize: 12.r,
-                                color: blueColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Text('No profile picture available');
-                    }
-                  },
+                      child: Text(
+                        _isUpdatingImage ? "Save" : "Upload New Picture",
+                        style: TextStyle(
+                          fontSize: 12.r,
+                          color: blueColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 28.h,
-              ),
+              SizedBox(height: 28.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -286,18 +283,14 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 4.h,
-              ),
+              SizedBox(height: 4.h),
               PRKFormField(
                 prefixIcon: Icons.person_rounded,
                 labelText: "Name",
                 controller: _nameCtrl,
                 enable: _isEditing,
               ),
-              SizedBox(
-                height: 12.h,
-              ),
+              SizedBox(height: 12.h),
               PRKFormField(
                 prefixIcon: Icons.badge_rounded,
                 labelText: "Student Number",
@@ -305,9 +298,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 enable: _isEditing,
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
-                height: 12.h,
-              ),
+              SizedBox(height: 12.h),
               PRKFormField(
                 prefixIcon: Icons.phone_rounded,
                 labelText: "Phone Number",
