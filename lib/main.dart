@@ -9,6 +9,7 @@ import 'package:park_in/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -24,7 +25,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     ),
   );
 }
-import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   tz.initializeTimeZones();
