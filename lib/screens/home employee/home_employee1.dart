@@ -686,6 +686,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
                             icon: const Icon(
                               Icons.notifications_outlined,
