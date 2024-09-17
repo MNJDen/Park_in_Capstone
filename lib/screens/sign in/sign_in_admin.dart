@@ -129,114 +129,124 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                height: 28.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/Logo.png",
-                    height: 53.h,
-                    width: 38.w,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 88.h,
-              ),
-              Text(
-                "Welcome Back!",
-                style: TextStyle(
-                  color: blueColor,
-                  fontSize: 24.r,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                "Enter your given account credentials.",
-                style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12.r,
-                ),
-              ),
-              SizedBox(
-                height: 32.h,
-              ),
-              PRKFormField(
-                prefixIcon: Icons.email_rounded,
-                labelText: "Email Address",
-                controller: _emailCtrl,
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              PRKFormField(
-                prefixIcon: Icons.password_rounded,
-                labelText: "Password",
-                suffixIcon: Icons.visibility_off_rounded,
-                controller: _passwordCtrl,
-                obscureText: true,
-              ),
-              SizedBox(
-                height: 228.h,
-              ),
-              PRKPrimaryBtn(
-                  label: "Sign In",
-                  onPressed: () {
-                    login(context);
-                  }),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Divider(
-                      thickness: 0.5,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.06),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/Logo.png",
+                          height: 53.h,
+                          width: 38.w,
+                        ),
+                      ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
+                    SizedBox(
+                      height: 88.h,
                     ),
-                    child: Text(
-                      "or",
+                    Text(
+                      "Welcome Back!",
                       style: TextStyle(
-                        color: blackColor,
-                        backgroundColor: bgColor,
-                        fontSize: 12.r,
-                        fontWeight: FontWeight.w300,
+                        color: blueColor,
+                        fontSize: 24.r,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      thickness: 0.5,
+                    SizedBox(
+                      height: 4.h,
                     ),
-                  ),
-                ],
+                    Text(
+                      "Enter your given account credentials.",
+                      style: TextStyle(
+                        color: blackColor,
+                        fontSize: 12.r,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 32.h,
+                    ),
+                    PRKFormField(
+                      prefixIcon: Icons.email_rounded,
+                      labelText: "Email Address",
+                      controller: _emailCtrl,
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    PRKFormField(
+                      prefixIcon: Icons.password_rounded,
+                      labelText: "Password",
+                      suffixIcon: Icons.visibility_off_rounded,
+                      controller: _passwordCtrl,
+                      obscureText: true,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 8.h,
-              ),
-              PRKSecondaryBtn(
-                label: "Continue as a Student/Employee",
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.1),
+                child: Column(
+                  children: [
+                    PRKPrimaryBtn(
+                        label: "Sign In",
+                        onPressed: () {
+                          login(context);
+                        }),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                          ),
+                          child: Text(
+                            "or",
+                            style: TextStyle(
+                              color: blackColor,
+                              backgroundColor: bgColor,
+                              fontSize: 12.r,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                        const Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    PRKSecondaryBtn(
+                      label: "Continue as a Student/Employee",
+                      onPressed: () {
+                        Navigator.pop(
+                          context,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
