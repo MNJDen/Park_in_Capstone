@@ -13,7 +13,6 @@ import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
 import 'package:park_in/screens/home%20employee/notification_employee.dart';
-import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
 import 'package:park_in/screens/misc/violations_empty.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
@@ -740,6 +739,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
                             icon: const Icon(
                               Icons.notifications_outlined,
