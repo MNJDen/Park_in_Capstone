@@ -244,7 +244,7 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
