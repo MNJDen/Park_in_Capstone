@@ -244,6 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -251,8 +252,7 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.06),
+                padding: EdgeInsets.only(top: 40.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -357,8 +357,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height * 0.1),
+                padding: EdgeInsets.only(bottom: 50.h),
                 child: Column(
                   children: [
                     PRKPrimaryBtn(
