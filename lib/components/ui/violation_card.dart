@@ -21,71 +21,76 @@ class PRKViolationCard extends StatefulWidget {
 class _PRKViolationCardState extends State<PRKViolationCard> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Container(
-        decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: Offset(0, 4),
+    return Column(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            decoration: BoxDecoration(
+              color: whiteColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16.r),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+            child: Padding(
+              padding: EdgeInsets.all(16.r),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.offenseNumber,
-                    style: TextStyle(
-                      fontSize: 16.r,
-                      fontWeight: FontWeight.w600,
-                      color: blackColor,
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.offenseNumber,
+                        style: TextStyle(
+                          fontSize: 16.r,
+                          fontWeight: FontWeight.w600,
+                          color: blackColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        widget.date,
+                        style: TextStyle(
+                          fontSize: 12.r,
+                          color: blackColor,
+                        ),
+                      ),
+                    ],
                   ),
-                  const Spacer(),
+                  const Divider(),
+                  SizedBox(height: 8.h),
                   Text(
-                    widget.date,
+                    "Violation:",
                     style: TextStyle(
                       fontSize: 12.r,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromRGBO(27, 27, 27, 0.5),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  Text(
+                    widget.violation,
+                    style: TextStyle(
+                      fontSize: 12.r,
+                      fontWeight: FontWeight.w500,
                       color: blackColor,
                     ),
                   ),
                 ],
               ),
-              const Divider(),
-              SizedBox(height: 8.h),
-              Text(
-                "Violation:",
-                style: TextStyle(
-                  fontSize: 12.r,
-                  fontWeight: FontWeight.w400,
-                  color: const Color.fromRGBO(27, 27, 27, 0.5),
-                ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                widget.violation,
-                style: TextStyle(
-                  fontSize: 12.r,
-                  fontWeight: FontWeight.w500,
-                  color: blackColor,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        SizedBox(height: 12.h),
+      ],
     );
   }
 }
