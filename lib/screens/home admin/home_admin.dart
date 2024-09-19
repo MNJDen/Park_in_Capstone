@@ -136,7 +136,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                           "Hello, ",
                           style: TextStyle(
                             fontSize: 20.r,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             color: blackColor,
                           ),
                         ),
@@ -144,7 +144,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                           "Admin",
                           style: TextStyle(
                             fontSize: 20.r,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             color: blueColor,
                           ),
                         ),
@@ -152,7 +152,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                           "!",
                           style: TextStyle(
                             fontSize: 20.r,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             color: blackColor,
                           ),
                         ),
