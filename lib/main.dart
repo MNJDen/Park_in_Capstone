@@ -31,38 +31,38 @@ void main() async {
   tz.initializeTimeZones();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // initialize fcm and set background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // initialize awesome notifications
   AwesomeNotifications().initialize(
-      // 'resource://assets/images/Logo.png', // Your app icon (optional)
-      null, // Set to null if no app icon is needed
-      [
-        NotificationChannel(
-          channelKey: 'announcements_channel',
-          channelName: 'Announcements',
-          channelDescription: 'Notification channel for announcements',
-          defaultColor: blueColor,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-        ),
-        NotificationChannel(
-          channelKey: 'violations_channel',
-          channelName: 'Parking Violations',
-          channelDescription: 'Notification channel for parking violations',
-          defaultColor: Colors.red,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-        )
-      ],
-      channelGroups: [
-        NotificationChannelGroup(
-            channelGroupKey: "basic_channelGroupKey",
-            channelGroupName: "basic_channelGroupName")
-      ]);
+    // 'asset://assets/images/notif_icon.png',
+    null, // Set to null if no app icon is needed
+    [
+      NotificationChannel(
+        channelKey: 'announcements_channel',
+        channelName: 'Announcements',
+        channelDescription: 'Notification channel for announcements',
+        defaultColor: blueColor,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
+      NotificationChannel(
+        channelKey: 'violations_channel',
+        channelName: 'Parking Violations',
+        channelDescription: 'Notification channel for parking violations',
+        defaultColor: Colors.red,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      )
+    ],
+    channelGroups: [
+      NotificationChannelGroup(
+          channelGroupKey: "basic_channelGroupKey",
+          channelGroupName: "basic_channelGroupName")
+    ],
+  );
   bool isAllowedToSendNotification =
       await AwesomeNotifications().isNotificationAllowed();
   if (!isAllowedToSendNotification) {
@@ -80,6 +80,14 @@ void main() async {
         NotificationService(userId: userId, userType: userType);
     notificationService.init();
   }
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: blackColor,
+    ),
+  );
 
   runApp(
     ChangeNotifierProvider(
