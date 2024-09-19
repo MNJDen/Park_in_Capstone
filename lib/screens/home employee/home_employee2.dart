@@ -537,10 +537,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
                         color: blackColor,
-                        size: 30,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -558,7 +558,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -572,7 +572,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "Hello, ",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -580,7 +580,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "$name",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blueColor,
                                 ),
                               ),
@@ -588,7 +588,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "!",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -599,7 +599,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -648,7 +648,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                       icon: Icon(
                         Icons.message_outlined,
                         color: blackColor,
-                        size: 30.r,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -669,10 +669,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -690,10 +690,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -741,10 +741,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                               );
                               NavbarNotifier.hideBottomNavBar = true;
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -762,10 +762,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -836,7 +836,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                     .split(' ')[0],
                                 violation: ticket['violation'],
                               ),
-                              SizedBox(height: 12.h),
+                              // SizedBox(height: 12.h),
                             ],
                           );
                         }),
@@ -851,6 +851,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                   }
                 },
               ),
+              SizedBox(height: 100.h),
             ],
           ),
         ),
