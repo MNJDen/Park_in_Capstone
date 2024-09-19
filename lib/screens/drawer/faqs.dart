@@ -22,7 +22,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 32.h,
+                height: 20.h,
               ),
               Stack(
                 alignment: Alignment.center,
@@ -46,7 +46,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
                     style: TextStyle(
                       fontSize: 20.r,
                       color: blueColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
