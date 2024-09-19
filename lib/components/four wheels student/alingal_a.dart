@@ -120,14 +120,16 @@ class _PRKAlingalA4WStundentState extends State<PRKAlingalA4WStundent>
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 38,
-                    left: 21,
-                    child: Text(
-                      widget.availableSpace,
-                      style: TextStyle(
-                        fontSize: 48.r,
-                        fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.availableSpace,
+                        style: TextStyle(
+                          fontSize: 48.r,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -136,8 +138,8 @@ class _PRKAlingalA4WStundentState extends State<PRKAlingalA4WStundent>
                     right: -51,
                     child: Image.asset(
                       widget.image,
-                      height: 97.h,
-                      width: 147.w,
+                      // height: 97.h,
+                      width: 150.w,
                     ),
                   ),
                   Positioned(
