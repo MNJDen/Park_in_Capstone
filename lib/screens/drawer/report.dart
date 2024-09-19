@@ -296,7 +296,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 32.h,
+                    height: 20.h,
                   ),
                   Stack(
                     alignment: Alignment.center,
@@ -320,7 +320,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -406,7 +406,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   Row(
                     children: [
                       Text(
-                        "Attachments",
+                        "Attachment/s (Optional)",
                         style: TextStyle(
                           color: blackColor,
                           fontSize: 12.r,
