@@ -88,7 +88,7 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                               child: Icon(
                                 Icons.delete_outline_rounded,
                                 color: blackColor,
-                                size: 30.r,
+                                size: 26.r,
                               ),
                             ),
                           ),
@@ -110,7 +110,7 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                             style: TextStyle(
                               fontSize: 20.r,
                               color: blueColor,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
