@@ -484,10 +484,10 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
                         color: blackColor,
-                        size: 30,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -505,7 +505,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -519,7 +519,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                 "Hello, ",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -527,7 +527,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                 "$name",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blueColor,
                                 ),
                               ),
@@ -535,7 +535,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                 "!",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -546,7 +546,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -595,7 +595,8 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                       icon: Icon(
                         Icons.message_outlined,
                         color: blackColor,
-                        size: 30.r,
+                        weight: 100,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -616,10 +617,10 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -637,10 +638,10 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -688,10 +689,10 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                               );
                               NavbarNotifier.hideBottomNavBar = true;
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -709,10 +710,10 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
