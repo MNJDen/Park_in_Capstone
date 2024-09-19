@@ -120,14 +120,16 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 38,
-                    left: 21,
-                    child: Text(
-                      widget.availableSpace,
-                      style: TextStyle(
-                        fontSize: 48.r,
-                        fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.availableSpace,
+                        style: TextStyle(
+                          fontSize: 48.r,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -136,8 +138,8 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
                     right: -53,
                     child: Image.asset(
                       widget.image,
-                      height: 104.h,
-                      width: 148.w,
+                      // height: 104.h,
+                      width: 150.w,
                     ),
                   ),
                   Positioned(
