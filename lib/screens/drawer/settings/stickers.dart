@@ -96,7 +96,7 @@ class _StickersScreennState extends State<StickersScreen> {
                     style: TextStyle(
                       fontSize: 20.r,
                       color: blueColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
