@@ -120,24 +120,26 @@ class _PRKCCB4WStundentState extends State<PRKCC4WStundent>
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 38,
-                    left: 21,
-                    child: Text(
-                      widget.availableSpace,
-                      style: TextStyle(
-                        fontSize: 48.r,
-                        fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.availableSpace,
+                        style: TextStyle(
+                          fontSize: 48.r,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                   Positioned(
-                    bottom: -35,
-                    right: -59,
+                    bottom: -33,
+                    right: -61,
                     child: Image.asset(
                       widget.image,
-                      height: 105.h,
-                      width: 155.w,
+                      // height: 105.h,
+                      width: 160.w,
                     ),
                   ),
                   Positioned(
