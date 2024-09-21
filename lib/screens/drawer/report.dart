@@ -223,6 +223,8 @@ class _ReportScreenState extends State<ReportScreen> {
     String? name;
     String? userNumber;
     String? userType;
+    String reporterName = "Anonymous";
+
     if (_selectedRadio == 'No') {
       final userId = await _getUserId();
       if (userId != null) {
@@ -233,6 +235,8 @@ class _ReportScreenState extends State<ReportScreen> {
         name = userDoc['name'];
         userNumber = userDoc['userNumber'];
         userType = userDoc['userType'];
+
+        reporterName = name!;
       }
     }
 
@@ -247,8 +251,8 @@ class _ReportScreenState extends State<ReportScreen> {
       'reportedPlateNumber': _plateNumberCtrl.text,
       'reportDescription': _descriptionCtrl.text,
       'image_url': imageUrl,
-      'anonymous': _selectedRadio ?? 'No',
       'timestamp': FieldValue.serverTimestamp(),
+      'reporterName': reporterName,
     };
 
     // Include user details if the report is not anonymous
@@ -258,7 +262,6 @@ class _ReportScreenState extends State<ReportScreen> {
         userType != null) {
       reportData.addAll({
         'universityRole': userType,
-        'reporterName': name,
         'reporterUserNumber': userNumber,
       });
     }
