@@ -156,7 +156,7 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],

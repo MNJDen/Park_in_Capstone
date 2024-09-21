@@ -36,7 +36,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
   List<NavbarItem> items = [
     const NavbarItem(
       Icons.grid_view_outlined,
-      'Home 1',
+      'Home',
       selectedIcon: Icon(
         Icons.grid_view_rounded,
         size: 30,
@@ -45,7 +45,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
     ),
     const NavbarItem(
       Icons.new_releases_outlined,
-      'Home 2',
+      'Violations',
       selectedIcon: Icon(
         Icons.new_releases_rounded,
         size: 30,
@@ -70,7 +70,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
         '/': HomeEmployeeScreen1(),
       },
       1: {
-        '/': HomeEmployeeScreen2(userId: _userId!, userType: 'Student'),
+        '/': HomeEmployeeScreen2(userId: _userId!, userType: 'Employee'),
       },
     };
 
@@ -88,7 +88,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
         backgroundColor: whiteColor,
         showSelectedLabels: false,
         selectedIconColor: blueColor,
-        unselectedIconColor: const Color.fromRGBO(45, 49, 250, 0.4),
+        unselectedIconColor: blueColor.withOpacity(0.3),
         borderRadius: BorderRadius.circular(10),
         isExtended: true,
       ),

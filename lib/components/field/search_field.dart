@@ -24,12 +24,12 @@ class PRKSearchField extends StatefulWidget {
 
 class _PRKSearchFieldState extends State<PRKSearchField> {
   bool _isFocused = false;
-
-  late FocusNode _focusNode = FocusNode();
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     _focusNode.addListener(_onFocusChange);
   }
 
@@ -43,6 +43,13 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
+  }
+
+  void _handleSuggestionTap(SearchFieldListItem<dynamic> item) {
+    final suggestionText = item.toString(); // Customize this as needed
+    widget.onTap(suggestionText);
+    _focusNode
+        .unfocus(); // Unfocus the search field when a suggestion is selected
   }
 
   @override
@@ -106,8 +113,8 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
         suggestions: widget.searchFieldListItems,
         maxSuggestionsInViewPort: 6,
         itemHeight: 60,
-        onTap: () {
-          widget.onTap(widget.controller.text);
+        onSuggestionTap: (item) {
+          _handleSuggestionTap(item); // Handle suggestion tap
         },
       ),
     );

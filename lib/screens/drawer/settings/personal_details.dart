@@ -203,7 +203,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                     style: TextStyle(
                       fontSize: 20.r,
                       color: blueColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

@@ -108,8 +108,8 @@ class NotificationService {
       content: NotificationContent(
         id: 10, // Unique notification ID
         channelKey: 'violations_channel',
-        title: 'Parking Violation',
-        body: 'You have a new parking violation for ${ticket['plate_number']}.',
+        title: 'Oh no! Seems like you have committed a violation!',
+        body: 'Go to your violation record to see further details.',
         notificationLayout: NotificationLayout.Default,
       ),
     );

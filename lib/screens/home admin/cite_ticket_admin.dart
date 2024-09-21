@@ -337,7 +337,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],

@@ -13,7 +13,6 @@ import 'package:park_in/screens/drawer/settings/change_password.dart';
 import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
 import 'package:park_in/screens/home%20employee/notification_employee.dart';
-import 'package:park_in/screens/home%20student/parking%20areas%20student/parking_areas_2W_student.dart';
 import 'package:park_in/screens/misc/violations_empty.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
@@ -538,10 +537,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
                         color: blackColor,
-                        size: 30,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -559,7 +558,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -573,7 +572,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "Hello, ",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -581,7 +580,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "$name",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blueColor,
                                 ),
                               ),
@@ -589,7 +588,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                 "!",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -600,7 +599,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -649,7 +648,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                       icon: Icon(
                         Icons.message_outlined,
                         color: blackColor,
-                        size: 30.r,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -670,10 +669,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -691,10 +690,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -740,11 +739,12 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -762,10 +762,10 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -836,7 +836,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                     .split(' ')[0],
                                 violation: ticket['violation'],
                               ),
-                              SizedBox(height: 12.h),
+                              // SizedBox(height: 12.h),
                             ],
                           );
                         }),
@@ -851,6 +851,7 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                   }
                 },
               ),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

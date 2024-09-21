@@ -87,7 +87,7 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _colorAnimation,
         builder: (context, child) {
-          return Container(
+          return SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 140.h,
             child: Container(
@@ -108,14 +108,16 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(10),
                 child: Stack(
                   children: [
-                    Positioned(
-                      top: 38,
-                      left: 21,
-                      child: Text(
-                        widget.availableSpace,
-                        style: TextStyle(
-                          fontSize: 48.r,
-                          fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.availableSpace,
+                          style: TextStyle(
+                            fontSize: 48.r,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

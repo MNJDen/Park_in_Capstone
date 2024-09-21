@@ -88,7 +88,7 @@ class _PRKLibrary2WState extends State<PRKLibrary2W>
       child: AnimatedBuilder(
         animation: _colorAnimation,
         builder: (context, child) {
-          return Container(
+          return SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 140.h,
             child: Container(
@@ -109,19 +109,21 @@ class _PRKLibrary2WState extends State<PRKLibrary2W>
                 borderRadius: BorderRadius.circular(10),
                 child: Stack(
                   children: [
-                    Positioned(
-                      top: 38,
-                      left: 21,
-                      child: Text(
-                        widget.availableSpace,
-                        style: TextStyle(
-                          fontSize: 48.r,
-                          fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.availableSpace,
+                          style: TextStyle(
+                            fontSize: 48.r,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                     Positioned(
-                      bottom: -46,
+                      bottom: -56,
                       right: -26,
                       child: Transform.flip(
                         flipX: true,

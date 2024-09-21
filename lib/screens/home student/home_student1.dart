@@ -483,10 +483,10 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
                         color: blackColor,
-                        size: 30,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -504,7 +504,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -518,7 +518,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                 "Hello, ",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -526,7 +526,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                 "$name",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blueColor,
                                 ),
                               ),
@@ -534,7 +534,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                 "!",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -545,7 +545,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -570,10 +570,10 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -591,10 +591,10 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -640,11 +640,12 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -662,10 +663,10 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );

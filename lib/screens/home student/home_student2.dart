@@ -536,10 +536,10 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
                         color: blackColor,
-                        size: 30,
+                        size: 26.r,
                       ),
                     ),
                   ),
@@ -557,7 +557,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -571,7 +571,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                 "Hello, ",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -579,7 +579,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                 "$name",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blueColor,
                                 ),
                               ),
@@ -587,7 +587,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                 "!",
                                 style: TextStyle(
                                   fontSize: 20.r,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: blackColor,
                                 ),
                               ),
@@ -598,7 +598,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             'Hello, ---!',
                             style: TextStyle(
                               fontSize: 20.r,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               color: blackColor,
                             ),
                           );
@@ -623,10 +623,10 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -644,10 +644,10 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -693,11 +693,12 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                       const Duration(milliseconds: 400),
                                 ),
                               );
+                              NavbarNotifier.hideBottomNavBar = true;
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -715,10 +716,10 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           child: IconButton(
                             highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.notifications_outlined,
                               color: blackColor,
-                              size: 30,
+                              size: 26.r,
                             ),
                           ),
                         );
@@ -777,22 +778,20 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                       });
 
                       return Column(
-                        children: List.generate(tickets.length, (index) {
-                          final ticket = tickets[index];
-                          return Column(
-                            children: [
-                              PRKViolationCard(
-                                offenseNumber: formatOffenseNumber(index + 1),
-                                date: (ticket['timestamp'] as Timestamp)
-                                    .toDate()
-                                    .toString()
-                                    .split(' ')[0],
-                                violation: ticket['violation'],
-                              ),
-                              SizedBox(height: 12.h),
-                            ],
-                          );
-                        }),
+                        children: List.generate(
+                          tickets.length,
+                          (index) {
+                            final ticket = tickets[index];
+                            return PRKViolationCard(
+                              offenseNumber: formatOffenseNumber(index + 1),
+                              date: (ticket['timestamp'] as Timestamp)
+                                  .toDate()
+                                  .toString()
+                                  .split(' ')[0],
+                              violation: ticket['violation'],
+                            );
+                          },
+                        ),
                       );
                     }
                   } else {
@@ -804,6 +803,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                   }
                 },
               ),
+              SizedBox(height: 100.h),
             ],
           ),
         ),
