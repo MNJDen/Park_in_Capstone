@@ -27,6 +27,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
   File? _closeUpImage;
   File? _midShotImage;
   File? _wideShotImage;
+  final String? _status = "Pending";
 
   void _onSuggestionTap(String suggestion) {
     setState(() {});
@@ -208,6 +209,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
         'vehicle_type': _vehicleTypeCtrl.text,
         'violation': _searchCtrl.text,
         'description': _descriptionCtrl.text,
+        'status': _status,
         'close_up_image_url': closeUpImageUrl,
         'mid_shot_image_url': midShotImageUrl,
         'wide_shot_image_url': wideShotImageUrl,
