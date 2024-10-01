@@ -120,6 +120,116 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
     });
   }
 
+  final int _alingalAMaxSpace = 35;
+
+  Color _getAlingalAStatusColor() {
+    if (_alingalAAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_alingalAAvailableSpace == _alingalAMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_alingalAAvailableSpace < 35 && _alingalAAvailableSpace > 17) {
+      return parkingGreenColor;
+    } else if (_alingalAAvailableSpace <= 17 && _alingalAAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_alingalAAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _alingalBMaxSpace = 13;
+
+  Color _getAlingalBStatusColor() {
+    if (_alingalBAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_alingalBAvailableSpace == _alingalBMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_alingalBAvailableSpace < 13 && _alingalBAvailableSpace > 7) {
+      return parkingGreenColor;
+    } else if (_alingalBAvailableSpace <= 7 && _alingalBAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_alingalBAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _burnsMaxSpace = 15;
+
+  Color _getBurnsStatusColor() {
+    if (_burnsAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_burnsAvailableSpace == _burnsMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_burnsAvailableSpace < 15 && _burnsAvailableSpace > 7) {
+      return parkingGreenColor;
+    } else if (_burnsAvailableSpace <= 7 && _burnsAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_burnsAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _cokoMaxSpace = 16;
+
+  Color _getCokoStatusColor() {
+    if (_cokoCafeAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_cokoCafeAvailableSpace == _cokoMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_cokoCafeAvailableSpace < 16 && _cokoCafeAvailableSpace > 8) {
+      return parkingGreenColor;
+    } else if (_cokoCafeAvailableSpace <= 8 && _cokoCafeAvailableSpace > 4) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_cokoCafeAvailableSpace <= 4) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _coveredCourtMaxSpace = 19;
+
+  Color _getCoveredCourtStatusColor() {
+    if (_coveredCourtAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_coveredCourtAvailableSpace == _coveredCourtMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_coveredCourtAvailableSpace < 19 &&
+        _coveredCourtAvailableSpace > 9) {
+      return parkingGreenColor;
+    } else if (_coveredCourtAvailableSpace <= 9 &&
+        _coveredCourtAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_coveredCourtAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _libraryMaxSpace = 9;
+
+  Color _getLibraryStatusColor() {
+    if (_libraryAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_libraryAvailableSpace == _libraryMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_libraryAvailableSpace < 9 && _libraryAvailableSpace > 6) {
+      return parkingGreenColor;
+    } else if (_libraryAvailableSpace <= 6 && _libraryAvailableSpace > 3) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_libraryAvailableSpace <= 3) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -171,13 +281,13 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
               parkingArea: "Alingal A",
               availableSpace: _alingalAAvailableSpace.toString(),
               image: "assets/building_images/AlingalA-4W-S.png",
-              dotColor: parkingGreenColor,
+              dotColor: _getAlingalAStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 100)),
             PRKAlingalB4WStundent(
               parkingArea: "Alingal B",
               availableSpace: _alingalBAvailableSpace.toString(),
               image: "assets/building_images/AlingalB-4W-S.png",
-              dotColor: parkingGreenColor,
+              dotColor: _getAlingalBStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 120)),
           ],
         ),
@@ -191,13 +301,13 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
               parkingArea: "Burns",
               availableSpace: _burnsAvailableSpace.toString(),
               image: "assets/building_images/Burns-4W-S.png",
-              dotColor: parkingYellowColor,
+              dotColor: _getBurnsStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 140)),
             PRKCoko4WStundent(
               parkingArea: "Coko Cafe",
               availableSpace: _cokoCafeAvailableSpace.toString(),
               image: "assets/building_images/Coko-4W-S.png",
-              dotColor: parkingYellowColor,
+              dotColor: _getCokoStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 160)),
           ],
         ),
@@ -211,13 +321,13 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
               parkingArea: "Covered Court",
               availableSpace: _coveredCourtAvailableSpace.toString(),
               image: "assets/building_images/CC-4W-S.png",
-              dotColor: parkingRedColor,
+              dotColor: _getCoveredCourtStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 180)),
             PRKLibrary4WStundent(
               parkingArea: "Library",
               availableSpace: _libraryAvailableSpace.toString(),
               image: "assets/building_images/Library-4W-S.png",
-              dotColor: parkingRedColor,
+              dotColor: _getCoveredCourtStatusColor(),
             ).animate().fade(delay: const Duration(milliseconds: 200)),
           ],
         ),
