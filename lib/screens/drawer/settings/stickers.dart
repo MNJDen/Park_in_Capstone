@@ -256,7 +256,6 @@ class _StickersScreennState extends State<StickersScreen> {
               if (userDoc.exists) {
                 Map<String, dynamic>? userData =
                     userDoc.data() as Map<String, dynamic>?;
-                // Retrieve existing arrays or create empty lists if fields are missing
                 List<dynamic> existingStickerNumbers =
                     userData?['stickerNumber'] ?? [];
                 List<dynamic> existingPlateNumbers = userData?['plateNo'] ?? [];
