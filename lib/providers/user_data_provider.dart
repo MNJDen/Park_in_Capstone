@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-// Assuming UserData is a data class with default values and a copyWith method.
 class UserData {
   String? name;
   String? userNumber;
@@ -50,7 +49,6 @@ class UserData {
       imageFile: imageFile ?? this.imageFile,
       usertype: usertype ?? this.usertype,
       department: department ?? this.department,
-      // Deep copy the lists to ensure immutability
       stickerNumber: stickerNumber ?? List<String>.from(this.stickerNumber),
       plateNumber: plateNumber ?? List<String>.from(this.plateNumber),
     );
