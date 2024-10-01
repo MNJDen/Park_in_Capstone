@@ -72,6 +72,60 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
     });
   }
 
+  final int _alingal2wMaxSpace = 80;
+
+  Color _getAlingalStatusColor() {
+    if (_alingalAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_alingalAvailableSpace == _alingal2wMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_alingalAvailableSpace < 80 && _alingalAvailableSpace > 40) {
+      return parkingGreenColor;
+    } else if (_alingalAvailableSpace <= 40 && _alingalAvailableSpace > 10) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_alingalAvailableSpace <= 10) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _dolan2wMaxSpace = 50;
+
+  Color _getDolanStatusColor() {
+    if (_dolanAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_dolanAvailableSpace == _dolan2wMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_dolanAvailableSpace < 50 && _dolanAvailableSpace > 25) {
+      return parkingGreenColor;
+    } else if (_dolanAvailableSpace <= 25 && _dolanAvailableSpace > 10) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_dolanAvailableSpace <= 10) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _library2wMaxSpace = 80;
+
+  Color _getLibraryStatusColor() {
+    if (_libraryAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_libraryAvailableSpace == _library2wMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_libraryAvailableSpace < 80 && _libraryAvailableSpace > 40) {
+      return parkingGreenColor;
+    } else if (_libraryAvailableSpace <= 40 && _libraryAvailableSpace > 10) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_libraryAvailableSpace <= 10) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -123,7 +177,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
                 parkingArea: "Alingal",
                 availableSpace: _alingalAvailableSpace.toString(),
                 image: "assets/building_images/Alingal-2W.png",
-                dotColor: parkingGreenColor,
+                dotColor: _getAlingalStatusColor(),
               ),
             ),
           ],
@@ -138,7 +192,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
                 parkingArea: "Dolan",
                 availableSpace: _dolanAvailableSpace.toString(),
                 image: "assets/building_images/Dolan-2W.png",
-                dotColor: parkingYellowColor,
+                dotColor: _getDolanStatusColor(),
               ),
             ),
           ],
@@ -153,7 +207,7 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
                 parkingArea: "Library",
                 availableSpace: _libraryAvailableSpace.toString(),
                 image: "assets/building_images/Library-2W.png",
-                dotColor: parkingRedColor,
+                dotColor: _getLibraryStatusColor(),
               ),
             ),
           ],
