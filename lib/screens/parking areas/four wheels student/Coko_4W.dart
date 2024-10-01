@@ -36,6 +36,40 @@ class _Coko4wState extends State<Coko4w> {
     });
   }
 
+  final int _maxSpace = 16;
+
+  Color _getStatusColor() {
+    if (_coko4wAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_coko4wAvailableSpace == _maxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_coko4wAvailableSpace < 16 && _coko4wAvailableSpace > 8) {
+      return parkingGreenColor;
+    } else if (_coko4wAvailableSpace <= 8 && _coko4wAvailableSpace > 4) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_coko4wAvailableSpace <= 4) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  String _getStatusText() {
+    if (_coko4wAvailableSpace == 0) {
+      return "Full"; // Red status.
+    } else if (_coko4wAvailableSpace == _maxSpace) {
+      return "Available"; // Green status.
+    } else if (_coko4wAvailableSpace < 16 && _coko4wAvailableSpace > 8) {
+      return "Available"; // Green status.
+    } else if (_coko4wAvailableSpace <= 8 && _coko4wAvailableSpace > 4) {
+      return "Mid-way Full"; // Yellow status.
+    } else if (_coko4wAvailableSpace <= 4) {
+      return "Almost Full"; // Orange status.
+    } else {
+      return "Filling";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,15 +152,13 @@ class _Coko4wState extends State<Coko4w> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _coko4wAvailableSpace > 0
-                                      ? parkingYellowColor.withOpacity(0.1)
-                                      : Colors.red,
+                                  color: _getStatusColor().withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(
-                                  "Yellow",
+                                  _getStatusText(),
                                   style: TextStyle(
-                                    color: parkingYellowColor,
+                                    color: _getStatusColor(),
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
