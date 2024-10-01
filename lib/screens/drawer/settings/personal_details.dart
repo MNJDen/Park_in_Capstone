@@ -79,9 +79,9 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
 
   //pick image para mag replace pfp
   Future<void> _pickImage() async {
-    if (_isPickingImage) return; // Avoid opening multiple image pickers
+    if (_isPickingImage) return; // to avoid opening multiple image pickers
     setState(() {
-      _isPickingImage = true; // Set to true when picker is activated
+      _isPickingImage = true; // set to true when picker is activated
     });
 
     try {
