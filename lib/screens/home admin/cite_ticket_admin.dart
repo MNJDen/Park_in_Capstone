@@ -203,8 +203,19 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
       wideShotImageUrl = await _uploadImage(_wideShotImage!);
     }
 
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Violation Ticket')
+        .orderBy('timestamp', descending: false)
+        .get();
+
+    final int ticketCount = snapshot.docs.length;
+    final String newDocId = 'T${(ticketCount + 1).toString().padLeft(3, '0')}';
+
     try {
-      await FirebaseFirestore.instance.collection('Violation Ticket').add({
+      await FirebaseFirestore.instance
+          .collection('Violation Ticket')
+          .doc(newDocId)
+          .set({
         'plate_number': _plateNumberCtrl.text,
         'vehicle_type': _vehicleTypeCtrl.text,
         'violation': _searchCtrl.text,
@@ -366,6 +377,26 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                     prefixIcon: Icons.warning_rounded,
                     labelText: "Violation",
                     searchFieldListItems: [
+                      //serious violations
+                      SearchFieldListItem(
+                          'Selling, attempting to sell, or giving their gate pass/sticker to another person.'),
+                      SearchFieldListItem(
+                          'False declaration in any application for a gate pass/sticker or in a report of a stolen gate pass/sticker.'),
+                      SearchFieldListItem(
+                          'Tampering/Falsification/Alteration or Duplication of gate pass/sticker.'),
+                      SearchFieldListItem(
+                          'Driving while under the influence of prohibited drugs or any alcoholic beverages.'),
+                      SearchFieldListItem(
+                          'Using the car as shelter for obnoxious and scandalous activities.'),
+                      SearchFieldListItem(
+                          'Driving without license or unregistered vehicles.'),
+                      SearchFieldListItem(
+                          'Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID.'),
+                      SearchFieldListItem(
+                          'Verbal/physical abuse against security personnel.'),
+                      SearchFieldListItem(
+                          'Driving inside the campus at a speed in excess of 10 km/hr'),
+                      //minor violations
                       SearchFieldListItem(
                           'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus'),
                       SearchFieldListItem('Illegal parking'),
