@@ -56,6 +56,42 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
     });
   }
 
+  final int _alingalMaxSpace = 30;
+
+  Color _getAlingalStatusColor() {
+    if (_alingalAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_alingalAvailableSpace == _alingalMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_alingalAvailableSpace < 30 && _alingalAvailableSpace > 15) {
+      return parkingGreenColor;
+    } else if (_alingalAvailableSpace <= 15 && _alingalAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_alingalAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
+  final int _phelanMaxSpace = 30;
+
+  Color _getPhelanStatusColor() {
+    if (_phelanAvailableSpace == 0) {
+      return parkingRedColor; // Red when full.
+    } else if (_phelanAvailableSpace == _phelanMaxSpace) {
+      return parkingGreenColor; // Green when completely empty.
+    } else if (_phelanAvailableSpace < 30 && _phelanAvailableSpace > 15) {
+      return parkingGreenColor;
+    } else if (_phelanAvailableSpace <= 15 && _phelanAvailableSpace > 5) {
+      return parkingYellowColor; // Yellow when mid-way full.
+    } else if (_phelanAvailableSpace <= 5) {
+      return parkingOrangeColor; // Orange when almost full.
+    } else {
+      return parkingYellowColor;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -107,7 +143,7 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
                 parkingArea: "Alingal",
                 availableSpace: _alingalAvailableSpace.toString(),
                 image: "assets/building_images/AlingalA-4W-E.png",
-                dotColor: parkingGreenColor,
+                dotColor: _getAlingalStatusColor(),
               ),
             ),
           ],
@@ -122,7 +158,7 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
                 parkingArea: "Phelan",
                 availableSpace: _phelanAvailableSpace.toString(),
                 image: "assets/building_images/Phelan-4W-E.png",
-                dotColor: parkingYellowColor,
+                dotColor: _getPhelanStatusColor(),
               ),
             ),
           ],
