@@ -41,7 +41,7 @@ class _Controls2WAdminState extends State<Controls2WAdmin> {
         fetchedParkingAreas.add({
           'parkingArea': area,
           'count': areaData?['count'] ?? 0,
-          'dotColor': parkingGreenColor, // Customize the color logic as needed
+          'dotColor': parkingGreenColor,
         });
       }
     }
