@@ -88,7 +88,6 @@ class NotificationService {
         final announcement = doc.data();
         final timestamp = (announcement['createdAt'] as Timestamp).toDate();
 
-        // Ensure the announcement is for the correct userType and it's new
         if ((announcement['userType'] == userType ||
                 announcement['userType'] == 'Everyone') &&
             timestamp.isAfter(latestAnnouncementTime)) {
@@ -106,7 +105,7 @@ class NotificationService {
   void _triggerViolationNotification(Map<String, dynamic> ticket) {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: 10, // Unique notification ID
+        id: 10,
         channelKey: 'violations_channel',
         title: 'Oh no! Seems like you have committed a violation!',
         body: 'Go to your violation record to see further details.',
