@@ -38,7 +38,7 @@ void main() async {
   // initialize awesome notifications
   AwesomeNotifications().initialize(
     // 'asset://assets/images/notif_icon.png',
-    null, // Set to null if no app icon is needed
+    null,
     [
       NotificationChannel(
         channelKey: 'announcements_channel',
