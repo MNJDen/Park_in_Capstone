@@ -38,7 +38,7 @@ class _Controls4WEmployeeAdminState extends State<Controls4WEmployeeAdmin> {
         fetchedParkingAreas.add({
           'parkingArea': area,
           'count': areaData?['count'] ?? 0,
-          'dotColor': parkingGreenColor, // Customize the color logic as needed
+          'dotColor': parkingGreenColor,
         });
       }
     }
