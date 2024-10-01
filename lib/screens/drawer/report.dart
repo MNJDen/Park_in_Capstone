@@ -266,10 +266,20 @@ class _ReportScreenState extends State<ReportScreen> {
       });
     }
 
+    // Fetch the current number of incident reports to generate the document ID
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Incident Report')
+        .orderBy('timestamp', descending: false)
+        .get();
+
+    final int reportCount = snapshot.docs.length;
+    final String newDocId = 'IR${(reportCount + 1).toString().padLeft(3, '0')}';
+
     // Add the report to Firestore
     await FirebaseFirestore.instance
         .collection('Incident Report')
-        .add(reportData);
+        .doc(newDocId)
+        .set(reportData);
 
     _plateNumberCtrl.clear();
     _descriptionCtrl.clear();
