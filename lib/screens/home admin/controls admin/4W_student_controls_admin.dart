@@ -38,14 +38,14 @@ class _Controls4WAdminState extends State<Controls4WStudentAdmin> {
       DataSnapshot snapshot = event.snapshot;
 
       if (snapshot.value != null) {
-        // Safely cast the value to a Map<String, dynamic>
+        // cast the value to a Map<String, dynamic>
         Map<String, dynamic>? areaData =
             (snapshot.value as Map?)?.cast<String, dynamic>();
 
         fetchedParkingAreas.add({
           'parkingArea': area,
           'count': areaData?['count'] ?? 0, // Default to 0 if count is null
-          'dotColor': parkingGreenColor, // Customize the color logic as needed
+          'dotColor': parkingGreenColor,
         });
       }
     }
