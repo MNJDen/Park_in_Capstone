@@ -56,7 +56,7 @@ class _NotificationStudeEmployeenState
           .doc(widget.userId) // Get the document with the current user's ID
           .get();
 
-      final plateNoField = userDoc['plateNo']; // This might be a List or String
+      final plateNoField = userDoc['plateNo'];
 
       setState(() {
         if (plateNoField is List) {
@@ -151,6 +151,7 @@ class _NotificationStudeEmployeenState
                             stream: FirebaseFirestore.instance
                                 .collection('Violation Ticket')
                                 .where('plate_number', whereIn: _plateNumbers)
+                                .where('status', isEqualTo: 'Pending')
                                 .snapshots(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
