@@ -752,6 +752,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                 stream: FirebaseFirestore.instance
                     .collection('Violation Ticket')
                     .where('plate_number', whereIn: _plateNumbers)
+                    .where('status', isEqualTo: 'Pending')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -777,18 +778,28 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             .compareTo(b['timestamp'] as Timestamp);
                       });
 
+                      // Map to track how many times a violation the user has committed
+                      Map<String, int> violationCounts = {};
+
                       return Column(
                         children: List.generate(
                           tickets.length,
                           (index) {
                             final ticket = tickets[index];
+                            final violationType = ticket['violation'];
+
+                            // Increment the violation count
+                            violationCounts[violationType] =
+                                (violationCounts[violationType] ?? 0) + 1;
+
                             return PRKViolationCard(
-                              offenseNumber: formatOffenseNumber(index + 1),
+                              offenseNumber: formatOffenseNumber(
+                                  violationCounts[violationType]!),
                               date: (ticket['timestamp'] as Timestamp)
                                   .toDate()
                                   .toString()
                                   .split(' ')[0],
-                              violation: ticket['violation'],
+                              violation: violationType,
                             );
                           },
                         ),
