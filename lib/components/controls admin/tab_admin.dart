@@ -24,7 +24,7 @@ class _PRKTabAdminState extends State<PRKTabAdmin> {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 8,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
