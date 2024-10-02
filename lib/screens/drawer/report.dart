@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -31,13 +33,69 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final ImageSource? source = await _showImageSourceOption();
+    if (source != null) {
+      final XFile? image = await picker.pickImage(
+        source: source,
+      );
 
-    if (image != null) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
     }
+  }
+
+  Future<ImageSource?> _showImageSourceOption() async {
+    return await showModalBottomSheet<ImageSource>(
+      backgroundColor: whiteColor,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Column(
+          children: [
+            ListTile(
+              dense: true,
+              title: Text(
+                "Choose a source: ",
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    color: blackColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Camera",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Gallery",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // Method to clear the selected image
@@ -62,160 +120,17 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future<void> _citeReport() async {
     if (_selectedRadio == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Select one if you want to anonymously report or no",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Choose if you want to anonymously report or no");
       return;
     } else if (_plateNumberCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Provide the vehicle's plate number for the report",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(
+          context, "Provide the vehicle's plate number for the report");
       return;
     } else if (_descriptionCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Describe what is being reported",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Describe what happened");
       return;
     } else if (_selectedImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Upload images for evidence",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Upload an image for evidence");
       return;
     }
 
@@ -287,18 +202,14 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       _selectedRadio = null; // Reset selected radio button
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Incident report submitted successfully!'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    successSnackbar(context, "Report submitted successfully");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -419,34 +330,77 @@ class _ReportScreenState extends State<ReportScreen> {
                   Row(
                     children: [
                       Text(
-                        "Attachment/s (Optional)",
+                        "Attachment: ",
                         style: TextStyle(
                           color: blackColor,
                           fontSize: 12.r,
                         ),
                       ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          _pickImage();
-                        },
-                        child: Icon(
-                          Icons.attachment_rounded,
-                          color: blackColor,
-                          size: 24.r,
-                        ),
-                      )
                     ],
                   ),
-                  if (_selectedImage != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: Image.file(
-                        _selectedImage!,
-                        height: 100.h,
-                        width: 100.h,
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: blueColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: _selectedImage != null
+                              ? Image.file(
+                                  _selectedImage!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          _pickImage();
+                                        },
+                                        icon: Icon(
+                                          Icons.image_rounded,
+                                          color: blackColor,
+                                          size: 20.r,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Tap to upload an image",
+                                        style: TextStyle(
+                                          color: blackColor,
+                                          fontSize: 12.r,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ),
                       ),
-                    ),
+                      if (_selectedImage != null)
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: IconButton.filled(
+                            onPressed: _clearImage,
+                            style: const ButtonStyle(
+                              backgroundColor:
+                                  WidgetStatePropertyAll(blackColor),
+                            ),
+                            icon: const Icon(
+                              Icons.close_rounded,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
               Padding(

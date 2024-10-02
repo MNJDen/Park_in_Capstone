@@ -71,7 +71,16 @@ class _ParkingAreas4WAdminState extends State<ParkingAreas4WAdmin> {
           SizedBox(
             height: 12.h,
           ),
-          PRKTotalAvailableCard(value: _totalCount.toString()),
+          TweenAnimationBuilder<int>(
+            tween: IntTween(
+              begin: 0,
+              end: _totalCount,
+            ),
+            duration: const Duration(seconds: 1),
+            builder: (context, value, child) {
+              return PRKTotalAvailableCard(value: value.toString());
+            },
+          ),
           SizedBox(
             height: 12.h,
           ),

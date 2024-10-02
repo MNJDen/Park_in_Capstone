@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -29,43 +31,7 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
       if (_oldPasswordCtrl.text.isEmpty ||
           _newPasswordCtrl.text.isEmpty ||
           _confirmPasswordCtrl.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            width: MediaQuery.of(context).size.width * 0.95,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: Color.fromRGBO(255, 0, 0, 1),
-              ),
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_outline_rounded,
-                  color: const Color.fromRGBO(255, 0, 0, 1),
-                  size: 20.r,
-                ),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Flexible(
-                  child: Text(
-                    "Fill out all the forms",
-                    style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        errorSnackbar(context, "Please fill in all fields");
       } else {
         final docSnapshot = await FirebaseFirestore.instance
             .collection('User')
@@ -80,124 +46,16 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
               .doc(userId)
               .update({'password': _confirmPasswordCtrl.text});
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              width: MediaQuery.of(context).size.width * 0.95,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(
-                  color: Color.fromRGBO(20, 255, 0, 1),
-                ),
-              ),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline_rounded,
-                    color: const Color.fromRGBO(20, 255, 0, 1),
-                    size: 20.r,
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Flexible(
-                    child: Text(
-                      "Password changed successfully",
-                      style: TextStyle(
-                        color: blackColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          successSnackbar(context, "Password changed successfully");
 
           _oldPasswordCtrl.clear();
           _newPasswordCtrl.clear();
           _confirmPasswordCtrl.clear();
         } else {
           if (oldPassword != _oldPasswordCtrl.text) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                width: MediaQuery.of(context).size.width * 0.95,
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(
-                    color: Color.fromRGBO(255, 0, 0, 1),
-                  ),
-                ),
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline_rounded,
-                      color: const Color.fromRGBO(255, 0, 0, 1),
-                      size: 20.r,
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Flexible(
-                      child: Text(
-                        "Old password is incorrect",
-                        style: TextStyle(
-                          color: blackColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            errorSnackbar(context, "Old password is incorrect");
           } else if (_newPasswordCtrl.text != _confirmPasswordCtrl.text) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                width: MediaQuery.of(context).size.width * 0.95,
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(
-                    color: Color.fromRGBO(255, 0, 0, 1),
-                  ),
-                ),
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline_rounded,
-                      color: const Color.fromRGBO(255, 0, 0, 1),
-                      size: 20.r,
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Flexible(
-                      child: Text(
-                        "New password does not match",
-                        style: TextStyle(
-                          color: blackColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            errorSnackbar(context, "New password does not match");
           }
         }
       }
@@ -210,6 +68,7 @@ class ChangePasswordScreennState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

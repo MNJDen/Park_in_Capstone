@@ -235,93 +235,81 @@ class _FaqsScreenState extends State<FaqsScreen> {
                         SizedBox(
                           height: 12.h,
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Green",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: parkingGreenColor,
-                                  fontFamily: 'General Sans',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    " signifies that there are ample parking spaces available.",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: blackColor,
-                                  fontFamily: 'General Sans',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
+                        Text(
+                          "Green",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: parkingGreenColor,
+                            fontFamily: 'General Sans',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "- signifies that there are ample parking spaces available.",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: blackColor,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
                           height: 12.h,
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Yellow",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: parkingYellowColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w500, // replace with your app's font weight
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    " indicates that the parking area is at approximately 50% capacity.",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: blackColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w400, // replace with your app's font weight
-                                ),
-                              ),
-                            ],
+                        Text(
+                          "Yellow",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: parkingYellowColor,
+                            fontFamily: 'General Sans',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "- indicates that the parking area is at approximately 50% capacity.",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: blackColor,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
                           height: 12.h,
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Red",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: parkingRedColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w500, // replace with your app's font weight
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    " signals that the parking area is nearing full capacity or is already at full capacity.",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: blackColor,
-                                  fontFamily:
-                                      'General Sans', // replace with your app's font family
-                                  fontWeight: FontWeight
-                                      .w400, // replace with your app's font weight
-                                ),
-                              ),
-                            ],
+                        Text(
+                          "Orange",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: parkingOrangeColor,
+                            fontFamily: 'General Sans',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "- indicates that the parking area is at approximately 50% capacity.",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: blackColor,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        Text(
+                          "Red",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: parkingRedColor,
+                            fontFamily: 'General Sans',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "- signals that the parking area is nearing full capacity or is already at full capacity.",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: blackColor,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],

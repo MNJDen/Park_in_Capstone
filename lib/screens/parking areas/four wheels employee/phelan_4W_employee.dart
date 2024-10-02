@@ -59,11 +59,11 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
     if (_phelanAvailableSpace == 0) {
       return "Full"; // Red status.
     } else if (_phelanAvailableSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_phelanAvailableSpace < 30 && _phelanAvailableSpace > 15) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_phelanAvailableSpace <= 15 && _phelanAvailableSpace > 5) {
-      return "Mid-way Full"; // Yellow status.
+      return "Half Full"; // Yellow status.
     } else if (_phelanAvailableSpace <= 5) {
       return "Almost Full"; // Orange status.
     } else {
@@ -110,7 +110,7 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -153,7 +153,7 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.09),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(

@@ -157,12 +157,12 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
                       _addSticker();
                       updateProviderData();
                     },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(yellowColor),
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(yellowColor),
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add_rounded,
-                      color: blackColor,
+                      color: whiteColor,
                     ),
                   ),
                 ],
@@ -198,7 +198,7 @@ class StickerFormField extends StatelessWidget {
       children: [
         Card(
           elevation: 15,
-          shadowColor: Color.fromRGBO(27, 27, 27, 0.2),
+          shadowColor: blackColor.withOpacity(0.1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.r),
           ),
@@ -214,15 +214,16 @@ class StickerFormField extends StatelessWidget {
                       "Sticker #$stickerIndex",
                       style: TextStyle(
                         fontSize: 16.r,
-                        color: blackColor,
+                        color: whiteColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     GestureDetector(
                       child: Icon(
                         Icons.highlight_remove_rounded,
                         size: 25.r,
+                        color: whiteColor,
                       ),
                       onTap: () => onDelete(index),
                     ),

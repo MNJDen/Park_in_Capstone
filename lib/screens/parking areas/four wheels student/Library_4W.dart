@@ -58,9 +58,9 @@ class _Library4w extends State<Library4w> {
     if (_libraryAvailbaleSpace == 0) {
       return "Full"; // Red status.
     } else if (_libraryAvailbaleSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_libraryAvailbaleSpace < 9 && _libraryAvailbaleSpace > 6) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_libraryAvailbaleSpace <= 6 && _libraryAvailbaleSpace > 3) {
       return "Mid-way Full"; // Yellow status.
     } else if (_libraryAvailbaleSpace <= 3) {
@@ -109,7 +109,7 @@ class _Library4w extends State<Library4w> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -152,7 +152,7 @@ class _Library4w extends State<Library4w> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(

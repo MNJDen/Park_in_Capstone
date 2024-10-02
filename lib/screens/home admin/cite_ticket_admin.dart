@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:park_in/components/controls%20admin/ticket_upload.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -35,35 +37,102 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
 
   Future<void> _pickCloseUpImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final ImageSource? source = await _showImageSourceOption();
+    if (source != null) {
+      final XFile? image = await picker.pickImage(
+        source: source,
+      );
 
-    if (image != null) {
-      setState(() {
-        _closeUpImage = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _closeUpImage = File(image.path);
+        });
+      }
     }
   }
 
   Future<void> _pickMidShotImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final ImageSource? source = await _showImageSourceOption();
+    if (source != null) {
+      final XFile? image = await picker.pickImage(
+        source: source,
+      );
 
-    if (image != null) {
-      setState(() {
-        _midShotImage = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _midShotImage = File(image.path);
+        });
+      }
     }
   }
 
   Future<void> _pickWideShotImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final ImageSource? source = await _showImageSourceOption();
+    if (source != null) {
+      final XFile? image = await picker.pickImage(
+        source: source,
+      );
 
-    if (image != null) {
-      setState(() {
-        _wideShotImage = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _wideShotImage = File(image.path);
+        });
+      }
     }
+  }
+
+  Future<ImageSource?> _showImageSourceOption() async {
+    return await showModalBottomSheet<ImageSource>(
+      backgroundColor: whiteColor,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Column(
+          children: [
+            ListTile(
+              dense: true,
+              title: Text(
+                "Choose a source: ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                  fontWeight: FontWeight.w500
+                ),
+              ),
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Camera",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Gallery",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _clearImage() {
@@ -109,86 +178,15 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
     if (_plateNumberCtrl.text.isEmpty ||
         _vehicleTypeCtrl.text.isEmpty ||
         _searchCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Fill out all the required fields",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Please fill in all required fields");
       return;
     }
 
     if (_closeUpImage == null ||
         _midShotImage == null ||
         _wideShotImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Please upload all required images (Close-up, Mid Shot, Wide Shot)",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context,
+          "Please upload all required images (Close-up, Mid Shot, Wide Shot)");
       return;
     }
 
@@ -233,81 +231,9 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
       _descriptionCtrl.clear();
       _clearImage();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(20, 255, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.check_circle_outline_rounded,
-                color: const Color.fromRGBO(20, 255, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Ticket cited successfully",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      successSnackbar(context, "Ticket cited successfully!");
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Error Occured: $e",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Error Occured: $e");
     }
   }
 
@@ -436,6 +362,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                     children: [
                       PRKTicketsUpload(
                         label: "Close-up Shot",
+                        hint: "(Image of the plate number)",
                         onPressed: _closeUpImage != null
                             ? _clearCloseUpImage
                             : _pickCloseUpImage,
@@ -447,6 +374,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                       SizedBox(height: 8.h),
                       PRKTicketsUpload(
                         label: "Mid Shot",
+                        hint: "(Photo of the vehicle)",
                         onPressed: _midShotImage != null
                             ? _clearMidShotImage
                             : _pickMidShotImage,
@@ -458,6 +386,7 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                       SizedBox(height: 8.h),
                       PRKTicketsUpload(
                         label: "Wide Shot",
+                        hint: "(Capture the surroundings)",
                         onPressed: _wideShotImage != null
                             ? _clearWideShotImage
                             : _pickWideShotImage,

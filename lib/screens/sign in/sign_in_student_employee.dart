@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -28,43 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final password = _passwordCtrl.text.trim();
 
     if (userNumber.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 235, 235),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Please fill out the fields",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Please fill in all fields");
       return;
     }
 
@@ -93,65 +58,26 @@ class _SignInScreenState extends State<SignInScreen> {
         } else if (userType == 'Employee') {
           destination = BottomNavBarEmployee();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              width: MediaQuery.of(context).size.width * 0.95,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color.fromARGB(255, 255, 235, 235),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(
-                  color: Color.fromRGBO(255, 0, 0, 1),
-                ),
-              ),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_rounded,
-                    color: const Color.fromRGBO(255, 0, 0, 1),
-                    size: 20.r,
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Flexible(
-                    child: Text(
-                      'User type not recognized',
-                      style: TextStyle(
-                        color: blackColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          errorSnackbar(context, "User type not recognize");
           return;
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            // width: MediaQuery.of(context).size.width * 0.95,
+            elevation: 0,
             margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+            backgroundColor: blackColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: Color.fromRGBO(20, 255, 0, 1),
-              ),
             ),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.check_circle_rounded,
-                  color: const Color.fromRGBO(20, 255, 0, 1),
+                  Icons.check_circle_outline_rounded,
+                  color: successColor,
                   size: 20.r,
                 ),
                 SizedBox(
@@ -161,8 +87,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Text(
                     'Sign In Successful!',
                     style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w500,
+                      color: whiteColor,
+                      fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                     ),
                   ),
@@ -193,50 +119,10 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            width: MediaQuery.of(context).size.width * 0.95,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromARGB(255, 255, 235, 235),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: Color.fromRGBO(255, 0, 0, 1),
-              ),
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_rounded,
-                  color: const Color.fromRGBO(255, 0, 0, 1),
-                  size: 20.r,
-                ),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Flexible(
-                  child: Text(
-                    'Invalid user number or password',
-                    style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        errorSnackbar(context, "Invalid user number or password");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to sign in: $e'),
-        ),
-      );
+      errorSnackbar(context, "Error Occured: $e");
     }
   }
 
@@ -285,7 +171,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     SizedBox(height: 32.h),
                     PRKFormField(
-                      prefixIcon: Icons.person_rounded,
+                      prefixIcon: Icons.badge_rounded,
                       labelText: "Student/Employee Number",
                       controller: _userNumberCtrl,
                       keyboardType: TextInputType.number,

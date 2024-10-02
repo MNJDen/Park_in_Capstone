@@ -61,13 +61,13 @@ class _CoveredCourt4w extends State<CoveredCourt4w> {
     if (_coveredCourtAvailableSpace == 0) {
       return "Full"; // Red status.
     } else if (_coveredCourtAvailableSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_coveredCourtAvailableSpace < 19 &&
         _coveredCourtAvailableSpace > 9) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_coveredCourtAvailableSpace <= 9 &&
         _coveredCourtAvailableSpace > 5) {
-      return "Mid-way Full"; // Yellow status.
+      return "Half Full"; // Yellow status.
     } else if (_coveredCourtAvailableSpace <= 5) {
       return "Almost Full"; // Orange status.
     } else {
@@ -114,7 +114,7 @@ class _CoveredCourt4w extends State<CoveredCourt4w> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -157,7 +157,7 @@ class _CoveredCourt4w extends State<CoveredCourt4w> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(

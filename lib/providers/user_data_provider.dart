@@ -46,7 +46,7 @@ class UserData {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       imageUrl: imageUrl ?? this.imageUrl,
-      imageFile: imageFile ?? this.imageFile,
+      imageFile: imageFile != null ? imageFile : null,
       usertype: usertype ?? this.usertype,
       department: department ?? this.department,
       stickerNumber: stickerNumber ?? List<String>.from(this.stickerNumber),
