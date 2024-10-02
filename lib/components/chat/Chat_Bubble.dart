@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -57,13 +58,46 @@ class ChatBubble extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (!isCurrentUser)
-                  CircleAvatar(
-                    radius: 14.w,
-                    backgroundImage: profilePictureUrl != null
-                        ? NetworkImage(profilePictureUrl!)
-                        : const AssetImage("assets/images/AdNU_Logo.png")
-                            as ImageProvider,
-                  ),
+                  profilePictureUrl != null
+                      ? ClipOval(
+                          child: Image.network(
+                            profilePictureUrl!,
+                            height: 28.h,
+                            width: 28.h,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) {
+                                return child;
+                              } else {
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 28.w,
+                                    height: 28.h,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                "assets/images/AdNU_Logo.png",
+                                height: 28.h,
+                                width: 28.h,
+                              );
+                            },
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 14.w,
+                          backgroundImage:
+                              const AssetImage("assets/images/AdNU_Logo.png")
+                                  as ImageProvider,
+                        ),
                 SizedBox(width: isCurrentUser ? 0 : 8.w),
                 Expanded(
                   child: Column(
