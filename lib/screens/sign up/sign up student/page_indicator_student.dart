@@ -102,7 +102,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                   IconButton(
                     onPressed: _currentPage < _pages.length - 1
                         ? () {
-                            _updateUserData(); 
+                            _updateUserData();
                             _controller.nextPage(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.ease,
@@ -170,11 +170,12 @@ class Indicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: 10.h,
-      width: isActive ? 20.w : 10.w,
+      curve: Curves.fastOutSlowIn,
+      height: 8.h,
+      width: isActive ? 36.w : 8.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
       decoration: BoxDecoration(
-        color: isActive ? blueColor : blackColor.withOpacity(0.3),
+        color: isActive ? blueColor : blueColor.withOpacity(0.2),
         borderRadius: BorderRadius.all(Radius.circular(100.r)),
       ),
     );
