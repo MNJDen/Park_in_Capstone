@@ -58,11 +58,11 @@ class _Coko4wState extends State<Coko4w> {
     if (_coko4wAvailableSpace == 0) {
       return "Full"; // Red status.
     } else if (_coko4wAvailableSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_coko4wAvailableSpace < 16 && _coko4wAvailableSpace > 8) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_coko4wAvailableSpace <= 8 && _coko4wAvailableSpace > 4) {
-      return "Mid-way Full"; // Yellow status.
+      return "Half Full"; // Yellow status.
     } else if (_coko4wAvailableSpace <= 4) {
       return "Almost Full"; // Orange status.
     } else {
@@ -109,7 +109,7 @@ class _Coko4wState extends State<Coko4w> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -152,7 +152,7 @@ class _Coko4wState extends State<Coko4w> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(
