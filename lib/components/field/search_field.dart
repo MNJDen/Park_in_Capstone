@@ -111,7 +111,7 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
         offset: Offset(0, 55),
         controller: widget.controller,
         suggestions: widget.searchFieldListItems,
-        maxSuggestionsInViewPort: 6,
+        maxSuggestionsInViewPort: 5,
         itemHeight: 60,
         onSuggestionTap: (item) {
           _handleSuggestionTap(item); // Handle suggestion tap
