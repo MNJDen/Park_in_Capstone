@@ -60,11 +60,11 @@ class _AlingalA4WState extends State<AlingalA4W> {
     if (_alingalAAvailableSpace == 0) {
       return "Full"; // Red status.
     } else if (_alingalAAvailableSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_alingalAAvailableSpace < 35 && _alingalAAvailableSpace > 17) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_alingalAAvailableSpace <= 40 && _alingalAAvailableSpace > 5) {
-      return "Mid-way Full"; // Yellow status.
+      return "Half Full"; // Yellow status.
     } else if (_alingalAAvailableSpace <= 5) {
       return "Almost Full"; // Orange status.
     } else {
@@ -111,7 +111,7 @@ class _AlingalA4WState extends State<AlingalA4W> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -154,7 +154,7 @@ class _AlingalA4WState extends State<AlingalA4W> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(
