@@ -72,6 +72,25 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
     });
   }
 
+  Color _getDotColor() {
+    int maxCount = _maxCounts[widget.parkingArea] ?? 0;
+
+    if (_currentCount == 0) {
+      return parkingRedColor;
+    } else if (_currentCount < maxCount * 0.25) {
+      return parkingOrangeColor;
+    } else if (_currentCount >= maxCount * 0.25 &&
+        _currentCount < maxCount * 0.5) {
+      return parkingYellowColor;
+    } else if (_currentCount >= maxCount * 0.5 && _currentCount < maxCount) {
+      return parkingGreenColor;
+    } else if (_currentCount == maxCount) {
+      return parkingGreenColor;
+    } else {
+      return Colors.grey; // default color
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -92,7 +111,7 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
             width: 7.w,
             height: 7.w,
             decoration: BoxDecoration(
-              color: widget.dotColor,
+              color: _getDotColor(),
               borderRadius: BorderRadius.circular(100),
             ),
           ),
