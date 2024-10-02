@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 
 class PRKControlsAdmin extends StatefulWidget {
@@ -55,21 +56,22 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
     // Get the maximum allowed count for the parking area
     int maxCount = _maxCounts[widget.parkingArea] ?? 0;
 
-    // Ensure count is within bounds
     if (newCount < 0) {
-      newCount = 0; // Prevent negative counts
+      newCount = 0;
+      errorSnackbar(context, "Already at 0");
     } else if (newCount > maxCount) {
-      newCount = maxCount; // Prevent exceeding max count
+      newCount = maxCount;
+      errorSnackbar(context, "Already at maximum capacity");
+    } else {
+      setState(() {
+        _currentCount = newCount;
+      });
+
+      // Update the count in the Realtime Database
+      _databaseReference.update({
+        'count': _currentCount,
+      });
     }
-
-    setState(() {
-      _currentCount = newCount;
-    });
-
-    // Update the count in the Realtime Database
-    _databaseReference.update({
-      'count': _currentCount,
-    });
   }
 
   @override
@@ -104,7 +106,7 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.remove_circle_outline),
+                icon: const Icon(Icons.remove_circle_outline),
                 iconSize: 30,
                 color: blueColor,
                 onPressed: () => _updateCount(-1),
@@ -124,7 +126,7 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
               ),
               SizedBox(width: 5.w),
               IconButton(
-                icon: Icon(Icons.add_circle_outline),
+                icon: const Icon(Icons.add_circle_outline),
                 iconSize: 30,
                 color: blueColor,
                 onPressed: () => _updateCount(1),
