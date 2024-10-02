@@ -25,6 +25,14 @@ class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
     }
   }
 
+  void _removeImage() {
+    Provider.of<UserDataProvider>(context, listen: false)
+        .updateUserData(imageFile: null);
+    //debug
+    print(
+        'Current imageFile after removal: ${Provider.of<UserDataProvider>(context, listen: false).userData.imageFile}');
+  }
+
   @override
   Widget build(BuildContext context) {
     final imageUrl = Provider.of<UserDataProvider>(context).userData.imageFile;
@@ -49,52 +57,92 @@ class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
               ),
               SizedBox(height: 4.h),
               Text(
-                "Upload an image with that charming face of yours. Please upload images that are in 4:3 or 5:4 aspect ratios, or ensure that your face is centered for optimal results.",
+                "Upload an image with that charming face of yours. Images that are in 4:3 or 5:4 aspect ratios, or ensure that your face is centered for optimal results.",
                 style: TextStyle(
                   color: blackColor,
                   fontSize: 12.r,
                 ),
               ),
               SizedBox(height: 32.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 77.r,
-                    backgroundColor: whiteColor,
-                    child: imageUrl == null
-                        ? Icon(
-                            Icons.image_rounded,
-                            color: blackColor,
-                            size: 25.r,
-                          )
-                        : ClipOval(
-                            child: Image.file(
-                              imageUrl,
-                              width: 154.r,
-                              height: 154.r,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
               Center(
-                child: TextButton(
-                  onPressed: _pickImage,
-                  child: Text(
-                    imageUrl == null
-                        ? "Upload Profile Picture"
-                        : "Change Picture",
-                    style: TextStyle(
-                      color: blueColor,
-                      fontSize: 12.r,
-                      fontWeight: FontWeight.w600,
+                child: Stack(
+                  children: [
+                    Consumer<UserDataProvider>(
+                      builder: (context, userDataProvider, child) {
+                        final imageUrl = userDataProvider.userData.imageFile;
+                        return CircleAvatar(
+                          radius: 77.r,
+                          backgroundColor: whiteColor,
+                          child: imageUrl == null
+                              ? Icon(
+                                  Icons.image_rounded,
+                                  color: blackColor,
+                                  size: 25.r,
+                                )
+                              : ClipOval(
+                                  child: Image.file(
+                                    imageUrl,
+                                    width: 154.r,
+                                    height: 154.r,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                        );
+                      },
                     ),
-                  ),
+                    Consumer<UserDataProvider>(
+                      builder: (context, userDataProvider, child) {
+                        final imageUrl = userDataProvider.userData.imageFile;
+                        return imageUrl == null
+                            ? Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: _pickImage,
+                                  style: const ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(blueColor),
+                                    side: WidgetStatePropertyAll(
+                                      BorderSide(
+                                        width: 1,
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                  icon: Icon(
+                                    Icons.add_rounded,
+                                    color: whiteColor,
+                                    size: 20.r,
+                                  ),
+                                  splashRadius: 20.r,
+                                ),
+                              )
+                            : Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: _removeImage,
+                                  style: const ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(blackColor),
+                                    side: WidgetStatePropertyAll(
+                                      BorderSide(
+                                        width: 1,
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                  icon: Icon(
+                                    Icons.close_rounded,
+                                    color: whiteColor,
+                                    size: 20.r,
+                                  ),
+                                  splashRadius: 20.r,
+                                ),
+                              );
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
