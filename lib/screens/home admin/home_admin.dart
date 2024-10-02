@@ -40,13 +40,13 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
               color: blackColor,
             ),
           ),
-          content: Container(
+          content: SizedBox(
             height: 40.h,
-            child: Text('Are you sure you want to exit?'),
+            child: const Text('Are you sure you want to exit?'),
           ),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -58,7 +58,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Sign Out',
                 style: TextStyle(color: whiteColor),
               ),
