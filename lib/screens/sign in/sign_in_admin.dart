@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -22,6 +24,11 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
   void login(BuildContext context) async {
     final authService = AuthService();
 
+    if (_emailCtrl.text.isEmpty || _passwordCtrl.text.isEmpty) {
+      errorSnackbar(context, "Please fill in all fields");
+      return;
+    }
+
     try {
       await authService.signInWithEmailPassword(
         _emailCtrl.text,
@@ -32,43 +39,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
       await prefs.setString('userType', 'Admin'); // Store user type
       await prefs.setBool('isLoggedIn', true); // Store login status
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(20, 255, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.check_circle_rounded,
-                color: const Color.fromRGBO(20, 255, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  'Sign In Successful!', // Use the cleaned error message here
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      successSnackbar(context, "Sign In Successful!");
 
       Navigator.pushReplacement(
         context,
@@ -83,43 +54,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
           errorMessage = 'An unknown error occurred';
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            width: MediaQuery.of(context).size.width * 0.95,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromARGB(255, 255, 235, 235),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: Color.fromRGBO(255, 0, 0, 1),
-              ),
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_rounded,
-                  color: const Color.fromRGBO(255, 0, 0, 1),
-                  size: 20.r,
-                ),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Flexible(
-                  child: Text(
-                    errorMessage, // Use the cleaned error message here
-                    style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        errorSnackbar(context, errorMessage);
       }
     }
   }
@@ -175,7 +110,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                       height: 32.h,
                     ),
                     PRKFormField(
-                      prefixIcon: Icons.email_rounded,
+                      prefixIcon: Icons.alternate_email_rounded,
                       labelText: "Email Address",
                       controller: _emailCtrl,
                     ),
@@ -193,7 +128,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                 ),
               ),
               Padding(
-                 padding: EdgeInsets.only(bottom: 50.h),
+                padding: EdgeInsets.only(bottom: 50.h),
                 child: Column(
                   children: [
                     PRKPrimaryBtn(
