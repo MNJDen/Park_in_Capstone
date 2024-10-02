@@ -6,6 +6,7 @@ import 'package:park_in/components/theme/color_scheme.dart';
 
 class PRKTicketsUpload extends StatefulWidget {
   final String label;
+  final String hint;
   final VoidCallback onPressed;
   final File? image;
   final IconData icon;
@@ -13,6 +14,7 @@ class PRKTicketsUpload extends StatefulWidget {
   const PRKTicketsUpload({
     super.key,
     required this.label,
+    required this.hint,
     required this.onPressed,
     this.image,
     required this.icon,
@@ -58,15 +60,27 @@ class _PRKTicketsUploadState extends State<PRKTicketsUpload> {
             SizedBox(
               width: 8.w,
             ),
-            Expanded(
-              child: Text(
-                widget.label,
-                style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12.r,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.label,
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12.r,
+                  ),
                 ),
-              ),
+                Text(
+                  widget.hint,
+                  style: TextStyle(
+                    color: blackColor.withOpacity(0.5),
+                    fontSize: 10.r,
+                  ),
+                ),
+              ],
             ),
+            const Spacer(),
             IconButton(
               onPressed: () {
                 widget.onPressed();
