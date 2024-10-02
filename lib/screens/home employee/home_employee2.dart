@@ -18,6 +18,7 @@ import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeEmployeeScreen2 extends StatefulWidget {
   final String userId; // Current logged-in user's ID
@@ -165,68 +166,135 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                 userData['profilePicture'] ?? "assets/images/AdNU_Logo.png";
             return Column(
               children: <Widget>[
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/bg1.png",
+                SizedBox(
+                  height: 140.h,
+                  child: Stack(
+                    children: [
+                      Container(
+                        color: blueColor,
                       ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        ClipOval(
-                          child: Image.network(
-                            profilePicture,
-                            height: 70.h,
-                            width: 70.h,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) {
-                                return child;
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                    value: progress.expectedTotalBytes != null
-                                        ? progress.cumulativeBytesLoaded /
-                                            (progress.expectedTotalBytes ?? 1)
-                                        : null,
+                      Positioned(
+                        top: -50,
+                        left: -60,
+                        child: Container(
+                          width: 200.w,
+                          height: 200.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: -50,
+                        right: -30,
+                        child: Container(
+                          width: 140.w,
+                          height: 140.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: -197,
+                        child: Transform.rotate(
+                          angle: -0.995398,
+                          child: Container(
+                            width: 400.w,
+                            height: 37.5.h,
+                            color: whiteColor,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: -293,
+                        child: Transform.rotate(
+                          angle: -0.995398,
+                          child: Container(
+                            width: 400.w,
+                            height: 37.5.h,
+                            color: whiteColor,
+                          ),
+                        ),
+                      ),
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          dividerTheme: const DividerThemeData(
+                            thickness: 0,
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        child: DrawerHeader(
+                          margin: const EdgeInsets.only(bottom: 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ClipOval(
+                                child: Image.network(
+                                  profilePicture,
+                                  height: 60.h,
+                                  width: 60.h,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, progress) {
+                                    if (progress == null) {
+                                      return child;
+                                    } else {
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 60.w,
+                                          height: 60.h,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      "assets/images/AdNU_Logo.png",
+                                      height: 60.h,
+                                      width: 60.h,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: TextStyle(
+                                      fontSize: 14.r,
+                                      color: whiteColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "General Sans",
+                                    ),
                                   ),
-                                );
-                              }
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                "assets/images/AdNU_Logo.png",
-                                height: 70.h,
-                                width: 70.h,
-                              );
-                            },
+                                  Text(
+                                    userNumber,
+                                    style: TextStyle(
+                                      fontSize: 12.r,
+                                      color: whiteColor.withOpacity(0.5),
+                                      fontFamily: "General Sans",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        Text(
-                          name,
-                          style: TextStyle(
-                            fontSize: 16.r,
-                            color: blackColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          userNumber,
-                          style: TextStyle(
-                            fontSize: 12.r,
-                            color: blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
