@@ -24,7 +24,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
           Provider.of<UserDataProvider>(context, listen: false);
       final userData = userDataProvider.userData;
 
-      // Upload the image and get the download URL (if any)
+      // Upload the image and get the download URL
       String? downloadUrl;
       if (userData.imageFile != null) {
         final storageRef = FirebaseStorage.instance
@@ -156,7 +156,6 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
     final userDataProvider = Provider.of<UserDataProvider>(context);
     final userData = userDataProvider.userData;
 
-    // Assuming stickerNumber and plateNumber are lists of strings
     final stickers = userData.stickerNumber;
     final plates = userData.plateNumber;
 
@@ -192,7 +191,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  // Generate PRKStudenteSticker widgets with spacing
+                  // Generate PRKStudenteSticker
                   Column(
                     children: List.generate(
                       stickers.length,
