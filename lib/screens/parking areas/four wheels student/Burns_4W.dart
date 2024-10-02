@@ -60,11 +60,11 @@ class _Burns4wState extends State<Burns4w> {
     if (_burnsAvailableSpace == 0) {
       return "Full"; // Red status.
     } else if (_burnsAvailableSpace == _maxSpace) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_burnsAvailableSpace < 15 && _burnsAvailableSpace > 7) {
-      return "Available"; // Green status.
+      return "Plenty of Space"; // Green status.
     } else if (_burnsAvailableSpace <= 7 && _burnsAvailableSpace > 5) {
-      return "Mid-way Full"; // Yellow status.
+      return "Half Full"; // Yellow status.
     } else if (_burnsAvailableSpace <= 5) {
       return "Almost Full"; // Orange status.
     } else {
@@ -111,7 +111,7 @@ class _Burns4wState extends State<Burns4w> {
                         style: TextStyle(
                           fontSize: 20.r,
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -154,7 +154,7 @@ class _Burns4wState extends State<Burns4w> {
                                   vertical: 2.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.1),
+                                  color: _getStatusColor().withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Text(
