@@ -168,32 +168,29 @@ class _StickersScreennState extends State<StickersScreen> {
     );
   }
 
-  // Future<void> _addSticker() async {
-  //   final userId = await _getUserId();
-  //   DocumentSnapshot userDoc =
-  //       await FirebaseFirestore.instance.collection('User').doc(userId).get();
+  Future<void> _addSticker() async {
+    final userId = await _getUserId();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('User').doc(userId).get();
 
-  //   // Check if user document exists
-  //   if (userDoc.exists) {
-  //     Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
-  //     // Retrieve existing arrays or create empty lists if fields are missing
-  //     List<dynamic> existingStickerNumbers = userData?['stickerNumber'] ?? [];
-  //     List<dynamic> existingPlateNumbers = userData?['plateNo'] ?? [];
+    // Check if user document exists
+    if (userDoc.exists) {
+      Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+      // Retrieve existing arrays or create empty lists if fields are missing
+      List<dynamic> existingStickerNumbers = userData?['stickerNumber'] ?? [];
+      List<dynamic> existingPlateNumbers = userData?['plateNo'] ?? [];
 
-  //     // Add the new values from the controllers
-  //     existingStickerNumbers.add(_stickerNumberCtrl.text);
-  //     existingPlateNumbers.add(_plateNumberCtrl.text);
+      // Add the new values from the controllers
+      existingStickerNumbers.add(_stickerNumberCtrl.text);
+      existingPlateNumbers.add(_plateNumberCtrl.text);
 
-  //     // Update the Firestore document with the new arrays
-  //     await FirebaseFirestore.instance.collection('User').doc(userId).update({
-  //       'stickerNumber': existingStickerNumbers,
-  //       'plateNo': existingPlateNumbers,
-  //     });
-
-  //     // Close the dialog
-  //     Navigator.of(context).pop();
-  //   }
-  // }
+      // Update the Firestore document with the new arrays
+      await FirebaseFirestore.instance.collection('User').doc(userId).update({
+        'stickerNumber': existingStickerNumbers,
+        'plateNo': existingPlateNumbers,
+      });
+    }
+  }
 
   void _showAddStickerModal(BuildContext context) {
     showDialog(
@@ -231,7 +228,7 @@ class _StickersScreennState extends State<StickersScreen> {
         ),
         actions: [
           TextButton(
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -243,7 +240,7 @@ class _StickersScreennState extends State<StickersScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: Text(
+            child: const Text(
               'Add',
               style: TextStyle(color: whiteColor),
             ),
@@ -252,40 +249,13 @@ class _StickersScreennState extends State<StickersScreen> {
                   _plateNumberCtrl.text.isEmpty) {
                 errorSnackbar(context, "Please fill in all fields");
               } else {
-                final userId = await _getUserId();
-                DocumentSnapshot userDoc = await FirebaseFirestore.instance
-                    .collection('User ')
-                    .doc(userId)
-                    .get();
+                _addSticker();
 
-                // Check if user document exists
-                if (userDoc.exists) {
-                  Map<String, dynamic>? userData =
-                      userDoc.data() as Map<String, dynamic>?;
-                  List<dynamic> existingStickerNumbers =
-                      userData?['stickerNumber'] ?? [];
-                  List<dynamic> existingPlateNumbers =
-                      userData?['plateNo'] ?? [];
+                // Close the dialog
+                Navigator.of(context).pop();
 
-                  // Add the new values from the controllers
-                  existingStickerNumbers.add(_stickerNumberCtrl.text);
-                  existingPlateNumbers.add(_plateNumberCtrl.text);
-
-                  // Update the Firestore document with the new arrays
-                  await FirebaseFirestore.instance
-                      .collection('User ')
-                      .doc(userId)
-                      .update({
-                    'stickerNumber': existingStickerNumbers,
-                    'plateNo': existingPlateNumbers,
-                  });
-
-                  // Close the dialog
-                  Navigator.of(context).pop();
-
-                  // Show a snackbar indicating that the sticker was added successfully
-                  successSnackbar(context, "Sticker added successfully");
-                }
+                // Show a snackbar indicating that the sticker was added successfully
+                successSnackbar(context, "Sticker added successfully");
               }
             },
           ),
