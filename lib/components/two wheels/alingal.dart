@@ -55,7 +55,7 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
         if (!_animationController.isAnimating) {
           _animationController.forward(from: 0);
           Timer(
-            Duration(milliseconds: 350),
+            const Duration(milliseconds: 350),
             () {
               _animationController.reverse();
               Navigator.push(
@@ -101,7 +101,7 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 8,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
