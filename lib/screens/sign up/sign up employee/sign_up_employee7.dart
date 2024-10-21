@@ -1,7 +1,9 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
+import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/employee_eSticker.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
@@ -18,7 +20,13 @@ class SignUpEmployeeScreen7 extends StatefulWidget {
 }
 
 class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
+  bool _isSigningUp = false;
+
   Future<void> _uploadData() async {
+    setState(() {
+      _isSigningUp = true;
+    });
+
     try {
       final userDataProvider =
           Provider.of<UserDataProvider>(context, listen: false);
@@ -65,23 +73,20 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            // width: MediaQuery.of(context).size.width * 0.95,
+            elevation: 0,
             margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color.fromRGBO(217, 255, 214, 1),
+            backgroundColor: blackColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: Color.fromRGBO(20, 255, 0, 1),
-              ),
             ),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.check_circle_rounded,
-                  color: const Color.fromRGBO(20, 255, 0, 1),
+                  Icons.check_circle_outline_rounded,
+                  color: successColor,
                   size: 20.r,
                 ),
                 SizedBox(
@@ -91,8 +96,8 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
                   child: Text(
                     'Sign Up Successful!',
                     style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w500,
+                      color: whiteColor,
+                      fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                     ),
                   ),
@@ -110,44 +115,13 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          width: MediaQuery.of(context).size.width * 0.95,
-          margin: EdgeInsets.only(bottom: 60.h),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color.fromARGB(255, 255, 226, 226),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-            ),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                color: const Color.fromRGBO(255, 0, 0, 1),
-                size: 20.r,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Flexible(
-                child: Text(
-                  "Error Occured: $e",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      errorSnackbar(context, "Error Occurred: $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSigningUp = false;
+        });
+      }
     }
   }
 
@@ -164,62 +138,86 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 32.h),
-                  Text(
-                    "Looks like you’re all set up!",
-                    style: TextStyle(
-                      color: blueColor,
-                      fontSize: 24.r,
-                      fontWeight: FontWeight.w600,
-                    ),
+          child: _isSigningUp
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      LoadingAnimationWidget.waveDots(
+                        color: blueColor,
+                        size: 50.r,
+                      ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      Text(
+                        "Getting everything ready, wait a moment...",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: blackColor.withOpacity(0.8),
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    "Since you're finished signing up, here’s your digital sticker!",
-                    style: TextStyle(
-                      color: blackColor,
-                      fontSize: 12.r,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 32.h,
-                  ),
-                  Column(
-                    children: List.generate(
-                      stickers.length,
-                      (index) => Column(
-                        children: [
-                          PRKEmployeeeSticker(
-                            stickerNumber: stickers[index],
-                            plateNumber: plates[index],
-                            heroTag:
-                                'sticker_${stickers[index]}_${plates[index]}',
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 32.h),
+                        Text(
+                          "Looks like you’re all set up!",
+                          style: TextStyle(
+                            color: blueColor,
+                            fontSize: 24.r,
+                            fontWeight: FontWeight.w600,
                           ),
-                          if (index < stickers.length - 1)
-                            SizedBox(
-                                height: 16.h), // Add space between stickers
-                        ],
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          "Since you're finished signing up, here’s your digital sticker!",
+                          style: TextStyle(
+                            color: blackColor,
+                            fontSize: 12.r,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32.h,
+                        ),
+                        Column(
+                          children: List.generate(
+                            stickers.length,
+                            (index) => Column(
+                              children: [
+                                PRKEmployeeeSticker(
+                                  stickerNumber: stickers[index],
+                                  plateNumber: plates[index],
+                                  heroTag:
+                                      'sticker_${stickers[index]}_${plates[index]}',
+                                ),
+                                if (index < stickers.length - 1)
+                                  SizedBox(
+                                    height: 12.h,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 40.h),
+                      child: PRKPrimaryBtn(
+                        label: "Continue",
+                        onPressed: _uploadData,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 40.h),
-                child: PRKPrimaryBtn(
-                  label: "Continue",
-                  onPressed: _uploadData,
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
