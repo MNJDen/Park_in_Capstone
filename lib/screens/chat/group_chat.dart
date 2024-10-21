@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/chat/Chat_Bubble.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
@@ -148,164 +149,178 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // header
-            SizedBox(
-              height: 8.h,
-            ),
-            Container(
-              height: 50.h,
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(
-                          context,
-                        );
-                        NavbarNotifier.hideBottomNavBar = false;
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: blackColor,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          NavbarNotifier.hideBottomNavBar = false;
+          return;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // header
+              SizedBox(
+                height: 8.h,
+              ),
+              Container(
+                height: 50.h,
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(
+                            context,
+                          );
+                          NavbarNotifier.hideBottomNavBar = false;
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: blackColor,
+                        ),
                       ),
                     ),
-                  ),
-                  Text(
-                    "Chat Room",
-                    style: TextStyle(
-                      fontSize: 20.r,
-                      color: blueColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // header
-
-            // body, the convo, tig rretrieve niya si messages from firebase
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  border: Border(
-                    top: BorderSide(width: 0.1.w, color: borderBlack),
-                    bottom: BorderSide(width: 0.1.w, color: borderBlack),
-                  ),
-                ),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _chatService.getGroupMessagesStream(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    final messages = snapshot.data!.docs;
-
-                    //fetch si profile picture
-                    _preloadProfilePictures(messages);
-
-                    return ListView.builder(
-                      reverse: true,
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        final data = messages[messages.length - 1 - index]
-                            .data() as Map<String, dynamic>;
-                        final messageText = data['message'] as String;
-                        final messageSender = data['name'] as String;
-                        final senderID = data['senderID'] as String;
-                        final isCurrentUser = currentUserID == senderID;
-
-                        final Timestamp timestamp =
-                            data['timestamp'] as Timestamp;
-                        final DateTime utcTime = timestamp.toDate().toUtc();
-
-                        final DateTime localTime = tz.TZDateTime.from(
-                            utcTime, tz.getLocation('Asia/Manila'));
-
-                        // Fetch cached profile picture URL
-                        final profilePictureUrl =
-                            _profilePictureCache[senderID];
-
-                        return ChatBubble(
-                          message: messageText,
-                          userName: messageSender,
-                          isCurrentUser: isCurrentUser,
-                          profilePictureUrl: profilePictureUrl,
-                          timestamp: localTime,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // text field
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
+                    Text(
+                      "Chat Room",
                       style: TextStyle(
-                        fontSize: 12.sp,
-                        color: blackColor,
+                        fontSize: 20.r,
+                        color: blueColor,
+                        fontWeight: FontWeight.w600,
                       ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: whiteColor,
-                        hintText: "Type your message here...",
-                        hintStyle: TextStyle(
-                          fontSize: 12.sp,
-                          color: const Color.fromARGB(90, 27, 27, 27),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: blueColor,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            width: 0.1.w,
-                            color: borderBlack,
-                          ),
-                        ),
-                      ),
-                      onChanged: (text) {
-                        setState(
-                          () {
-                            if (text.trim().isEmpty) {
-                              _sendButtonColor = blackColor;
-                            } else {
-                              _sendButtonColor = blueColor;
-                            }
-                          },
-                        );
-                      },
+                    ),
+                  ],
+                ),
+              ),
+              // header
+
+              // body, the convo, tig rretrieve niya si messages from firebase
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    border: Border(
+                      top: BorderSide(width: 0.1.w, color: borderBlack),
+                      bottom: BorderSide(width: 0.1.w, color: borderBlack),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.send_rounded),
-                    color: _sendButtonColor,
-                    onPressed: () => sendMessage(_controller.text),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _chatService.getGroupMessagesStream(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: LoadingAnimationWidget.waveDots(
+                            color: blueColor,
+                            size: 50.r,
+                          ),
+                        );
+                      }
+                      final messages = snapshot.data!.docs;
+
+                      //fetch si profile picture
+                      _preloadProfilePictures(messages);
+
+                      return ListView.builder(
+                        reverse: true,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          final data = messages[messages.length - 1 - index]
+                              .data() as Map<String, dynamic>;
+                          final messageText = data['message'] as String;
+                          final messageSender = data['name'] as String;
+                          final senderID = data['senderID'] as String;
+                          final isCurrentUser = currentUserID == senderID;
+
+                          final Timestamp timestamp =
+                              data['timestamp'] as Timestamp;
+                          final DateTime utcTime = timestamp.toDate().toUtc();
+
+                          final DateTime localTime = tz.TZDateTime.from(
+                              utcTime, tz.getLocation('Asia/Manila'));
+
+                          // Fetch cached profile picture URL
+                          final profilePictureUrl =
+                              _profilePictureCache[senderID];
+
+                          return ChatBubble(
+                            message: messageText,
+                            userName: messageSender,
+                            isCurrentUser: isCurrentUser,
+                            profilePictureUrl: profilePictureUrl,
+                            timestamp: localTime,
+                          );
+                        },
+                      );
+                    },
                   ),
-                ],
+                ),
               ),
-            ),
-            // text field
-          ],
+
+              // text field
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: blackColor,
+                        ),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: whiteColor,
+                          hintText: "Type your message here...",
+                          hintStyle: TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color.fromARGB(90, 27, 27, 27),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 1.w,
+                              color: blueColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 0.1.w,
+                              color: borderBlack,
+                            ),
+                          ),
+                        ),
+                        onChanged: (text) {
+                          setState(
+                            () {
+                              if (text.trim().isEmpty) {
+                                _sendButtonColor = blackColor;
+                              } else {
+                                _sendButtonColor = blueColor;
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.send_rounded),
+                      color: _sendButtonColor,
+                      onPressed: () => sendMessage(_controller.text),
+                    ),
+                  ],
+                ),
+              ),
+              // text field
+            ],
+          ),
         ),
       ),
     );
