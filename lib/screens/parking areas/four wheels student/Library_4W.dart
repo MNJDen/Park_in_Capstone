@@ -72,149 +72,158 @@ class _Library4w extends State<Library4w> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(
-                              context,
-                            );
-                            NavbarNotifier.hideBottomNavBar = false;
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: blackColor,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Library",
-                        style: TextStyle(
-                          fontSize: 20.r,
-                          color: blueColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Current Capacity:",
-                            style: TextStyle(
-                              fontSize: 12.sp,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          NavbarNotifier.hideBottomNavBar = false;
+          return;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(
+                                context,
+                              );
+                              NavbarNotifier.hideBottomNavBar = false;
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
                               color: blackColor,
                             ),
                           ),
-                          SizedBox(
-                            height: 2.h,
+                        ),
+                        Text(
+                          "Library",
+                          style: TextStyle(
+                            fontSize: 20.r,
+                            color: blueColor,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Status:",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: blackColor,
-                                ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Current Capacity:",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: blackColor,
                               ),
-                              SizedBox(
-                                width: 12.w,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w,
-                                  vertical: 2.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: _getStatusColor().withOpacity(0.07),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Text(
-                                  _getStatusText(),
+                            ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Status:",
                                   style: TextStyle(
-                                    color: _getStatusColor(),
                                     fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
+                                    color: blackColor,
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 12.w,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w,
+                                    vertical: 2.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _getStatusColor().withOpacity(0.07),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Text(
+                                    _getStatusText(),
+                                    style: TextStyle(
+                                      color: _getStatusColor(),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        Text(
+                          "$_libraryAvailbaleSpace",
+                          style: TextStyle(
+                            fontSize: 52.sp,
+                            color: blackColor,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    Image.asset(
+                      "assets/building_images/Library-4W-S.png",
+                      width: 356.w,
+                      height: 219.h,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 40.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.info_rounded,
+                        color: blackColor,
                       ),
-                      const Spacer(),
-                      Text(
-                        "$_libraryAvailbaleSpace",
-                        style: TextStyle(
-                          fontSize: 52.sp,
-                          color: blackColor,
-                          fontWeight: FontWeight.bold,
+                      SizedBox(
+                        width: 12.w,
+                      ),
+                      Flexible(
+                        child: Text(
+                          "Always be mindful of the space between vehicles.",
+                          softWrap: true,
+                          style: TextStyle(
+                            color: blackColor,
+                            fontSize: 12.sp,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Image.asset(
-                    "assets/building_images/Library-4W-S.png",
-                    width: 356.w,
-                    height: 219.h,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 40.h),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.info_rounded,
-                      color: blackColor,
-                    ),
-                    SizedBox(
-                      width: 12.w,
-                    ),
-                    Flexible(
-                      child: Text(
-                        "Always be mindful of the space between vehicles.",
-                        softWrap: true,
-                        style: TextStyle(
-                          color: blackColor,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
