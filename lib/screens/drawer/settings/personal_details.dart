@@ -4,9 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PersonalDetailsScreen extends StatefulWidget {
   const PersonalDetailsScreen({super.key});
@@ -64,15 +66,26 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
   Future<void> _updateUserData() async {
     final userId = await _getUserId();
     if (userId != null) {
-      await FirebaseFirestore.instance.collection('User').doc(userId).update({
-        'name': _nameCtrl.text,
-        'userNumber': _userNumberCtrl.text,
-        'mobileNo': _phoneNumberCtrl.text,
-      });
-      if (mounted) {
-        setState(() {
-          _isEditing = false; // exit editing state after updating
+      if (_nameCtrl.text != _userData?['name'] ||
+          _userNumberCtrl.text != _userData?['userNumber'] ||
+          _phoneNumberCtrl.text != _userData?['mobileNo']) {
+        await FirebaseFirestore.instance.collection('User').doc(userId).update({
+          'name': _nameCtrl.text,
+          'userNumber': _userNumberCtrl.text,
+          'mobileNo': _phoneNumberCtrl.text,
         });
+        if (mounted) {
+          setState(() {
+            _isEditing = false;
+          });
+          successSnackbar(context, "User details updated successfully!");
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _isEditing = false;
+          });
+        }
       }
     }
   }
@@ -91,6 +104,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
       if (image != null) {
         setState(() {
           _selectedImage = File(image.path);
+          _isUpdatingImage = true;
         });
       }
     } catch (e) {
@@ -142,6 +156,13 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
               .update({
             'profilePicture': newImageUrl,
           });
+
+          setState(() {
+            _profilePicUrl = newImageUrl;
+            _isUpdatingImage = false;
+          });
+
+          successSnackbar(context, "Profile picture updated successfully!");
 
           if (oldProfilePicUrl != null &&
               oldProfilePicUrl != "assets/images/default_pic.png") {
@@ -214,29 +235,60 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 child: Column(
                   children: [
                     ClipOval(
-                      child: _profilePicUrl != null &&
-                              _profilePicUrl!.startsWith('http')
-                          ? Image.network(
-                              _profilePicUrl!,
+                      child: _selectedImage != null
+                          ? Image.file(
+                              _selectedImage!,
                               height: 100.h,
                               width: 100.h,
                               fit: BoxFit.cover,
                             )
-                          : Image.asset(
-                              "assets/images/default_pic.png",
-                              height: 100.h,
-                              width: 100.h,
-                              fit: BoxFit.cover,
-                            ),
+                          : _profilePicUrl != null &&
+                                  _profilePicUrl!.startsWith('http')
+                              ? _isUpdatingImage
+                                  ? Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 100.h,
+                                        width: 100.h,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      _profilePicUrl!,
+                                      height: 100.h,
+                                      width: 100.h,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey.shade300,
+                                          highlightColor: Colors.grey.shade100,
+                                          child: Container(
+                                            height: 100.h,
+                                            width: 100.h,
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        );
+                                      },
+                                    )
+                              : Image.asset(
+                                  "assets/images/default_pic.png",
+                                  height: 100.h,
+                                  width: 100.h,
+                                  fit: BoxFit.cover,
+                                ),
                     ),
                     TextButton(
                       onPressed: _isPickingImage
                           ? null // Disable button while picking image
                           : () {
                               if (_isUpdatingImage) {
-                                _updateProfilePicture();
+                                _updateProfilePicture(); // Update profile picture when "Save" is clicked
                               } else {
-                                _pickImage();
+                                _pickImage(); // Pick a new image when "Upload New Picture" is clicked
                               }
                               setState(() {
                                 _isUpdatingImage = !_isUpdatingImage;
@@ -250,7 +302,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
