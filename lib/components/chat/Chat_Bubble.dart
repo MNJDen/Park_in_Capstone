@@ -73,7 +73,7 @@ class ChatBubble extends StatelessWidget {
                                   baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.grey[100]!,
                                   child: Container(
-                                    width: 28.w,
+                                    width: 28.h,
                                     height: 28.h,
                                     decoration: const BoxDecoration(
                                       color: Colors.white,
