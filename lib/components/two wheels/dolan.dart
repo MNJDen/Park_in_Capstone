@@ -54,7 +54,7 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
         if (!_animationController.isAnimating) {
           _animationController.forward(from: 0);
           Timer(
-            Duration(milliseconds: 350),
+            const Duration(milliseconds: 350),
             () {
               _animationController.reverse();
               Navigator.push(
@@ -100,7 +100,7 @@ class _PRKDolan2WState extends State<PRKDolan2W> with TickerProviderStateMixin {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 8,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
