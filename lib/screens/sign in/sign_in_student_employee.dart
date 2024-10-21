@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
 import 'package:park_in/components/snackbar/error_snackbar.dart';
@@ -23,6 +24,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _userNumberCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
+  bool _isSigningIn = false;
 
   Future<void> _signIn() async {
     final userNumber = _userNumberCtrl.text.trim();
@@ -50,6 +52,11 @@ class _SignInScreenState extends State<SignInScreen> {
         await prefs.setString('userType', userType);
         await prefs.setString('userId', userId);
 
+        // Show loading screen only now, as credentials are correct
+        setState(() {
+          _isSigningIn = true;
+        });
+
         // Navigate to appropriate page based on userType
         Widget destination;
 
@@ -58,7 +65,10 @@ class _SignInScreenState extends State<SignInScreen> {
         } else if (userType == 'Employee') {
           destination = BottomNavBarEmployee();
         } else {
-          errorSnackbar(context, "User type not recognize");
+          errorSnackbar(context, "User type not recognized");
+          setState(() {
+            _isSigningIn = false;
+          });
           return;
         }
 
@@ -122,7 +132,13 @@ class _SignInScreenState extends State<SignInScreen> {
         errorSnackbar(context, "Invalid user number or password");
       }
     } catch (e) {
-      errorSnackbar(context, "Error Occured: $e");
+      errorSnackbar(context, "Error Occurred: $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSigningIn = false;
+        });
+      }
     }
   }
 
@@ -134,185 +150,209 @@ class _SignInScreenState extends State<SignInScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 40.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/Logo.png",
-                          height: 53.h,
-                          width: 38.w,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 88.h),
-                    Text(
-                      "Hey There!",
-                      style: TextStyle(
+          child: _isSigningIn
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      LoadingAnimationWidget.waveDots(
                         color: blueColor,
-                        fontSize: 24.r,
-                        fontWeight: FontWeight.w600,
+                        size: 50.r,
                       ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      "Enter your account credentials to continue.",
-                      style: TextStyle(
-                        color: blackColor,
-                        fontSize: 12.r,
+                      SizedBox(
+                        height: 8.h,
                       ),
-                    ),
-                    SizedBox(height: 32.h),
-                    PRKFormField(
-                      prefixIcon: Icons.badge_rounded,
-                      labelText: "Student/Employee Number",
-                      controller: _userNumberCtrl,
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(height: 12.h),
-                    PRKFormField(
-                      prefixIcon: Icons.password_rounded,
-                      labelText: "Password",
-                      suffixIcon: Icons.visibility_off_rounded,
-                      controller: _passwordCtrl,
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Wrap(
-                          spacing: 2.w,
-                          children: [
-                            Text(
-                              "Don’t have an account yet?",
-                              style: TextStyle(
-                                color: blackColor,
-                                fontSize: 12.r,
-                                fontWeight: FontWeight.w300,
+                      Text(
+                        "Signing in, wait a moment...",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: blackColor.withOpacity(0.8),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 40.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/Logo.png",
+                                height: 53.h,
+                                width: 38.w,
                               ),
+                            ],
+                          ),
+                          SizedBox(height: 88.h),
+                          Text(
+                            "Hey There!",
+                            style: TextStyle(
+                              color: blueColor,
+                              fontSize: 24.r,
+                              fontWeight: FontWeight.w600,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (BuildContext context,
-                                        Animation<double> animation1,
-                                        Animation<double> animation2) {
-                                      return SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(1, 0),
-                                          end: Offset.zero,
-                                        ).animate(CurveTween(
-                                                curve: Curves
-                                                    .fastEaseInToSlowEaseOut)
-                                            .animate(animation1)),
-                                        child: const Material(
-                                          elevation: 5,
-                                          child: SignUpMainScreen(),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            "Enter your account credentials to continue.",
+                            style: TextStyle(
+                              color: blackColor,
+                              fontSize: 12.r,
+                            ),
+                          ),
+                          SizedBox(height: 32.h),
+                          PRKFormField(
+                            prefixIcon: Icons.badge_rounded,
+                            labelText: "Student/Employee Number",
+                            controller: _userNumberCtrl,
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: 12.h),
+                          PRKFormField(
+                            prefixIcon: Icons.password_rounded,
+                            labelText: "Password",
+                            suffixIcon: Icons.visibility_off_rounded,
+                            controller: _passwordCtrl,
+                            obscureText: true,
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Wrap(
+                                spacing: 2.w,
+                                children: [
+                                  Text(
+                                    "Don’t have an account yet?",
+                                    style: TextStyle(
+                                      color: blackColor,
+                                      fontSize: 12.r,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (BuildContext context,
+                                              Animation<double> animation1,
+                                              Animation<double> animation2) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(1, 0),
+                                                end: Offset.zero,
+                                              ).animate(CurveTween(
+                                                      curve: Curves
+                                                          .fastEaseInToSlowEaseOut)
+                                                  .animate(animation1)),
+                                              child: const Material(
+                                                elevation: 5,
+                                                child: SignUpMainScreen(),
+                                              ),
+                                            );
+                                          },
+                                          transitionDuration:
+                                              const Duration(milliseconds: 400),
                                         ),
                                       );
                                     },
-                                    transitionDuration:
-                                        const Duration(milliseconds: 400),
+                                    child: Text(
+                                      "Sign Up",
+                                      style: TextStyle(
+                                          color: blueColor,
+                                          fontSize: 12.r,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: blueColor),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                    color: blueColor,
-                                    fontSize: 12.r,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: blueColor),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 50.h),
-                child: Column(
-                  children: [
-                    PRKPrimaryBtn(
-                      label: "Sign In",
-                      onPressed: _signIn,
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Divider(
-                            thickness: 0.5,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 50.h),
+                      child: Column(
+                        children: [
+                          PRKPrimaryBtn(
+                            label: "Sign In",
+                            onPressed: _signIn,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
+                          SizedBox(height: 8.h),
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 0.5,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                ),
+                                child: Text(
+                                  "or",
+                                  style: TextStyle(
+                                    color: blackColor,
+                                    backgroundColor: bgColor,
+                                    fontSize: 12.r,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ),
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 0.5,
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Text(
-                            "or",
-                            style: TextStyle(
-                              color: blackColor,
-                              backgroundColor: bgColor,
-                              fontSize: 12.r,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                        const Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    PRKSecondaryBtn(
-                      label: "Continue as an Admin",
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (BuildContext context,
-                                Animation<double> animation1,
-                                Animation<double> animation2) {
-                              return SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(1, 0),
-                                  end: Offset.zero,
-                                ).animate(CurveTween(
-                                        curve: Curves.fastEaseInToSlowEaseOut)
-                                    .animate(animation1)),
-                                child: const Material(
-                                  elevation: 5,
-                                  child: SignInAdminScreen(),
+                          SizedBox(height: 8.h),
+                          PRKSecondaryBtn(
+                            label: "Continue as an Admin",
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (BuildContext context,
+                                      Animation<double> animation1,
+                                      Animation<double> animation2) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1, 0),
+                                        end: Offset.zero,
+                                      ).animate(CurveTween(
+                                              curve: Curves
+                                                  .fastEaseInToSlowEaseOut)
+                                          .animate(animation1)),
+                                      child: const Material(
+                                        elevation: 5,
+                                        child: SignInAdminScreen(),
+                                      ),
+                                    );
+                                  },
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
                                 ),
                               );
                             },
-                            transitionDuration:
-                                const Duration(milliseconds: 400),
                           ),
-                        );
-                      },
-                    ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
         ),
       ),
     );
