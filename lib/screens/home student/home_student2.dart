@@ -266,28 +266,30 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                 ),
                               ),
                               SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: 14.r,
-                                      color: blackColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: "General Sans",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style: TextStyle(
+                                        fontSize: 14.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "General Sans",
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    userNumber,
-                                    style: TextStyle(
-                                      fontSize: 12.r,
-                                      color: blackColor.withOpacity(0.5),
-                                      fontFamily: "General Sans",
+                                    Text(
+                                      userNumber,
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor.withOpacity(0.5),
+                                        fontFamily: "General Sans",
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
