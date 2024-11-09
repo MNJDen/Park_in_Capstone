@@ -21,6 +21,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
   final TextEditingController _nameCtrl = TextEditingController();
   final TextEditingController _userNumberCtrl = TextEditingController();
   final TextEditingController _phoneNumberCtrl = TextEditingController();
+  final TextEditingController _departmentCrtl = TextEditingController();
   bool _isEditing = false;
   bool _isUpdatingImage = false;
   bool _isPickingImage = false;
@@ -55,6 +56,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
           _nameCtrl.text = _userData?['name'] ?? '';
           _userNumberCtrl.text = _userData?['userNumber'] ?? '';
           _phoneNumberCtrl.text = _userData?['mobileNo'] ?? '';
+          _departmentCrtl.text = _userData?['department'] ?? '';
           _profilePicUrl = _userData?['profilePicture'] ??
               "assets/images/default_pic.png"; // assign si na fetch na pfp sa _profilePicUrl
         });
@@ -350,8 +352,7 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 prefixIcon: Icons.badge_rounded,
                 labelText: "Student Number",
                 controller: _userNumberCtrl,
-                enable: _isEditing,
-                keyboardType: TextInputType.number,
+                enable: false,
               ),
               SizedBox(height: 12.h),
               PRKFormField(
@@ -361,6 +362,14 @@ class _PersonalDetailsScreennState extends State<PersonalDetailsScreen> {
                 enable: _isEditing,
                 keyboardType: TextInputType.phone,
               ),
+              SizedBox(height: 12.h),
+              if (_userData?['userType'] == 'Employee')
+                PRKFormField(
+                  prefixIcon: Icons.apartment_rounded,
+                  labelText: "Department",
+                  controller: _departmentCrtl,
+                  enable: false,
+                ),
             ],
           ),
         ),
