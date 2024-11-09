@@ -49,65 +49,95 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 28.h),
-              Text(
-                "Who are you?",
-                style: TextStyle(
-                  color: blueColor,
-                  fontSize: 24.r,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 4.h),
-              Text(
-                "Feel free to enter your preferred nickname. This will be the name we will use to address you.",
-                style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12.r,
-                ),
-              ),
-              SizedBox(height: 32.h),
-              PRKFormField(
-                prefixIcon: Icons.person_rounded,
-                labelText: "Name",
-                controller: _nameCtrl,
-              ),
-              SizedBox(height: 12.h),
-              PRKFormField(
-                prefixIcon: Icons.badge_rounded,
-                labelText: "Employee Number",
-                controller: _userNumberCtrl,
-              ),
-              SizedBox(height: 12.h),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Switch(
-                    value: off,
-                    inactiveThumbColor: blackColor,
-                    inactiveTrackColor: whiteColor,
-                    activeTrackColor: blueColor,
-                    activeColor: whiteColor,
-                    onChanged: (bool value) {
-                      setState(() {
-                        off = value;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 12.w),
+                  SizedBox(height: 28.h),
                   Text(
-                    "I have a reserved parking space",
+                    "Who are you?",
                     style: TextStyle(
+                      color: blueColor,
+                      fontSize: 24.r,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    "Feel free to enter your preferred nickname. This will be the name we will use to address you.",
+                    style: TextStyle(
+                      color: blackColor,
                       fontSize: 12.r,
+                    ),
+                  ),
+                  SizedBox(height: 32.h),
+                  PRKFormField(
+                    prefixIcon: Icons.person_rounded,
+                    labelText: "Name",
+                    controller: _nameCtrl,
+                  ),
+                  SizedBox(height: 12.h),
+                  PRKFormField(
+                    prefixIcon: Icons.badge_rounded,
+                    labelText: "Employee Number",
+                    controller: _userNumberCtrl,
+                    helperText: "Ex: 202100153",
+                  ),
+                  SizedBox(height: 12.h),
+                  // Row(
+                  //   children: [
+                  //     Switch(
+                  //       value: off,
+                  //       inactiveThumbColor: blackColor,
+                  //       inactiveTrackColor: whiteColor,
+                  //       activeTrackColor: blueColor,
+                  //       activeColor: whiteColor,
+                  //       onChanged: (bool value) {
+                  //         setState(() {
+                  //           off = value;
+                  //         });
+                  //       },
+                  //     ),
+                  //     SizedBox(width: 12.w),
+                  //     Text(
+                  //       "I have a reserved parking space",
+                  //       style: TextStyle(
+                  //         fontSize: 12.r,
+                  //         color: blackColor,
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 40.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.info_rounded,
                       color: blackColor,
                     ),
-                  )
-                ],
+                    SizedBox(
+                      width: 12.w,
+                    ),
+                    Flexible(
+                      child: Text(
+                        "Your employee number is permanent, please double check it.",
+                        softWrap: true,
+                        style: TextStyle(
+                          color: blackColor,
+                          fontSize: 12.r,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
