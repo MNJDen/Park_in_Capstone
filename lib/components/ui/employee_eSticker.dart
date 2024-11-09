@@ -66,7 +66,7 @@ class PRKEmployeeeSticker extends StatelessWidget {
                 style: TextStyle(
                   color: whiteColor,
                   fontSize: 40.r,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
