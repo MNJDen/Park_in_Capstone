@@ -170,7 +170,6 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      highlightColor: blueColor.withOpacity(0.2),
                       onPressed: () {
                         logout(context);
                       },
