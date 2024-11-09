@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/field/soft_field.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
@@ -154,10 +155,10 @@ class SignUpEmployeeScreen4State extends State<SignUpEmployeeScreen4> {
                   IconButton.filled(
                     iconSize: 30.r,
                     onPressed: _addSticker,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(blueColor),
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(blueColor),
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add_rounded,
                       color: whiteColor,
                     ),
@@ -193,55 +194,116 @@ class StickerFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Card(
-          elevation: 15,
-          shadowColor: Color.fromRGBO(27, 27, 27, 0.2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
+        Container(
+          width: 320.w,
+          height: 175.h,
+          decoration: BoxDecoration(
+            color: blueColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          color: blueColor,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(12.w, 16.h, 12.w, 16.h),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Sticker #$stickerIndex",
-                      style: TextStyle(
-                        fontSize: 16.r,
-                        color: whiteColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.highlight_remove_rounded,
-                        size: 25.r,
-                        color: whiteColor,
-                      ),
-                      onTap: () => onDelete(index),
-                    ),
-                  ],
+          child: Stack(
+            children: [
+              Positioned(
+                top: -50,
+                left: -60,
+                child: Container(
+                  width: 200.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.2),
+                  ),
                 ),
-                SizedBox(height: 16.h),
-                PRKFormField(
-                  prefixIcon: Icons.tag_rounded,
-                  labelText: "Sticker Number",
+              ),
+              Positioned(
+                top: -50,
+                right: -30,
+                child: Container(
+                  width: 140.w,
+                  height: 140.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 10,
+                left: 20,
+                child: PRKSoftField(
+                  hintText: "1234",
+                  maxLength: 4,
+                  maxWidth: 100.w,
                   controller: stickerNumberCtrl,
-                  onChanged: (value) => onChanged(),
+                  keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 12.h),
-                PRKFormField(
-                  prefixIcon: Icons.pin_rounded,
-                  labelText: "Plate Number",
+              ),
+              Positioned(
+                bottom: 30,
+                left: 20,
+                child: PRKSoftField(
+                  hintText: "ESX458",
+                  maxLength: 7,
+                  maxWidth: 175.w,
                   controller: plateNumberCtrl,
-                  onChanged: (value) => onChanged(),
+                  keyboardType: TextInputType.text,
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 0,
+                right: -197,
+                child: Transform.rotate(
+                  angle: -0.995398,
+                  child: Container(
+                    width: 400.w,
+                    height: 37.5.h,
+                    color: whiteColor,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: -293,
+                child: Transform.rotate(
+                  angle: -0.995398,
+                  child: Container(
+                    width: 400.w,
+                    height: 37.5.h,
+                    color: whiteColor,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 13,
+                right: 10,
+                child: GestureDetector(
+                  child: Icon(
+                    Icons.highlight_remove_rounded,
+                    size: 25.r,
+                    color: blackColor,
+                  ),
+                  onTap: () => onDelete(index),
+                ),
+              ),
+              Positioned(
+                bottom: 10,
+                left: 20,
+                child: Text(
+                  '© 2024 Park-In. All Rights Reserved.',
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontSize: 10.r,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 12.h),
