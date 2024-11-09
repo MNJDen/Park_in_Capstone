@@ -15,7 +15,8 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +65,17 @@ class _AboutScreenState extends State<AboutScreen> {
                 height: 16.h,
               ),
               Text(
-                "This application, Park-in, is a prerequisite for Capstone I and II, and it was initially conceptualized to assist people who were using the parking facilities within the campus due to limited parking availability.",
+                "This application, Park-in, is a prerequisite for Capstone I and II, and it was initially conceptualized and developed to assist people who were using the parking facilities within the campus due to limited parking availability for a mobile development subject.",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              Text(
+                "Later on, it was pushed by the proponents’ adviser, Kevin G. Vega, as a proposed topic for Capstone I which led to its further development into its current form.",
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: blackColor,
@@ -86,12 +97,22 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(
                 height: 4.h,
               ),
+              Text(
+                "The people responsible for the application was a two-man team. They are the following: ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 50.r,
-                    backgroundImage: AssetImage("assets/images/den.png"),
+                    radius: 45.r,
+                    backgroundImage: const AssetImage("assets/images/den.png"),
                   ),
                   SizedBox(
                     width: 20.w,
@@ -118,7 +139,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           height: 12.h,
                         ),
                         Text(
-                          'Responsible for the user interface design, logo creation, typeface selection, 3D models of the buildings, and front-end development of Park-in.',
+                          'Responsible for the UI/UX design, logo development, typeface selection, creation of 3D models for the buildings, and front-end development of Park-in.',
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: blackColor,
@@ -136,8 +157,8 @@ class _AboutScreenState extends State<AboutScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 50.r,
-                    backgroundImage: AssetImage("assets/images/doms.png"),
+                    radius: 45.r,
+                    backgroundImage: const AssetImage("assets/images/doms.png"),
                   ),
                   SizedBox(
                     width: 20.w,
@@ -164,40 +185,21 @@ class _AboutScreenState extends State<AboutScreen> {
                           height: 12.h,
                         ),
                         Text(
-                          'Responsible for overseeing the entire back-end infrastructure of Park-in, which includes setting up the database and establishing its connection with the application.',
+                          'Managed the entire back-end infrastructure of Park-in, which includes setting up the database and its integration with the application, enabling real-time data accessibility.',
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: blackColor,
                           ),
                         ),
+                        // Image.asset(
+                        //   "assets/images/group_logo.png",
+                        //   height: 39.h,
+                        //   width: 86.w,
+                        // ),
                       ],
                     ),
                   ),
                 ],
-              ),
-              Spacer(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 40.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Developed by:",
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          color: blackColor,
-                        ),
-                      ),
-                      Image.asset(
-                        "assets/images/group_logo.png",
-                        height: 39.h,
-                        width: 86.w,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
