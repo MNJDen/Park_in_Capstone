@@ -212,28 +212,31 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                 ),
                               ),
                               SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: 14.r,
-                                      color: blackColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: "General Sans",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style: TextStyle(
+                                        fontSize: 14.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "General Sans",
+                                      ),
+                                      maxLines: 2,
                                     ),
-                                  ),
-                                  Text(
-                                    userNumber,
-                                    style: TextStyle(
-                                      fontSize: 12.r,
-                                      color: blackColor.withOpacity(0.5),
-                                      fontFamily: "General Sans",
+                                    Text(
+                                      userNumber,
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor.withOpacity(0.5),
+                                        fontFamily: "General Sans",
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -546,7 +549,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      highlightColor: blueColor.withOpacity(0.2),
                       onPressed: () {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
@@ -555,6 +557,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                         Icons.menu_rounded,
                         color: blackColor,
                         size: 26.r,
+                        
                       ),
                     ),
                   ),
@@ -579,7 +582,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                         } else if (snapshot.hasData && snapshot.data != null) {
                           final userData = snapshot.data!;
                           final String name =
-                              userData['name'] ?? 'Hello, User!';
+                              (userData['name'] ?? 'Hello, User!')
+                                  .split(' ')
+                                  .first;
                           return Wrap(
                             children: [
                               Text(
@@ -636,7 +641,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
@@ -657,7 +661,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
@@ -679,7 +682,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -729,7 +731,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
