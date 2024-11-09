@@ -5,12 +5,13 @@ import 'package:park_in/components/theme/color_scheme.dart';
 class PRKFormField extends StatefulWidget {
   final IconData? prefixIcon;
   final String labelText;
+  final String? helperText;
   final IconData? suffixIcon;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
   final bool? enable;
-  final bool obscureText; // Add this property
-  final TextInputType? keyboardType; // Add this property
+  final bool obscureText;
+  final TextInputType? keyboardType;
   final void Function(String)? onChanged;
 
   PRKFormField({
@@ -20,9 +21,10 @@ class PRKFormField extends StatefulWidget {
     required this.controller,
     this.validator,
     this.enable,
-    this.obscureText = false, // Set default value to false
+    this.obscureText = false,
     this.keyboardType,
-    this.onChanged, // Set default value to null
+    this.onChanged,
+    this.helperText,
   });
 
   @override
@@ -73,52 +75,56 @@ class _PRKFormFieldState extends State<PRKFormField> {
         color: blackColor,
       ),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: widget.enable ?? true ? whiteColor : Colors.grey[100],
-        prefixIcon: Icon(
-          size: 20,
-          widget.prefixIcon,
-          color: _isFocused ? blueColor : blackColor,
-        ),
-        suffixIcon: widget.suffixIcon != null
-            ? IconButton(
-                icon: Icon(
-                  _obscureText ? widget.suffixIcon : Icons.visibility_rounded,
-                  color: _isFocused ? blueColor : blackColor,
-                ),
-                onPressed: () {
-                  if (widget.suffixIcon != null) {
-                    _toggleObscureText();
-                  }
-                },
-              )
-            : null,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 1.w,
-            color: blueColor,
+          filled: true,
+          fillColor: widget.enable ?? true ? whiteColor : Colors.grey[200],
+          prefixIcon: Icon(
+            size: 20,
+            widget.prefixIcon,
+            color: _isFocused ? blueColor : blackColor,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 0.1.w,
-            color: borderBlack,
+          suffixIcon: widget.suffixIcon != null
+              ? IconButton(
+                  icon: Icon(
+                    _obscureText ? widget.suffixIcon : Icons.visibility_rounded,
+                    color: _isFocused ? blueColor : blackColor,
+                  ),
+                  onPressed: () {
+                    if (widget.suffixIcon != null) {
+                      _toggleObscureText();
+                    }
+                  },
+                )
+              : null,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              width: 1.w,
+              color: blueColor,
+            ),
           ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            width: 0.1,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              width: 0.1.w,
+              color: borderBlack,
+            ),
           ),
-        ),
-        labelText: widget.labelText,
-        labelStyle: TextStyle(
-          fontSize: 12.r,
-          color: _isFocused ? blueColor : blackColor,
-        ),
-      ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              width: 0.1,
+            ),
+          ),
+          labelText: widget.labelText,
+          labelStyle: TextStyle(
+            fontSize: 12.r,
+            color: _isFocused ? blueColor : blackColor,
+          ),
+          helperText: widget.helperText,
+          helperStyle: TextStyle(
+            fontSize: 10.sp,
+            color: blackColor.withOpacity(0.5),
+          )),
       validator: widget.validator,
       onFieldSubmitted: (_) {
         setState(() {
