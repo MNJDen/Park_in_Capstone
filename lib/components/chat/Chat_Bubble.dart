@@ -84,16 +84,23 @@ class ChatBubble extends StatelessWidget {
                               }
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                "assets/images/AdNU_Logo.png",
-                                height: 28.h,
-                                width: 28.h,
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  width: 60.w,
+                                  height: 60.h,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
                               );
                             },
                           ),
                         )
                       : CircleAvatar(
-                          radius: 14.w,
+                          radius: 14.h,
                           backgroundImage:
                               const AssetImage("assets/images/AdNU_Logo.png")
                                   as ImageProvider,
