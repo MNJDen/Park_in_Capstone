@@ -268,14 +268,17 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         controller: _controller,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: blackColor,
                         ),
+                        // autofocus: true,
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           filled: true,
+                          isDense: true,
                           fillColor: whiteColor,
                           hintText: "Type your message here...",
                           hintStyle: TextStyle(
