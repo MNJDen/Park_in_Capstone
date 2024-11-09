@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/field/form_field.dart';
+import 'package:park_in/components/field/soft_field.dart';
 import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/employee_eSticker.dart';
+import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/ui/student_eSticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,6 +68,7 @@ class _StickersScreennState extends State<StickersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -193,73 +196,185 @@ class _StickersScreennState extends State<StickersScreen> {
   }
 
   void _showAddStickerModal(BuildContext context) {
-    showDialog(
+    showModalBottomSheet(
+      backgroundColor: whiteColor,
+      showDragHandle: true,
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: whiteColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      ),
+      builder: (context) => AnimatedPadding(
+        duration: const Duration(milliseconds: 100),
+        // curve: Curves.fastOutSlowIn,
+        padding: EdgeInsets.only(
+          left: 20.w,
+          right: 20.w,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        title: Text(
-          'Adding a Sticker',
-          style: TextStyle(
-            fontSize: 20.r,
-            fontWeight: FontWeight.w500,
-            color: blackColor,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PRKFormField(
-              prefixIcon: Icons.tag_rounded,
-              labelText: "Sticker Number",
-              controller: _stickerNumberCtrl,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            PRKFormField(
-              prefixIcon: Icons.pin_rounded,
-              labelText: "Plate Number",
-              controller: _plateNumberCtrl,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: blueColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Adding a New Sticker',
+                    style: TextStyle(
+                      fontSize: 16.r,
+                      fontWeight: FontWeight.w500,
+                      color: blackColor,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            child: const Text(
-              'Add',
-              style: TextStyle(color: whiteColor),
-            ),
-            onPressed: () async {
-              if (_stickerNumberCtrl.text.isEmpty ||
-                  _plateNumberCtrl.text.isEmpty) {
-                errorSnackbar(context, "Please fill in all fields");
-              } else {
-                _addSticker();
+              SizedBox(height: 4.h),
+              Text(
+                'Check your physical sticker\'s information to avoid any discrepancy.',
+                style: TextStyle(
+                  fontSize: 12.r,
+                  fontWeight: FontWeight.w400,
+                  color: blackColor.withOpacity(0.5),
+                ),
+                
+              ),
+              SizedBox(height: 32.h),
+              Container(
+                width: 320.w,
+                height: 175.h,
+                decoration: BoxDecoration(
+                  color: userType == 'Employee' ? blueColor : yellowColor,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: -50,
+                      left: -60,
+                      child: Container(
+                        width: 200.w,
+                        height: 200.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: -50,
+                      right: -30,
+                      child: Container(
+                        width: 140.w,
+                        height: 140.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 20,
+                      child: PRKSoftField(
+                        hintText: "1234",
+                        maxLength: 4,
+                        maxWidth: 100.w,
+                        controller: _stickerNumberCtrl,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 30,
+                      left: 20,
+                      child: PRKSoftField(
+                        hintText: "ESX458",
+                        maxLength: 7,
+                        maxWidth: 180.w,
+                        controller: _plateNumberCtrl,
+                        keyboardType: TextInputType.text,
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: -197,
+                      child: Transform.rotate(
+                        angle: -0.995398,
+                        child: Container(
+                          width: 400.w,
+                          height: 37.5.h,
+                          color: whiteColor,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: -293,
+                      child: Transform.rotate(
+                        angle: -0.995398,
+                        child: Container(
+                          width: 400.w,
+                          height: 37.5.h,
+                          color: whiteColor,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 13,
+                      right: 10,
+                      child: CircleAvatar(
+                        radius: 24,
+                        child: Image.asset(
+                          'assets/images/AdNU_Logo.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      left: 20,
+                      child: Text(
+                        '© 2024 Park-In. All Rights Reserved.',
+                        style: TextStyle(
+                          color: whiteColor,
+                          fontSize: 10.r,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 32.h),
+              PRKPrimaryBtn(
+                label: 'Add Sticker',
+                onPressed: () async {
+                  if (_stickerNumberCtrl.text.isEmpty ||
+                      _plateNumberCtrl.text.isEmpty) {
+                    errorSnackbar(context, "Please fill in all fields");
+                  } else {
+                    await _addSticker();
 
-                // Close the dialog
-                Navigator.of(context).pop();
+                    // Close the bottom sheet
+                    Navigator.of(context).pop();
 
-                // Show a snackbar indicating that the sticker was added successfully
-                successSnackbar(context, "Sticker added successfully");
-              }
-            },
+                    // Show a snackbar indicating that the sticker was added successfully
+                    successSnackbar(context, "Sticker added successfully");
+                  }
+                },
+              ),
+              SizedBox(height: 32.h),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
