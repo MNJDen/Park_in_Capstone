@@ -355,20 +355,18 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                                 'Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID.'),
                             SearchFieldListItem(
                                 'Verbal/physical abuse against security personnel.'),
-                            SearchFieldListItem(
-                                'Driving inside the campus at a speed in excess of 10 km/hr'),
                             //minor violations
                             SearchFieldListItem(
-                                'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus'),
-                            SearchFieldListItem('Illegal parking'),
+                                'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus.'),
+                            SearchFieldListItem('Illegal parking.'),
                             SearchFieldListItem(
-                                'Running the engines while parked'),
+                                'Running the engines while parked.'),
                             SearchFieldListItem(
-                                'Driving on a sidewalk or pathway'),
+                                'Driving on a sidewalk or pathway.'),
                             SearchFieldListItem(
                                 'Carrying or loading the car of any material when its edge portion causes damage or scrape the pavement of the road/street.'),
                             SearchFieldListItem(
-                                'Driving inside the campus at a speed in excess of 10 km/hr'),
+                                'Driving inside the campus at a speed in excess of 10 km/hr.'),
                           ],
                           controller: _searchCtrl,
                           onTap: (text) {
