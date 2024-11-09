@@ -213,28 +213,30 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                 ),
                               ),
                               SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: 14.r,
-                                      color: whiteColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: "General Sans",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style: TextStyle(
+                                        fontSize: 14.r,
+                                        color: whiteColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "General Sans",
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    userNumber,
-                                    style: TextStyle(
-                                      fontSize: 12.r,
-                                      color: whiteColor.withOpacity(0.5),
-                                      fontFamily: "General Sans",
+                                    Text(
+                                      userNumber,
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: whiteColor.withOpacity(0.5),
+                                        fontFamily: "General Sans",
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -547,7 +549,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      highlightColor: blueColor.withOpacity(0.2),
                       onPressed: () {
                         _scaffoldKey.currentState?.openDrawer();
                         NavbarNotifier.hideBottomNavBar = true;
@@ -633,7 +634,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      highlightColor: blueColor.withOpacity(0.2),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -683,7 +683,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
@@ -704,7 +703,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
@@ -726,7 +724,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -776,7 +773,6 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: IconButton(
-                            highlightColor: blueColor.withOpacity(0.2),
                             onPressed: () {},
                             icon: Icon(
                               Icons.notifications_outlined,
