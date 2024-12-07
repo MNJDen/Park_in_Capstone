@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/field/soft_field.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
-import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 import 'package:provider/provider.dart';
 
 class SignUpStudentScreen3 extends StatefulWidget {
-  const SignUpStudentScreen3({Key? key}) : super(key: key);
+  const SignUpStudentScreen3({super.key});
 
   @override
   State<SignUpStudentScreen3> createState() => SignUpStudentScreen3State();
@@ -184,7 +183,8 @@ class StickerFormField extends StatelessWidget {
   final int index;
   final VoidCallback onChanged;
 
-  StickerFormField({
+  const StickerFormField({
+    super.key,
     required this.stickerNumberCtrl,
     required this.plateNumberCtrl,
     required this.stickerIndex,
@@ -246,6 +246,7 @@ class StickerFormField extends StatelessWidget {
                   maxWidth: 100.w,
                   controller: stickerNumberCtrl,
                   keyboardType: TextInputType.number,
+                  isFocused: false,
                 ),
               ),
               Positioned(
@@ -257,6 +258,7 @@ class StickerFormField extends StatelessWidget {
                   maxWidth: 175.w,
                   controller: plateNumberCtrl,
                   keyboardType: TextInputType.text,
+                  isFocused: false,
                 ),
               ),
               Positioned(
