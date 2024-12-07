@@ -10,14 +10,17 @@ class PRKSoftField extends StatefulWidget {
   final void Function(String)? onChanged;
   final int? maxLength;
   final double maxWidth;
+  final bool isFocused;
 
-  PRKSoftField({
+  const PRKSoftField({
+    super.key,
     required this.controller,
     this.onChanged,
     this.keyboardType,
     required this.hintText,
     this.maxLength,
     required this.maxWidth,
+    required this.isFocused,
   });
 
   @override
@@ -53,6 +56,7 @@ class _PRKSoftFieldState extends State<PRKSoftField> {
       controller: widget.controller,
       focusNode: _focusNode,
       keyboardType: widget.keyboardType,
+      autofocus: widget.isFocused,
       inputFormatters: [
         TextInputFormatter.withFunction(
           (oldValue, newValue) {
@@ -93,6 +97,9 @@ class _PRKSoftFieldState extends State<PRKSoftField> {
           fontWeight: FontWeight.w700,
         ),
       ),
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
     );
   }
 }
