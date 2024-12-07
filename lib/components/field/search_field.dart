@@ -46,10 +46,9 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
   }
 
   void _handleSuggestionTap(SearchFieldListItem<dynamic> item) {
-    final suggestionText = item.toString(); // Customize this as needed
+    final suggestionText = item.toString();
     widget.onTap(suggestionText);
-    _focusNode
-        .unfocus(); // Unfocus the search field when a suggestion is selected
+    _focusNode.unfocus();
   }
 
   @override
@@ -90,12 +89,12 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
           backgroundColor: whiteColor,
           fontSize: 12.r,
           color: blackColor,
-          overflow: TextOverflow.visible,
+          overflow: TextOverflow.fade,
         ),
         suggestionsDecoration: SuggestionDecoration(
           elevation: 15,
           color: whiteColor,
-          selectionColor: Color.fromRGBO(45, 49, 250, 0.2),
+          selectionColor: blueColor.withOpacity(0.2),
           borderRadius: BorderRadius.circular(10),
         ),
         searchStyle: TextStyle(
@@ -108,13 +107,19 @@ class _PRKSearchFieldState extends State<PRKSearchField> {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        offset: Offset(0, 55),
+        offset: const Offset(0, 50),
         controller: widget.controller,
         suggestions: widget.searchFieldListItems,
-        maxSuggestionsInViewPort: 5,
-        itemHeight: 60,
+        // maxSuggestionsInViewPort: 5,
+        dynamicHeight: true,
+        // itemHeight: 60,
+        maxSuggestionBoxHeight: 185.h,
+        textCapitalization: TextCapitalization.sentences,
         onSuggestionTap: (item) {
           _handleSuggestionTap(item); // Handle suggestion tap
+        },
+        onTapOutside: (event) {
+          FocusScope.of(context).unfocus();
         },
       ),
     );
