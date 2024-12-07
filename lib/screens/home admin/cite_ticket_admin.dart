@@ -12,6 +12,7 @@ import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/field/search_field.dart';
 import 'package:park_in/components/field/text_area.dart';
+import 'package:park_in/screens/misc/image_viewer_carousel.dart';
 import 'package:searchfield/searchfield.dart';
 import 'dart:io';
 
@@ -183,6 +184,11 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
       return;
     }
 
+    if (_plateNumberCtrl.text.length < 6) {
+      errorSnackbar(context, "Invalid plate number");
+      return;
+    }
+
     if (_closeUpImage == null ||
         _midShotImage == null ||
         _wideShotImage == null) {
@@ -319,6 +325,9 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                           prefixIcon: Icons.pin_rounded,
                           labelText: "Plate Number",
                           controller: _plateNumberCtrl,
+                          maxLength: 7,
+                          helperText: "Don't include the dash(-). Ex. ESX668",
+                          isUpperCase: true,
                         ),
                         SizedBox(height: 12.h),
                         PRKSearchField(
@@ -340,33 +349,356 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                           searchFieldListItems: [
                             //serious violations
                             SearchFieldListItem(
-                                'Selling, attempting to sell, or giving their gate pass/sticker to another person.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Selling, attempting to sell, or giving their gate pass/sticker to another person',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Selling, attempting to sell, or giving their gate pass/sticker to another person'),
                             SearchFieldListItem(
-                                'False declaration in any application for a gate pass/sticker or in a report of a stolen gate pass/sticker.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'False declaration in any application for a gate pass/sticker or in a report of a stolen gate pass/sticker',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'False declaration in any application for a gate pass/sticker or in a report of a stolen gate pass/sticker'),
                             SearchFieldListItem(
-                                'Tampering/Falsification/Alteration or Duplication of gate pass/sticker.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Tampering/Falsification/Alteration or Duplication of gate pass/sticker',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Tampering/Falsification/Alteration or Duplication of gate pass/sticker'),
                             SearchFieldListItem(
-                                'Driving while under the influence of prohibited drugs or any alcoholic beverages.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Driving while under the influence of prohibited drugs or any alcoholic beverages',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Driving while under the influence of prohibited drugs or any alcoholic beverages'),
                             SearchFieldListItem(
-                                'Using the car as shelter for obnoxious and scandalous activities.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Using the car as shelter for obnoxious and scandalous activities',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Using the car as shelter for obnoxious and scandalous activities'),
                             SearchFieldListItem(
-                                'Driving without license or unregistered vehicles.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Driving without license or unregistered vehicles',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Driving without license or unregistered vehicles'),
                             SearchFieldListItem(
-                                'Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID'),
                             SearchFieldListItem(
-                                'Verbal/physical abuse against security personnel.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Verbal/physical abuse against security personnel',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Major Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Verbal/physical abuse against security personnel'),
                             //minor violations
                             SearchFieldListItem(
-                                'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus.'),
-                            SearchFieldListItem('Illegal parking.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus'),
                             SearchFieldListItem(
-                                'Running the engines while parked.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Illegal parking',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Illegal parking'),
                             SearchFieldListItem(
-                                'Driving on a sidewalk or pathway.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Running the engines while parked',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Running the engines while parked'),
                             SearchFieldListItem(
-                                'Carrying or loading the car of any material when its edge portion causes damage or scrape the pavement of the road/street.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Driving on a sidewalk or pathway',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Driving on a sidewalk or pathway'),
                             SearchFieldListItem(
-                                'Driving inside the campus at a speed in excess of 10 km/hr.'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Carrying or loading the car of any material when its edge portion causes damage or scrape the pavement of the road/street',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Carrying or loading the car of any material when its edge portion causes damage or scrape the pavement of the road/street'),
+                            SearchFieldListItem(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Driving inside the campus at a speed in excess of 10 km/hr',
+                                        style: TextStyle(
+                                          fontSize: 12.r,
+                                          color: blackColor,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Minor Violation',
+                                      style: TextStyle(
+                                        fontSize: 12.r,
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                'Driving inside the campus at a speed in excess of 10 km/hr'),
                           ],
                           controller: _searchCtrl,
                           onTap: (text) {
@@ -405,6 +737,23 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                               icon: _closeUpImage != null
                                   ? Icons.highlight_remove_rounded
                                   : Icons.file_upload_outlined,
+                              onTap: () {
+                                if (_closeUpImage != null ||
+                                    _midShotImage != null ||
+                                    _wideShotImage != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewerCarousel(
+                                        currentImage: _closeUpImage,
+                                        closeUpImage: _closeUpImage,
+                                        midShotImage: _midShotImage,
+                                        wideShotImage: _wideShotImage,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                             SizedBox(height: 8.h),
                             PRKTicketsUpload(
@@ -417,6 +766,23 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                               icon: _midShotImage != null
                                   ? Icons.highlight_remove_rounded
                                   : Icons.file_upload_outlined,
+                              onTap: () {
+                                if (_midShotImage != null ||
+                                    _closeUpImage != null ||
+                                    _wideShotImage != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewerCarousel(
+                                        currentImage: _midShotImage,
+                                        closeUpImage: _closeUpImage,
+                                        midShotImage: _midShotImage,
+                                        wideShotImage: _wideShotImage,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                             SizedBox(height: 8.h),
                             PRKTicketsUpload(
@@ -429,6 +795,23 @@ class _CiteTicketAdminScreenState extends State<CiteTicketAdminScreen> {
                               icon: _wideShotImage != null
                                   ? Icons.highlight_remove_rounded
                                   : Icons.file_upload_outlined,
+                              onTap: () {
+                                if (_wideShotImage != null ||
+                                    _closeUpImage != null ||
+                                    _midShotImage != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewerCarousel(
+                                        currentImage: _wideShotImage,
+                                        closeUpImage: _closeUpImage,
+                                        midShotImage: _midShotImage,
+                                        wideShotImage: _wideShotImage,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),
