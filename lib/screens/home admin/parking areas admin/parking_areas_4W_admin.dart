@@ -84,7 +84,7 @@ class _ParkingAreas4WAdminState extends State<ParkingAreas4WAdmin> {
           SizedBox(
             height: 12.h,
           ),
-          PRKTabAdmin(),
+          const PRKTabAdmin(),
         ],
       ),
     );
