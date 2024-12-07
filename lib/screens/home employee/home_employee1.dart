@@ -193,7 +193,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                         baseColor: Colors.grey[300]!,
                                         highlightColor: Colors.grey[100]!,
                                         child: Container(
-                                          width: 60.w,
+                                          width: 60.h,
                                           height: 60.h,
                                           decoration: const BoxDecoration(
                                             color: Colors.white,
@@ -231,8 +231,9 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                       userNumber,
                                       style: TextStyle(
                                         fontSize: 12.r,
-                                        color: whiteColor.withOpacity(0.5),
+                                        color: whiteColor,
                                         fontFamily: "General Sans",
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ],
@@ -568,20 +569,12 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       stream: userSubject.stream,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
-                            ),
-                          );
-                        } else if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.hasData && snapshot.data != null) {
                           final userData = snapshot.data!;
                           final String name =
-                              userData['name'] ?? 'Hello, User!';
+                              (userData['name'] ?? 'Hello, User!')
+                                  .split(' ')
+                                  .first;
                           return Wrap(
                             children: [
                               Text(
@@ -593,7 +586,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                                 ),
                               ),
                               Text(
-                                "$name",
+                                name,
                                 style: TextStyle(
                                   fontSize: 20.r,
                                   fontWeight: FontWeight.w600,
@@ -611,12 +604,16 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                             ],
                           );
                         } else {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              // width: 60.h,
+                              height: 20.r,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                // shape: BoxShape.circle,
+                              ),
                             ),
                           );
                         }
@@ -787,7 +784,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: 12.h,
               ),
               AnimatedToggleSwitch<int>.size(
                 current: value,
@@ -798,7 +795,7 @@ class _HomeEmployeeScreen1State extends State<HomeEmployeeScreen1> {
                 borderWidth: 4.0,
                 iconAnimationType: AnimationType.onHover,
                 style: ToggleStyle(
-                    backgroundColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    backgroundColor: blueColor.withOpacity(0.5),
                     borderColor: Colors.transparent,
                     borderRadius: BorderRadius.circular(10.0),
                     indicatorBorderRadius: BorderRadius.circular(6)),
