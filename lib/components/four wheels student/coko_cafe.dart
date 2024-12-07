@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
@@ -11,6 +13,7 @@ class PRKCoko4WStundent extends StatefulWidget {
   final String availableSpace;
   final String image;
   final Color? dotColor;
+  final bool isFull;
 
   const PRKCoko4WStundent({
     super.key,
@@ -18,6 +21,7 @@ class PRKCoko4WStundent extends StatefulWidget {
     required this.availableSpace,
     required this.image,
     this.dotColor,
+    required this.isFull,
   });
 
   @override
@@ -29,6 +33,8 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
   late AnimationController _animationController;
   late Animation<Color?> _colorAnimation;
 
+  double _blurOpacity = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +44,7 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
     );
     _colorAnimation = ColorTween(
       begin: whiteColor,
-      end: const Color.fromARGB(255, 209, 210, 253),
+      end: const Color.fromRGBO(171, 198, 255, 1),
     ).animate(_animationController);
   }
 
@@ -50,6 +56,12 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isFull) {
+      _blurOpacity = 1;
+    } else {
+      _blurOpacity = 0;
+    }
+
     return GestureDetector(
       onTap: () {
         if (!_animationController.isAnimating) {
@@ -120,19 +132,6 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.w),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.availableSpace,
-                        style: TextStyle(
-                          fontSize: 48.r,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
                   Positioned(
                     bottom: -14,
                     right: -53,
@@ -152,6 +151,29 @@ class _PRKCoko4WStundentState extends State<PRKCoko4WStundent>
                       ),
                     ),
                   ),
+                  AnimatedOpacity(
+                    opacity: _blurOpacity,
+                    duration: const Duration(milliseconds: 500),
+                    child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                        child: const SizedBox()),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Opacity(
+                        opacity: widget.isFull ? 1 : 1,
+                        child: Text(
+                          widget.availableSpace,
+                          style: TextStyle(
+                            fontSize: 48.r,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ).animate().fade(delay: const Duration(milliseconds: 450)),
                 ],
               ),
             ),
