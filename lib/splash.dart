@@ -96,6 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Image.asset(
                   "assets/images/Logo.png",
                   height: 73.h,
+                  color: blueColor,
                 ),
               ),
               Positioned(
