@@ -207,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: whiteColor,
                     border: Border(
                       top: BorderSide(width: 0.1.w, color: borderBlack),
-                      bottom: BorderSide(width: 0.1.w, color: borderBlack),
+                      // bottom: BorderSide(width: 0.1.w, color: borderBlack),
                     ),
                   ),
                   child: StreamBuilder<QuerySnapshot>(
@@ -263,8 +263,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
 
               // text field
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              Container(
+                color: whiteColor,
+                padding: EdgeInsets.fromLTRB(8.w, 8.h, 8.w, 20.h),
                 child: Row(
                   children: [
                     Expanded(
@@ -274,6 +275,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           fontSize: 12.sp,
                           color: blackColor,
                         ),
+                        minLines: 1,
+                        maxLines: 3,
                         // autofocus: true,
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
@@ -299,6 +302,12 @@ class _ChatScreenState extends State<ChatScreen> {
                               color: borderBlack,
                             ),
                           ),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.send_rounded),
+                            color: _sendButtonColor,
+                            onPressed: () => sendMessage(_controller.text),
+                            iconSize: 20.r,
+                          ),
                         ),
                         onChanged: (text) {
                           setState(
@@ -312,11 +321,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         },
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.send_rounded),
-                      color: _sendButtonColor,
-                      onPressed: () => sendMessage(_controller.text),
                     ),
                   ],
                 ),
