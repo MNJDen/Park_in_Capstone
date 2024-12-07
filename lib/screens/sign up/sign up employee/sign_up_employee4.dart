@@ -243,6 +243,7 @@ class StickerFormField extends StatelessWidget {
                   maxWidth: 100.w,
                   controller: stickerNumberCtrl,
                   keyboardType: TextInputType.number,
+                  isFocused: false,
                 ),
               ),
               Positioned(
@@ -254,6 +255,7 @@ class StickerFormField extends StatelessWidget {
                   maxWidth: 175.w,
                   controller: plateNumberCtrl,
                   keyboardType: TextInputType.text,
+                  isFocused: false,
                 ),
               ),
               Positioned(
