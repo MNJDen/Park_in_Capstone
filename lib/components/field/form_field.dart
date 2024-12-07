@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 
@@ -13,8 +14,11 @@ class PRKFormField extends StatefulWidget {
   final bool obscureText;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
+  final int? maxLength;
+  final bool? isUpperCase;
 
-  PRKFormField({
+  const PRKFormField({
+    super.key,
     required this.prefixIcon,
     required this.labelText,
     this.suffixIcon,
@@ -25,6 +29,8 @@ class PRKFormField extends StatefulWidget {
     this.keyboardType,
     this.onChanged,
     this.helperText,
+    this.maxLength,
+    this.isUpperCase,
   });
 
   @override
@@ -70,11 +76,22 @@ class _PRKFormFieldState extends State<PRKFormField> {
       focusNode: _focusNode,
       obscureText: _obscureText,
       keyboardType: widget.keyboardType,
+      maxLength: widget.maxLength,
       style: TextStyle(
         fontSize: 12.r,
         color: blackColor,
       ),
+      inputFormatters: widget.isUpperCase == true
+          ? [
+              TextInputFormatter.withFunction(
+                (oldValue, newValue) {
+                  return newValue.copyWith(text: newValue.text.toUpperCase());
+                },
+              ),
+            ]
+          : [],
       decoration: InputDecoration(
+          counterText: '',
           filled: true,
           fillColor: widget.enable ?? true ? whiteColor : Colors.grey[200],
           prefixIcon: Icon(
@@ -130,6 +147,9 @@ class _PRKFormFieldState extends State<PRKFormField> {
         setState(() {
           _isFocused = false;
         });
+      },
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
       },
     );
   }
