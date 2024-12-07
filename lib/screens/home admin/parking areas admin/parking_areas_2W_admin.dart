@@ -101,11 +101,11 @@ class _ParkingAreas2WAdminState extends State<ParkingAreas2WAdmin> {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 8,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
-            child: Controls2WAdmin(),
+            child: const Controls2WAdmin(),
           ),
         ],
       ),
