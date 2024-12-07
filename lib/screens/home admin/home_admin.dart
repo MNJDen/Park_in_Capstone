@@ -32,6 +32,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          actionsAlignment: MainAxisAlignment.center,
           title: Text(
             'Confirm Sign Out',
             style: TextStyle(
@@ -41,62 +42,83 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
             ),
           ),
           content: SizedBox(
-            height: 40.h,
+            height: 28.h,
             child: const Text('Are you sure you want to exit?'),
           ),
           actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: blueColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Sign Out',
-                style: TextStyle(color: whiteColor),
-              ),
-              onPressed: () async {
-                try {
-                  await authService.signOut();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (BuildContext context,
-                          Animation<double> animation1,
-                          Animation<double> animation2) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(
-                              CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                                  .animate(animation1)),
-                          child: const Material(
-                            elevation: 5,
-                            child: SignInScreen(),
-                          ),
-                        );
-                      },
-                      transitionDuration: const Duration(milliseconds: 400),
+            Column(
+              children: [
+                SizedBox(
+                  height: 45.h,
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: blueColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                } finally {
-                  setState(
-                    () {
-                      _isLoading = false;
+                    child: const Text(
+                      'Sign Out',
+                      style: TextStyle(color: whiteColor),
+                    ),
+                    onPressed: () async {
+                      try {
+                        await authService.signOut();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (BuildContext context,
+                                Animation<double> animation1,
+                                Animation<double> animation2) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1, 0),
+                                  end: Offset.zero,
+                                ).animate(CurveTween(
+                                        curve: Curves.fastEaseInToSlowEaseOut)
+                                    .animate(animation1)),
+                                child: const Material(
+                                  elevation: 5,
+                                  child: SignInScreen(),
+                                ),
+                              );
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 400),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      } finally {
+                        setState(
+                          () {
+                            _isLoading = false;
+                          },
+                        );
+                      }
                     },
-                  );
-                }
-              },
-            ),
+                  ),
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                SizedBox(
+                  height: 45.h,
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },
@@ -124,7 +146,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                   CircleAvatar(
                     backgroundImage:
                         const AssetImage("assets/images/AdNU_Logo.png"),
-                    radius: 17.r,
+                    radius: 15.r,
                   ),
                   SizedBox(
                     width: 8.w,
@@ -215,7 +237,7 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                 borderWidth: 4.0,
                 iconAnimationType: AnimationType.onHover,
                 style: ToggleStyle(
-                    backgroundColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    backgroundColor: blueColor.withOpacity(0.5),
                     borderColor: Colors.transparent,
                     borderRadius: BorderRadius.circular(10.0),
                     indicatorBorderRadius: BorderRadius.circular(6)),
