@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
-import 'package:park_in/components/field/search_field.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
@@ -100,7 +99,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        width: 0.5.w,
+                        width: 0.1.w,
                         color: borderBlack,
                       ),
                     ),
@@ -117,7 +116,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                   suggestionsDecoration: SuggestionDecoration(
                     elevation: 15,
                     color: whiteColor,
-                    selectionColor: Color.fromRGBO(45, 49, 250, 0.2),
+                    selectionColor: blueColor.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   searchStyle: TextStyle(
@@ -130,7 +129,7 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  offset: Offset(0, 55),
+                  offset: const Offset(0, 50),
                   controller: _searchController,
                   suggestions: [
                     SearchFieldListItem('Department 1'),
@@ -143,8 +142,9 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                     SearchFieldListItem('Department 8'),
                     SearchFieldListItem('Department 9'),
                   ],
-                  maxSuggestionsInViewPort: 6,
-                  itemHeight: 40,
+                  dynamicHeight: true,
+                  maxSuggestionBoxHeight: 185.h,
+                  textCapitalization: TextCapitalization.sentences,
                   onSuggestionTap: (SearchFieldListItem<dynamic> item) {
                     setState(() {
                       _searchController.text = item.searchKey;
