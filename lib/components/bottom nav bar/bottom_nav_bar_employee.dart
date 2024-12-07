@@ -57,7 +57,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
   @override
   Widget build(BuildContext context) {
     if (_userId == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child:
               CircularProgressIndicator(), // Display a loading indicator until _userId is available
@@ -67,7 +67,7 @@ class _BottomNavBarEmployeeState extends State<BottomNavBarEmployee> {
 
     final Map<int, Map<String, Widget>> routes = {
       0: {
-        '/': HomeEmployeeScreen1(),
+        '/': const HomeEmployeeScreen1(),
       },
       1: {
         '/': HomeEmployeeScreen2(userId: _userId!, userType: 'Employee'),
