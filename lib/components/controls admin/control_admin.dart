@@ -58,7 +58,7 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
 
     if (newCount < 0) {
       newCount = 0;
-      errorSnackbar(context, "Already at 0");
+      errorSnackbar(context, "Parking is already full");
     } else if (newCount > maxCount) {
       newCount = maxCount;
       errorSnackbar(context, "Already at maximum capacity");
@@ -133,9 +133,9 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
               SizedBox(width: 5.w),
               Container(
                 alignment: Alignment.center,
-                width: 20.w,
+                width: 30.w,
                 child: Text(
-                  "$_currentCount",
+                  _currentCount == 0 ? "Full" : "$_currentCount",
                   style: TextStyle(
                     fontSize: 16.r,
                     color: blackColor,
