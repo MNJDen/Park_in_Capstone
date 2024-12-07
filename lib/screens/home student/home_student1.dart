@@ -1,6 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
@@ -192,7 +193,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                         baseColor: Colors.grey[300]!,
                                         highlightColor: Colors.grey[100]!,
                                         child: Container(
-                                          width: 60.w,
+                                          width: 60.h,
                                           height: 60.h,
                                           decoration: const BoxDecoration(
                                             color: Colors.white,
@@ -231,8 +232,9 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                       userNumber,
                                       style: TextStyle(
                                         fontSize: 12.r,
-                                        color: blackColor.withOpacity(0.5),
+                                        color: blackColor,
                                         fontFamily: "General Sans",
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ],
@@ -557,7 +559,6 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                         Icons.menu_rounded,
                         color: blackColor,
                         size: 26.r,
-                        
                       ),
                     ),
                   ),
@@ -569,17 +570,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       stream: userSubject.stream,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
-                            ),
-                          );
-                        } else if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.hasData && snapshot.data != null) {
                           final userData = snapshot.data!;
                           final String name =
                               (userData['name'] ?? 'Hello, User!')
@@ -596,7 +587,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                                 ),
                               ),
                               Text(
-                                "$name",
+                                name,
                                 style: TextStyle(
                                   fontSize: 20.r,
                                   fontWeight: FontWeight.w600,
@@ -614,12 +605,16 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                             ],
                           );
                         } else {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              // width: 60.h,
+                              height: 20.r,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                // shape: BoxShape.circle,
+                              ),
                             ),
                           );
                         }
@@ -745,7 +740,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: 12.h,
               ),
               AnimatedToggleSwitch<int>.size(
                 current: value,
@@ -756,7 +751,7 @@ class _HomeStudentScreen1State extends State<HomeStudentScreen1> {
                 borderWidth: 4.0,
                 iconAnimationType: AnimationType.onHover,
                 style: ToggleStyle(
-                    backgroundColor: const Color.fromRGBO(45, 49, 250, 0.5),
+                    backgroundColor: blueColor.withOpacity(0.5),
                     borderColor: Colors.transparent,
                     borderRadius: BorderRadius.circular(10.0),
                     indicatorBorderRadius: BorderRadius.circular(6)),
