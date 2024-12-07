@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/field/soft_field.dart';
 import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/snackbar/success_snackbar.dart';
@@ -24,6 +23,7 @@ class _StickersScreennState extends State<StickersScreen> {
   List<String> stickerNumbers = [];
   List<String> plateNumbers = [];
   String userType = '';
+  bool _isButtonPressed = false;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _StickersScreennState extends State<StickersScreen> {
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
+          child: Column(  
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -197,10 +197,11 @@ class _StickersScreennState extends State<StickersScreen> {
 
   void _showAddStickerModal(BuildContext context) {
     showModalBottomSheet(
-      backgroundColor: whiteColor,
+      backgroundColor: bgColor,
       showDragHandle: true,
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
       ),
@@ -233,15 +234,14 @@ class _StickersScreennState extends State<StickersScreen> {
               ),
               SizedBox(height: 4.h),
               Text(
-                'Check your physical sticker\'s information to avoid any discrepancy.',
+                'This is PERMANENT so check your physical sticker\'s information to avoid any discrepancy.',
                 style: TextStyle(
                   fontSize: 12.r,
                   fontWeight: FontWeight.w400,
                   color: blackColor.withOpacity(0.5),
                 ),
-                
               ),
-              SizedBox(height: 32.h),
+              SizedBox(height: 16.h),
               Container(
                 width: 320.w,
                 height: 175.h,
@@ -291,6 +291,7 @@ class _StickersScreennState extends State<StickersScreen> {
                         maxWidth: 100.w,
                         controller: _stickerNumberCtrl,
                         keyboardType: TextInputType.number,
+                        isFocused: true,
                       ),
                     ),
                     Positioned(
@@ -302,6 +303,7 @@ class _StickersScreennState extends State<StickersScreen> {
                         maxWidth: 180.w,
                         controller: _plateNumberCtrl,
                         keyboardType: TextInputType.text,
+                        isFocused: false,
                       ),
                     ),
                     Positioned(
@@ -357,6 +359,11 @@ class _StickersScreennState extends State<StickersScreen> {
               PRKPrimaryBtn(
                 label: 'Add Sticker',
                 onPressed: () async {
+                  setState(() {
+                    _isButtonPressed =
+                        true; // Set to true when button is pressed
+                  });
+
                   if (_stickerNumberCtrl.text.isEmpty ||
                       _plateNumberCtrl.text.isEmpty) {
                     errorSnackbar(context, "Please fill in all fields");
