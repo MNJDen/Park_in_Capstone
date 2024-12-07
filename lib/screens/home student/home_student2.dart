@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:navbar_router/navbar_router.dart';
+import 'package:park_in/components/four%20wheels%20employee/alingal.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/ui/violation_card.dart';
@@ -246,7 +249,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                         baseColor: Colors.grey[300]!,
                                         highlightColor: Colors.grey[100]!,
                                         child: Container(
-                                          width: 60.w,
+                                          width: 60.h,
                                           height: 60.h,
                                           decoration: const BoxDecoration(
                                             color: Colors.white,
@@ -284,8 +287,9 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                       userNumber,
                                       style: TextStyle(
                                         fontSize: 12.r,
-                                        color: blackColor.withOpacity(0.5),
+                                        color: blackColor,
                                         fontFamily: "General Sans",
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ],
@@ -621,20 +625,12 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       stream: userSubject.stream,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
-                            ),
-                          );
-                        } else if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.hasData && snapshot.data != null) {
                           final userData = snapshot.data!;
                           final String name =
-                              userData['name'] ?? 'Hello, User!';
+                              (userData['name'] ?? 'Hello, User!')
+                                  .split(' ')
+                                  .first;
                           return Wrap(
                             children: [
                               Text(
@@ -646,7 +642,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                                 ),
                               ),
                               Text(
-                                "$name",
+                                name,
                                 style: TextStyle(
                                   fontSize: 20.r,
                                   fontWeight: FontWeight.w600,
@@ -664,12 +660,16 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             ],
                           );
                         } else {
-                          return Text(
-                            'Hello, ---!',
-                            style: TextStyle(
-                              fontSize: 20.r,
-                              fontWeight: FontWeight.w600,
-                              color: blackColor,
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              // width: 60.h,
+                              height: 20.r,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                // shape: BoxShape.circle,
+                              ),
                             ),
                           );
                         }
@@ -799,7 +799,7 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                 ],
               ),
               SizedBox(
-                height: 20.h,
+                height: 12.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -826,9 +826,12 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: LoadingAnimationWidget.waveDots(
+                          color: blueColor, size: 50.r),
+                    );
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Error fetching tickets'));
+                    return const Center(child: Text('Error fetching tickets'));
                   } else if (snapshot.hasData) {
                     final tickets = snapshot.data!.docs.map((doc) {
                       return doc.data() as Map<String, dynamic>;
@@ -848,31 +851,37 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             .compareTo(b['timestamp'] as Timestamp);
                       });
 
-                      // Map to track how many times a violation the user has committed
-                      Map<String, int> violationCounts = {};
-
                       return Column(
                         children: List.generate(
                           tickets.length,
                           (index) {
                             final ticket = tickets[index];
-                            final violationType = ticket['violation'];
-
-                            // Increment the violation count
-                            violationCounts[violationType] =
-                                (violationCounts[violationType] ?? 0) + 1;
-
-                            return PRKViolationCard(
-                              offenseNumber: formatOffenseNumber(
-                                  violationCounts[violationType]!),
-                              date: (ticket['timestamp'] as Timestamp)
-                                  .toDate()
-                                  .toString()
-                                  .split(' ')[0],
-                              violation: violationType,
+                            return Column(
+                              children: [
+                                PRKViolationCard(
+                                  offenseNumber: formatOffenseNumber(index + 1),
+                                  date: (ticket['timestamp'] as Timestamp)
+                                      .toDate()
+                                      .toString()
+                                      .split(' ')[0],
+                                  violation: ticket['violation'],
+                                ),
+                              ],
                             );
                           },
-                        ),
+                        )
+                            .animate()
+                            .fade(
+                              delay: const Duration(
+                                milliseconds: 200,
+                              ),
+                            )
+                            .moveY(
+                              begin: 10,
+                              end: 0,
+                              curve: Curves.fastEaseInToSlowEaseOut,
+                              duration: const Duration(milliseconds: 350),
+                            ),
                       );
                     }
                   } else {
