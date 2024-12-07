@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -61,9 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
         Widget destination;
 
         if (userType == 'Student') {
-          destination = BottomNavBarStudent();
+          destination = const BottomNavBarStudent();
         } else if (userType == 'Employee') {
-          destination = BottomNavBarEmployee();
+          destination = const BottomNavBarEmployee();
         } else {
           errorSnackbar(context, "User type not recognized");
           setState(() {
@@ -188,6 +187,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 "assets/images/Logo.png",
                                 height: 53.h,
                                 width: 38.w,
+                                color: blueColor,
                               ),
                             ],
                           ),
@@ -214,6 +214,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             labelText: "Student/Employee Number",
                             controller: _userNumberCtrl,
                             keyboardType: TextInputType.number,
+                            maxLength: 9,
                           ),
                           SizedBox(height: 12.h),
                           PRKFormField(
@@ -276,6 +277,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ],
                               ),
+                              
                             ],
                           ),
                         ],
