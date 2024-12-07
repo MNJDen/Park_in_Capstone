@@ -126,16 +126,8 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                         SizedBox(
                           height: 32.h,
                         ),
-                        PRKFormField(
-                          prefixIcon: Icons.campaign_rounded,
-                          labelText: "Announcement Title",
-                          controller: _titleCtrl,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
                         Text(
-                          "Select the Audience:",
+                          "Select the audience:",
                           style: TextStyle(
                             fontSize: 12.r,
                             color: blackColor,
@@ -211,6 +203,15 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                               ],
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        PRKFormField(
+                          prefixIcon: Icons.campaign_rounded,
+                          labelText: "Announcement Title",
+                          controller: _titleCtrl,
+                          
                         ),
                         SizedBox(
                           height: 12.h,
