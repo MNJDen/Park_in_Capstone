@@ -8,9 +8,9 @@ import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/providers/user_data_provider.dart';
-import 'package:park_in/components/ui/student_eSticker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:confetti/confetti.dart';
 
 class SignUpStudentScreen6 extends StatefulWidget {
   const SignUpStudentScreen6({super.key});
@@ -20,7 +20,27 @@ class SignUpStudentScreen6 extends StatefulWidget {
 }
 
 class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
+  final ConfettiController _leftConfettiController =
+      ConfettiController(duration: const Duration(seconds: 3));
+  final ConfettiController _rightConfettiController =
+      ConfettiController(duration: const Duration(seconds: 3));
   bool _isSigningUp = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _leftConfettiController.play();
+      _rightConfettiController.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    _leftConfettiController.dispose();
+    _rightConfettiController.dispose();
+    super.dispose();
+  }
 
   Future<void> _uploadData() async {
     setState(() {
@@ -50,7 +70,7 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
 
       // Create a new user document in Firestore
       final userDocument = FirebaseFirestore.instance.collection('User').doc();
-      final newUserId = userDocument.id; // Get the new user's ID
+      final newUserId = userDocument.id;
 
       await userDocument.set({
         'userType': userData.usertype,
@@ -59,15 +79,14 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
         'mobileNo': userData.phoneNumber,
         'department': userData.department,
         'password': userData.password,
-        'profilePicture': downloadUrl, // Use the downloadUrl
+        'profilePicture': downloadUrl,
         'stickerNumber': userData.stickerNumber,
         'plateNo': userData.plateNumber,
       });
 
-      // Save the new userId and userType in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('userId', newUserId); // Save new userId
+      await prefs.setString('userId', newUserId);
       await prefs.setString('userType', userData.usertype ?? 'Employee');
 
       if (mounted) {
@@ -125,96 +144,122 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
 
   @override
   Widget build(BuildContext context) {
-    final userDataProvider = Provider.of<UserDataProvider>(context);
-    final userData = userDataProvider.userData;
-
-    final stickers = userData.stickerNumber;
-    final plates = userData.plateNumber;
-
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: _isSigningUp
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      LoadingAnimationWidget.waveDots(
-                        color: blueColor,
-                        size: 50.r,
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: _isSigningUp
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LoadingAnimationWidget.waveDots(
+                            color: blueColor,
+                            size: 50.r,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Text(
+                            "Getting everything ready, wait a moment...",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: blackColor.withOpacity(0.8),
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        "Getting everything ready, wait a moment...",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: blackColor.withOpacity(0.8),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 32.h),
-                        Text(
-                          "Looks like you’re all set up!",
-                          style: TextStyle(
-                            color: blueColor,
-                            fontSize: 24.r,
-                            fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.1,
                           ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          "Since you're finished signing up, here’s your digital sticker!",
-                          style: TextStyle(
-                            color: blackColor,
-                            fontSize: 12.r,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        // Generate PRKStudenteSticker
-                        Column(
-                          children: List.generate(
-                            stickers.length,
-                            (index) => Column(
-                              children: [
-                                PRKStudenteSticker(
-                                  stickerNumber: stickers[index],
-                                  plateNumber: plates[index],
-                                  heroTag:
-                                      'sticker_${stickers[index]}_${plates[index]}',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/images/success_image.png",
+                                  height: 160.h),
+                              SizedBox(
+                                height: 12.h,
+                              ),
+                              Text(
+                                "Looks like you’re all set up!",
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 16.r,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                if (index < stickers.length - 1)
-                                  SizedBox(height: 16.h),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Text(
+                                "You can now access real-time information regarding parking availability on campus.",
+                                softWrap: true,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 12.r,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 40.h),
+                          child: PRKPrimaryBtn(
+                            label: "Continue",
+                            onPressed: _uploadData,
                           ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 40.h),
-                      child: PRKPrimaryBtn(
-                        label: "Continue",
-                        onPressed: _uploadData,
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: ConfettiWidget(
+                confettiController: _leftConfettiController,
+                blastDirection: 270,
+                emissionFrequency: 0.09,
+                numberOfParticles: 10,
+                shouldLoop: false,
+                colors: const [
+                  parkingRedColor,
+                  blueColor,
+                  parkingGreenColor,
+                  yellowColor,
+                  parkingOrangeColor,
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: ConfettiWidget(
+                confettiController: _rightConfettiController,
+                blastDirection: 180,
+                emissionFrequency: 0.09,
+                numberOfParticles: 10,
+                shouldLoop: false,
+                colors: const [
+                  parkingRedColor,
+                  blueColor,
+                  parkingGreenColor,
+                  yellowColor,
+                  parkingOrangeColor,
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
