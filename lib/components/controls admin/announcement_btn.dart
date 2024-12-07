@@ -26,7 +26,7 @@ class _PRKAnnouncementState extends State<PRKAnnouncement>
     );
     _colorAnimation = ColorTween(
       begin: whiteColor,
-      end: const Color.fromARGB(255, 209, 210, 253),
+      end: const Color.fromRGBO(171, 198, 255, 1),
     ).animate(_animationController);
   }
 
