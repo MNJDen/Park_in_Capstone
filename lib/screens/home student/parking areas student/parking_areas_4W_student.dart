@@ -279,16 +279,45 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
           children: [
             PRKAlingalA4WStundent(
               parkingArea: "Alingal A",
-              availableSpace: _alingalAAvailableSpace.toString(),
+              availableSpace: _alingalAAvailableSpace == 0
+                  ? "Full"
+                  : _alingalAAvailableSpace.toString(),
               image: "assets/building_images/AlingalA-4W-S.png",
               dotColor: _getAlingalAStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 100)),
+              isFull: _alingalAAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 100,
+                  ),
+                )
+                .moveY(
+                    begin: 10,
+                    end: 0,
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    duration: const Duration(milliseconds: 500)),
             PRKAlingalB4WStundent(
               parkingArea: "Alingal B",
-              availableSpace: _alingalBAvailableSpace.toString(),
+              availableSpace: _alingalBAvailableSpace == 0
+                  ? "Full"
+                  : _alingalBAvailableSpace.toString(),
               image: "assets/building_images/AlingalB-4W-S.png",
               dotColor: _getAlingalBStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 120)),
+              isFull: _alingalBAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 120,
+                  ),
+                )
+                .moveY(
+                  begin: 10,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: const Duration(milliseconds: 550),
+                ),
           ],
         ),
         SizedBox(
@@ -299,16 +328,46 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
           children: [
             PRKBurns4WStundent(
               parkingArea: "Burns",
-              availableSpace: _burnsAvailableSpace.toString(),
+              availableSpace: _burnsAvailableSpace == 0
+                  ? "Full"
+                  : _burnsAvailableSpace.toString(),
               image: "assets/building_images/Burns-4W-S.png",
               dotColor: _getBurnsStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 140)),
+              isFull: _burnsAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 140,
+                  ),
+                )
+                .moveY(
+                  begin: 10,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: const Duration(milliseconds: 600),
+                ),
             PRKCoko4WStundent(
               parkingArea: "Coko Cafe",
-              availableSpace: _cokoCafeAvailableSpace.toString(),
+              availableSpace: _cokoCafeAvailableSpace == 0
+                  ? "Full"
+                  : _cokoCafeAvailableSpace.toString(),
               image: "assets/building_images/Coko-4W-S.png",
               dotColor: _getCokoStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 160)),
+              isFull: _cokoCafeAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 160,
+                  ),
+                )
+                .moveY(
+                  begin: 10,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: const Duration(milliseconds: 650),
+                ),
           ],
         ),
         SizedBox(
@@ -319,16 +378,46 @@ class _ParkingArea4WStudentState extends State<ParkingArea4WStudent> {
           children: [
             PRKCC4WStundent(
               parkingArea: "Covered Court",
-              availableSpace: _coveredCourtAvailableSpace.toString(),
+              availableSpace: _coveredCourtAvailableSpace == 0
+                  ? "Full"
+                  : _coveredCourtAvailableSpace.toString(),
               image: "assets/building_images/CC-4W-S.png",
               dotColor: _getCoveredCourtStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 180)),
+              isFull: _coveredCourtAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 180,
+                  ),
+                )
+                .moveY(
+                  begin: 10,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: const Duration(milliseconds: 700),
+                ),
             PRKLibrary4WStundent(
               parkingArea: "Library",
-              availableSpace: _libraryAvailableSpace.toString(),
+              availableSpace: _libraryAvailableSpace == 0
+                  ? "Full"
+                  : _libraryAvailableSpace.toString(),
               image: "assets/building_images/Library-4W-S.png",
-              dotColor: _getCoveredCourtStatusColor(),
-            ).animate().fade(delay: const Duration(milliseconds: 200)),
+              dotColor: _getLibraryStatusColor(),
+              isFull: _libraryAvailableSpace == 0 ? true : false,
+            )
+                .animate()
+                .fade(
+                  delay: const Duration(
+                    milliseconds: 200,
+                  ),
+                )
+                .moveY(
+                  begin: 10,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: const Duration(milliseconds: 750),
+                ),
           ],
         ),
         SizedBox(
