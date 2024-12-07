@@ -52,6 +52,7 @@ class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +86,8 @@ class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
                     labelText: "Student Number",
                     controller: _userNumberCtrl,
                     helperText: "Ex: 202100153",
+                    keyboardType: TextInputType.number,
+                    maxLength: 8,
                   ),
                 ],
               ),
