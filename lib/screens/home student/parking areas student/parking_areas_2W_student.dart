@@ -175,13 +175,28 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
             Expanded(
               child: PRKAlingal2W(
                 parkingArea: "Alingal",
-                availableSpace: _alingalAvailableSpace.toString(),
+                availableSpace: _alingalAvailableSpace == 0
+                    ? "Full"
+                    : _alingalAvailableSpace.toString(),
                 image: "assets/building_images/Alingal-2W.png",
                 dotColor: _getAlingalStatusColor(),
+                isFull: _alingalAvailableSpace == 0 ? true : false,
               ),
             ),
           ],
-        ).animate().fade(delay: const Duration(milliseconds: 100)),
+        )
+            .animate()
+            .fade(
+              delay: const Duration(
+                milliseconds: 100,
+              ),
+            )
+            .moveY(
+              begin: 10,
+              end: 0,
+              curve: Curves.fastEaseInToSlowEaseOut,
+              duration: const Duration(milliseconds: 300),
+            ),
         SizedBox(
           height: 12.h,
         ),
@@ -190,13 +205,28 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
             Expanded(
               child: PRKDolan2W(
                 parkingArea: "Dolan",
-                availableSpace: _dolanAvailableSpace.toString(),
+                availableSpace: _dolanAvailableSpace == 0
+                    ? "Full"
+                    : _dolanAvailableSpace.toString(),
                 image: "assets/building_images/Dolan-2W.png",
                 dotColor: _getDolanStatusColor(),
+                isFull: _dolanAvailableSpace == 0 ? true : false,
               ),
             ),
           ],
-        ).animate().fade(delay: const Duration(milliseconds: 120)),
+        )
+            .animate()
+            .fade(
+              delay: const Duration(
+                milliseconds: 120,
+              ),
+            )
+            .moveY(
+              begin: 10,
+              end: 0,
+              curve: Curves.fastEaseInToSlowEaseOut,
+              duration: const Duration(milliseconds: 350),
+            ),
         SizedBox(
           height: 12.h,
         ),
@@ -205,13 +235,28 @@ class _ParkingArea2WState extends State<ParkingArea2W> {
             Expanded(
               child: PRKLibrary2W(
                 parkingArea: "Library",
-                availableSpace: _libraryAvailableSpace.toString(),
+                availableSpace: _libraryAvailableSpace == 0
+                    ? "Full"
+                    : _libraryAvailableSpace.toString(),
                 image: "assets/building_images/Library-2W.png",
                 dotColor: _getLibraryStatusColor(),
+                isFull: _libraryAvailableSpace == 0 ? true : false,
               ),
             ),
           ],
-        ).animate().fade(delay: const Duration(milliseconds: 140)),
+        )
+            .animate()
+            .fade(
+              delay: const Duration(
+                milliseconds: 140,
+              ),
+            )
+            .moveY(
+              begin: 10,
+              end: 0,
+              curve: Curves.fastEaseInToSlowEaseOut,
+              duration: const Duration(milliseconds: 400),
+            ),
         SizedBox(
           height: 8.h,
         ),
