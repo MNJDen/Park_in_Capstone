@@ -5,12 +5,12 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/snackbar/error_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
-import 'package:park_in/components/ui/employee_eSticker.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:confetti/confetti.dart';
 
 class SignUpEmployeeScreen7 extends StatefulWidget {
   const SignUpEmployeeScreen7({super.key});
@@ -21,6 +21,26 @@ class SignUpEmployeeScreen7 extends StatefulWidget {
 
 class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
   bool _isSigningUp = false;
+  final ConfettiController _leftConfettiController =
+      ConfettiController(duration: const Duration(seconds: 3));
+  final ConfettiController _rightConfettiController =
+      ConfettiController(duration: const Duration(seconds: 3));
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _leftConfettiController.play();
+      _rightConfettiController.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    _leftConfettiController.dispose();
+    _rightConfettiController.dispose();
+    super.dispose();
+  }
 
   Future<void> _uploadData() async {
     setState(() {
@@ -127,97 +147,122 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
 
   @override
   Widget build(BuildContext context) {
-    final userDataProvider = Provider.of<UserDataProvider>(context);
-    final userData = userDataProvider.userData;
-
-    final stickers = userData.stickerNumber;
-    final plates = userData.plateNumber;
-
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: _isSigningUp
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      LoadingAnimationWidget.waveDots(
-                        color: blueColor,
-                        size: 50.r,
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: _isSigningUp
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LoadingAnimationWidget.waveDots(
+                            color: blueColor,
+                            size: 50.r,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Text(
+                            "Getting everything ready, wait a moment...",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: blackColor.withOpacity(0.8),
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        "Getting everything ready, wait a moment...",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: blackColor.withOpacity(0.8),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 32.h),
-                        Text(
-                          "Looks like you’re all set up!",
-                          style: TextStyle(
-                            color: blueColor,
-                            fontSize: 24.r,
-                            fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.1,
                           ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          "Since you're finished signing up, here’s your digital sticker!",
-                          style: TextStyle(
-                            color: blackColor,
-                            fontSize: 12.r,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        ),
-                        Column(
-                          children: List.generate(
-                            stickers.length,
-                            (index) => Column(
-                              children: [
-                                PRKEmployeeeSticker(
-                                  stickerNumber: stickers[index],
-                                  plateNumber: plates[index],
-                                  heroTag:
-                                      'sticker_${stickers[index]}_${plates[index]}',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/images/success_image.png",
+                                  height: 160.h),
+                              SizedBox(
+                                height: 12.h,
+                              ),
+                              Text(
+                                "Looks like you’re all set up!",
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 16.r,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                if (index < stickers.length - 1)
-                                  SizedBox(
-                                    height: 12.h,
-                                  ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Text(
+                                "You can now access real-time information regarding parking availability on campus.",
+                                softWrap: true,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 12.r,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 40.h),
+                          child: PRKPrimaryBtn(
+                            label: "Continue",
+                            onPressed: _uploadData,
                           ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 40.h),
-                      child: PRKPrimaryBtn(
-                        label: "Continue",
-                        onPressed: _uploadData,
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: ConfettiWidget(
+                confettiController: _leftConfettiController,
+                blastDirection: 270,
+                emissionFrequency: 0.09,
+                numberOfParticles: 10,
+                shouldLoop: false,
+                colors: const [
+                  parkingRedColor,
+                  blueColor,
+                  parkingGreenColor,
+                  yellowColor,
+                  parkingOrangeColor,
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: ConfettiWidget(
+                confettiController: _rightConfettiController,
+                blastDirection: 180,
+                emissionFrequency: 0.09,
+                numberOfParticles: 10,
+                shouldLoop: false,
+                colors: const [
+                  parkingRedColor,
+                  blueColor,
+                  parkingGreenColor,
+                  yellowColor,
+                  parkingOrangeColor,
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
