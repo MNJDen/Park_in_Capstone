@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
@@ -11,6 +13,7 @@ class PRKAlingal2W extends StatefulWidget {
   final String availableSpace;
   final String image;
   final Color? dotColor;
+  final bool isFull;
 
   const PRKAlingal2W({
     super.key,
@@ -18,6 +21,7 @@ class PRKAlingal2W extends StatefulWidget {
     required this.availableSpace,
     required this.image,
     this.dotColor,
+    required this.isFull,
   });
 
   @override
@@ -28,6 +32,8 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Color?> _colorAnimation;
+
+  double _blurOpacity = 0.0;
 
   @override
   void initState() {
@@ -50,6 +56,12 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isFull) {
+      _blurOpacity = 1;
+    } else {
+      _blurOpacity = 0;
+    }
+
     return GestureDetector(
       onTap: () {
         if (!_animationController.isAnimating) {
@@ -109,16 +121,13 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
                 borderRadius: BorderRadius.circular(10),
                 child: Stack(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.availableSpace,
-                          style: TextStyle(
-                            fontSize: 48.r,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: Text(
+                        widget.parkingArea,
+                        style: TextStyle(
+                          fontSize: 12.r,
                         ),
                       ),
                     ),
@@ -133,16 +142,6 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
                     ),
                     Positioned(
                       top: 10,
-                      left: 10,
-                      child: Text(
-                        widget.parkingArea,
-                        style: TextStyle(
-                          fontSize: 12.r,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
                       right: 10,
                       child: Container(
                         width: 7.w,
@@ -153,6 +152,29 @@ class _PRKAlingal2WState extends State<PRKAlingal2W>
                         ),
                       ),
                     ),
+                    AnimatedOpacity(
+                      opacity: _blurOpacity,
+                      duration: const Duration(milliseconds: 500),
+                      child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                          child: const SizedBox()),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Opacity(
+                          opacity: widget.isFull ? 1 : 1,
+                          child: Text(
+                            widget.availableSpace,
+                            style: TextStyle(
+                              fontSize: 48.r,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ).animate().fade(delay: const Duration(milliseconds: 300)),
                   ],
                 ),
               ),
