@@ -141,9 +141,12 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
             Expanded(
               child: PRKAlingal4WEmployee(
                 parkingArea: "Alingal",
-                availableSpace: _alingalAvailableSpace.toString(),
+                availableSpace: _alingalAvailableSpace == 0
+                    ? "Full"
+                    : _alingalAvailableSpace.toString(),
                 image: "assets/building_images/AlingalA-4W-E.png",
                 dotColor: _getAlingalStatusColor(),
+                isFull: _alingalAvailableSpace == 0 ? true : false,
               ),
             ),
           ],
@@ -156,9 +159,12 @@ class _ParkingArea4WEmployeeState extends State<ParkingArea4WEmployee> {
             Expanded(
               child: PRKPhelan4WEmployee(
                 parkingArea: "Phelan",
-                availableSpace: _phelanAvailableSpace.toString(),
+                availableSpace: _phelanAvailableSpace == 0
+                    ? "Full"
+                    : _phelanAvailableSpace.toString(),
                 image: "assets/building_images/Phelan-4W-E.png",
                 dotColor: _getPhelanStatusColor(),
+                isFull: _phelanAvailableSpace == 0 ? true : false,
               ),
             ),
           ],
