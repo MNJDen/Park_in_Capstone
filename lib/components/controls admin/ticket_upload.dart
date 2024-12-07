@@ -10,6 +10,7 @@ class PRKTicketsUpload extends StatefulWidget {
   final VoidCallback onPressed;
   final File? image;
   final IconData icon;
+  final VoidCallback onTap;
 
   const PRKTicketsUpload({
     super.key,
@@ -18,6 +19,7 @@ class PRKTicketsUpload extends StatefulWidget {
     required this.onPressed,
     this.image,
     required this.icon,
+    required this.onTap,
   });
 
   @override
@@ -47,9 +49,14 @@ class _PRKTicketsUploadState extends State<PRKTicketsUpload> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: widget.image != null
-                    ? Image.file(
-                        widget.image!,
-                        fit: BoxFit.cover,
+                    ? GestureDetector(
+                        onTap: () {
+                          widget.onTap();
+                        },
+                        child: Image.file(
+                          widget.image!,
+                          fit: BoxFit.cover,
+                        ),
                       )
                     : Icon(
                         Icons.image,
