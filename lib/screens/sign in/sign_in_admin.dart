@@ -49,7 +49,23 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeAdminScreen1()),
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
+                  .animate(animation1)),
+              child: const Material(
+                elevation: 5,
+                child: HomeAdminScreen1(),
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
+        ),
       );
     } catch (e) {
       if (mounted) {
@@ -115,6 +131,7 @@ class _SignInAdminScreenState extends State<SignInAdminScreen> {
                                 "assets/images/Logo.png",
                                 height: 53.h,
                                 width: 38.w,
+                                color: blueColor,
                               ),
                             ],
                           ),
