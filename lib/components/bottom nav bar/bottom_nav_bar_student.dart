@@ -57,7 +57,7 @@ class _BottomNavBarStudentState extends State<BottomNavBarStudent> {
   @override
   Widget build(BuildContext context) {
     if (_userId == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child:
               CircularProgressIndicator(), // Display a loading indicator until _userId is available
@@ -67,7 +67,7 @@ class _BottomNavBarStudentState extends State<BottomNavBarStudent> {
 
     final Map<int, Map<String, Widget>> routes = {
       0: {
-        '/': HomeStudentScreen1(),
+        '/': const HomeStudentScreen1(),
       },
       1: {
         '/': HomeStudentScreen2(userId: _userId!, userType: 'Student'),
