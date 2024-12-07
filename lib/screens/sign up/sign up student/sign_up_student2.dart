@@ -80,18 +80,24 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
               Form(
                 key: _formKey,
                 child: InternationalPhoneNumberInput(
-                  textStyle: TextStyle(fontSize: 12.r),
-                  selectorTextStyle: TextStyle(fontSize: 12.r),
+                  textStyle: TextStyle(
+                    fontSize: 12.r,
+                  ),
+                  selectorTextStyle: TextStyle(
+                    fontSize: 12.r,
+                  ),
+                  spaceBetweenSelectorAndTextField: 0,
+                  maxLength: 12,
                   searchBoxDecoration: InputDecoration(
                     label: Text(
                       "Search for your country",
                       style: TextStyle(fontSize: 14.r),
                     ),
-                    contentPadding: EdgeInsets.all(10),
+                    contentPadding: const EdgeInsets.all(10),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        width: 0.5.w,
+                        width: 0.1.w,
                         color: borderBlack,
                       ),
                     ),
@@ -103,9 +109,11 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                         .updateUserData(phoneNumber: number.phoneNumber);
                   },
                   onInputValidated: (bool value) {
-                    print(value);
+                    if (value) {
+                      print(value);
+                    }
                   },
-                  selectorConfig: SelectorConfig(
+                  selectorConfig: const SelectorConfig(
                     selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                     trailingSpace: true,
                     useBottomSheetSafeArea: true,
@@ -115,8 +123,8 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                   initialValue: number,
                   textFieldController: _controller,
                   formatInput: true,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: true, decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                      signed: false, decimal: false),
                   inputDecoration: InputDecoration(
                     filled: true,
                     fillColor: whiteColor,
@@ -130,7 +138,7 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        width: 0.5.w,
+                        width: 0.1.w,
                         color: borderBlack,
                       ),
                     ),
@@ -140,9 +148,6 @@ class _SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
                       color: _isFocused ? blueColor : blackColor,
                     ),
                   ),
-                  onSaved: (PhoneNumber number) {
-                    print('On Saved: $number');
-                  },
                 ),
               ),
             ],
