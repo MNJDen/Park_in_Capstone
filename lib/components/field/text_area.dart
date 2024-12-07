@@ -48,6 +48,7 @@ class _PRKTextAreaState extends State<PRKTextArea> {
         fontSize: 12.r,
         color: blackColor,
       ),
+      textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         filled: true,
         fillColor: whiteColor,
@@ -76,6 +77,9 @@ class _PRKTextAreaState extends State<PRKTextArea> {
         setState(() {
           _isFocused = false;
         });
+      },
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
       },
     );
   }
