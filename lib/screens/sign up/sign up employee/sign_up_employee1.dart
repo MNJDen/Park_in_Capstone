@@ -86,6 +86,8 @@ class _SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                     labelText: "Employee Number",
                     controller: _userNumberCtrl,
                     helperText: "Ex: 202100153",
+                    keyboardType: TextInputType.number,
+                    maxLength: 8,
                   ),
                   SizedBox(height: 12.h),
                   // Row(
