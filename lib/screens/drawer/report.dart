@@ -12,6 +12,7 @@ import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/field/text_area.dart';
+import 'package:park_in/screens/misc/image_viewer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportScreen extends StatefulWidget {
@@ -24,9 +25,9 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _plateNumberCtrl = TextEditingController();
   final TextEditingController _descriptionCtrl = TextEditingController();
-  String? _selectedRadio;
   File? _selectedImage;
   bool _isReporting = false;
+  bool _isAnonymous = false; // Checkbox state
 
   Future<String?> _getUserId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -51,8 +52,9 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future<ImageSource?> _showImageSourceOption() async {
     return await showModalBottomSheet<ImageSource>(
-      backgroundColor: whiteColor,
+      backgroundColor: bgColor,
       showDragHandle: true,
+      useSafeArea: true,
       context: context,
       builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.2,
@@ -70,6 +72,7 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             ListTile(
               dense: true,
+              enableFeedback: true,
               title: Text(
                 "Camera",
                 style: TextStyle(
@@ -83,6 +86,7 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             ListTile(
               dense: true,
+              enableFeedback: true,
               title: Text(
                 "Gallery",
                 style: TextStyle(
@@ -100,10 +104,9 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  // Method to clear the selected image
   void _clearImage() {
     setState(() {
-      _selectedImage = null; // Clear the selected image
+      _selectedImage = null;
     });
   }
 
@@ -121,12 +124,14 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   Future<void> _citeReport() async {
-    if (_selectedRadio == null) {
-      errorSnackbar(context, "Choose if you want to anonymously report or no");
-      return;
-    } else if (_plateNumberCtrl.text.isEmpty) {
+    if (_plateNumberCtrl.text.isEmpty) {
       errorSnackbar(
-          context, "Provide the vehicle's plate number for the report");
+        context,
+        "Provide the vehicle's plate number for the report",
+      );
+      return;
+    } else if (_plateNumberCtrl.text.length < 6) {
+      errorSnackbar(context, "Invalid plate number");
       return;
     } else if (_descriptionCtrl.text.isEmpty) {
       errorSnackbar(context, "Describe what happened");
@@ -140,34 +145,28 @@ class _ReportScreenState extends State<ReportScreen> {
       _isReporting = true;
     });
 
-    // Fetch current user's details if the selected radio is "No"
-    String? name;
+    String reporterName = "Anonymous";
     String? userNumber;
     String? userType;
-    String reporterName = "Anonymous";
 
-    if (_selectedRadio == 'No') {
+    if (!_isAnonymous) {
       final userId = await _getUserId();
       if (userId != null) {
         final userDoc = await FirebaseFirestore.instance
-            .collection('User ')
+            .collection('User')
             .doc(userId)
             .get();
-        name = userDoc['name'];
+        reporterName = userDoc['name'];
         userNumber = userDoc['userNumber'];
         userType = userDoc['userType'];
-
-        reporterName = name!;
       }
     }
 
-    // Handle image upload if an image is selected
     String? imageUrl;
     if (_selectedImage != null) {
       imageUrl = await _uploadImage(_selectedImage!);
     }
 
-    // Prepare the report data
     final reportData = {
       'reportedPlateNumber': _plateNumberCtrl.text,
       'reportDescription': _descriptionCtrl.text,
@@ -176,18 +175,13 @@ class _ReportScreenState extends State<ReportScreen> {
       'reporterName': reporterName,
     };
 
-    // Include user details if the report is not anonymous
-    if (_selectedRadio == 'No' &&
-        name != null &&
-        userNumber != null &&
-        userType != null) {
+    if (!_isAnonymous && userNumber != null && userType != null) {
       reportData.addAll({
         'universityRole': userType,
-        'reporterUser Number': userNumber,
+        'reporterUserNumber': userNumber,
       });
     }
 
-    // Fetch the current number of incident reports to generate the document ID
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Incident Report')
         .orderBy('timestamp', descending: false)
@@ -197,7 +191,6 @@ class _ReportScreenState extends State<ReportScreen> {
     final String newDocId = 'IR${(reportCount + 1).toString().padLeft(3, '0')}';
 
     try {
-      // Add the report to Firestore
       await FirebaseFirestore.instance
           .collection('Incident Report')
           .doc(newDocId)
@@ -207,7 +200,7 @@ class _ReportScreenState extends State<ReportScreen> {
       _descriptionCtrl.clear();
       _clearImage();
       setState(() {
-        _selectedRadio = null; // Reset selected radio button
+        _isAnonymous = false;
       });
       successSnackbar(context, "Report submitted successfully");
 
@@ -259,9 +252,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 20.h,
-                        ),
+                        SizedBox(height: 20.h),
                         Stack(
                           alignment: Alignment.center,
                           children: [
@@ -269,9 +260,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               alignment: Alignment.centerLeft,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(
-                                    context,
-                                  );
+                                  Navigator.pop(context);
                                 },
                                 child: const Icon(
                                   Icons.arrow_back_ios_new_rounded,
@@ -289,84 +278,40 @@ class _ReportScreenState extends State<ReportScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          "Send it as anonymous?",
-                          style: TextStyle(
-                            fontSize: 12.r,
-                            color: blackColor,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
+                        SizedBox(height: 20.h),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Radio(
-                                  value: "Yes",
-                                  groupValue: _selectedRadio,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedRadio = value as String?;
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  "Yes",
-                                  style: TextStyle(
-                                    fontSize: 12.r,
-                                    color: blackColor,
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              "Send as Anonymous? (Optional)",
+                              style: TextStyle(fontSize: 12.r),
                             ),
-                            Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Radio(
-                                  value: "No",
-                                  groupValue: _selectedRadio,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedRadio = value as String?;
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  "No",
-                                  style: TextStyle(
-                                    fontSize: 12.r,
-                                    color: blackColor,
-                                  ),
-                                ),
-                              ],
+                            Checkbox(
+                              value: _isAnonymous,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isAnonymous = value ?? false;
+                                });
+                              },
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
+                        SizedBox(height: 4.h),
                         PRKFormField(
                           prefixIcon: Icons.pin_rounded,
                           labelText: "Plate Number",
                           controller: _plateNumberCtrl,
+                          maxLength: 7,
+                          helperText: "Don't include the dash(-). Ex. ESX668",
+                          isUpperCase: true,
                         ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
+                        SizedBox(height: 12.h),
                         PRKTextArea(
                           labelText: "Details",
                           controller: _descriptionCtrl,
                         ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
+                        SizedBox(height: 4.h),
                         Row(
                           children: [
                             Text(
@@ -378,9 +323,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
+                        SizedBox(height: 8.h),
                         Stack(
                           children: [
                             Container(
@@ -393,9 +336,24 @@ class _ReportScreenState extends State<ReportScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: _selectedImage != null
-                                    ? Image.file(
-                                        _selectedImage!,
-                                        fit: BoxFit.cover,
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          if (_selectedImage != null) {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageViewer(
+                                                  imagePath:
+                                                      _selectedImage!.path,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: Image.file(
+                                          _selectedImage!,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )
                                     : Center(
                                         child: Column(
@@ -406,19 +364,19 @@ class _ReportScreenState extends State<ReportScreen> {
                                               onPressed: () {
                                                 _pickImage();
                                               },
-                                              icon: Icon(
-                                                Icons.image_rounded,
+                                              icon: const Icon(
+                                                Icons
+                                                    .add_photo_alternate_rounded,
                                                 color: blackColor,
-                                                size: 20.r,
                                               ),
                                             ),
                                             Text(
                                               "Tap to upload an image",
                                               style: TextStyle(
+                                                fontSize: 12.sp,
                                                 color: blackColor,
-                                                fontSize: 12.r,
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -434,20 +392,22 @@ class _ReportScreenState extends State<ReportScreen> {
                                     backgroundColor:
                                         WidgetStatePropertyAll(blackColor),
                                   ),
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.close_rounded,
                                     color: whiteColor,
+                                    size: 20.r,
                                   ),
                                 ),
                               ),
                           ],
                         ),
+                        SizedBox(height: 40.h),
                       ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 40.h),
                       child: PRKPrimaryBtn(
-                        label: "Report",
+                        label: "Submit",
                         onPressed: () {
                           _citeReport();
                         },
