@@ -87,7 +87,7 @@ class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
                     controller: _userNumberCtrl,
                     helperText: "Ex: 202100153",
                     keyboardType: TextInputType.number,
-                    maxLength: 8,
+                    maxLength: 9,
                   ),
                 ],
               ),
