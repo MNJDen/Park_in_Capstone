@@ -6,6 +6,7 @@ import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student2.d
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student3.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student4.dart';
 import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student5.dart';
+import 'package:park_in/screens/sign%20up/sign%20up%20student/sign_up_student6.dart';
 
 class PageIndicatorStudent extends StatefulWidget {
   const PageIndicatorStudent({super.key});
@@ -107,7 +108,32 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                               curve: Curves.ease,
                             );
                           }
-                        : null,
+                        : () {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation1,
+                                    Animation<double> animation2) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurveTween(
+                                            curve:
+                                                Curves.fastEaseInToSlowEaseOut)
+                                        .animate(animation1)),
+                                    child: const Material(
+                                      elevation: 5,
+                                      child: SignUpStudentScreen6(),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 400),
+                              ),
+                            );
+                        },
                     icon: const Icon(
                       Icons.arrow_forward_ios_rounded,
                       color: blackColor,
