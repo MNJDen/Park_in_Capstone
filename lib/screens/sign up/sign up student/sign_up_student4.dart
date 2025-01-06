@@ -6,7 +6,12 @@ import 'package:park_in/providers/user_data_provider.dart';
 import 'package:provider/provider.dart';
 
 class SignUpStudentScreen4 extends StatefulWidget {
-  const SignUpStudentScreen4({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpStudentScreen4({
+    Key? key,
+    required this.onFormValidityChanged,
+  }) : super(key: key);
 
   @override
   State<SignUpStudentScreen4> createState() => SignUpStudentScreen4State();
@@ -20,6 +25,9 @@ class SignUpStudentScreen4State extends State<SignUpStudentScreen4> {
   void initState() {
     super.initState();
     _initializeFields();
+
+    _passwordCtrl.addListener(_checkFormValidity);
+    _confirmPasswordCtrl.addListener(_checkFormValidity);
   }
 
   void _initializeFields() {
@@ -50,9 +58,25 @@ class SignUpStudentScreen4State extends State<SignUpStudentScreen4> {
 
   @override
   void dispose() {
+    _passwordCtrl.removeListener(_checkFormValidity); // Remove listener
     _passwordCtrl.dispose();
+    _confirmPasswordCtrl.removeListener(_checkFormValidity); // Remove listener
     _confirmPasswordCtrl.dispose();
     super.dispose();
+  }
+
+  void _checkFormValidity() {
+    bool isValid = _passwordCtrl.text.isNotEmpty &&
+        _confirmPasswordCtrl.text.isNotEmpty &&
+        _passwordCtrl.text ==
+            _confirmPasswordCtrl.text; // Add password matching check
+
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
+  }
+
+  bool isFormValid() {
+    return _passwordCtrl.text.isNotEmpty &&
+        _confirmPasswordCtrl.text.isNotEmpty;
   }
 
   @override
