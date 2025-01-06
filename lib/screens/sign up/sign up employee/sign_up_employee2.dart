@@ -6,13 +6,18 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpEmployeeScreen2 extends StatefulWidget {
-  const SignUpEmployeeScreen2({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpEmployeeScreen2({
+    Key? key,
+    required this.onFormValidityChanged,
+  }) : super(key: key);
 
   @override
-  State<SignUpEmployeeScreen2> createState() => _SignUpEmployeeScreen2State();
+  State<SignUpEmployeeScreen2> createState() => SignUpEmployeeScreen2State();
 }
 
-class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
+class SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _controller;
   String initialCountry = 'PH';
@@ -29,10 +34,18 @@ class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
     _focusNode = FocusNode()..addListener(_onFocusChange);
 
     // Add listener to update the phone number in UserDataProvider
-    _controller.addListener(() {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(phoneNumber: _controller.text);
-    });
+    _controller.addListener(_onFieldChanged);
+  }
+
+  void _onFieldChanged() {
+    Provider.of<UserDataProvider>(context, listen: false)
+        .updateUserData(phoneNumber: _controller.text);
+    _checkFormValidity();
+  }
+
+  void _checkFormValidity() {
+    final isValid = _controller.text.isNotEmpty;
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
   }
 
   @override
@@ -46,6 +59,10 @@ class _SignUpEmployeeScreen2State extends State<SignUpEmployeeScreen2> {
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
+  }
+
+  bool isFormValid() {
+    return _controller.text.isNotEmpty;
   }
 
   @override
