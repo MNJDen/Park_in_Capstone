@@ -143,6 +143,37 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
     }
   }
 
+  // Lists of major and minor violations
+  List<String> majorViolations = [
+    "Selling, attempting to sell, or giving their gate pass/sticker to another person",
+    "False declaration in any application for a gate pass/sticker or in a report of a stolen gate pass/sticker",
+    "Tampering/Falsification/Alteration or Duplication of gate pass/sticker",
+    "Driving while under the influence of prohibited drugs or any alcoholic beverages",
+    "Using the car as shelter for obnoxious and scandalous activities",
+    "Driving without license or unregistered vehicles",
+    "Disregard or refusal at the gate, or in any part of the campus, to submit to standard security requirements such as the routine inspection or checking of ID",
+    "Verbal/physical abuse against security personnel",
+  ];
+
+  List<String> minorViolations = [
+    "Blowing of horn or any alarming device and/or playing of music of a car radio in the ADNU campus",
+    "Illegal parking",
+    "Running the engines while parked",
+    "Driving on a sidewalk or pathway",
+    "Carrying or loading the car of any material when its edge portion causes damage or scrape the pavement of the road/street",
+    "Driving inside the campus at a speed in excess of 10 km/hr",
+  ];
+
+// Function to classify violations
+  String classifyViolation(String violation) {
+    if (majorViolations.contains(violation)) {
+      return "Major Violation";
+    } else if (minorViolations.contains(violation)) {
+      return "Minor Violation";
+    }
+    return "Unclassified Violation"; // Default if it doesn't match any
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -856,15 +887,29 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           tickets.length,
                           (index) {
                             final ticket = tickets[index];
+                            final violation = ticket['violation'] as String;
+
+                            // Count occurrences of each violation
+                            final offenseCount = tickets
+                                .sublist(
+                                    0,
+                                    index +
+                                        1) // Consider tickets up to the current index
+                                .where((t) => t['violation'] == violation)
+                                .length;
+
                             return Column(
                               children: [
                                 PRKViolationCard(
-                                  offenseNumber: formatOffenseNumber(index + 1),
+                                  violationClassification:
+                                      classifyViolation(violation),
+                                  offenseNumber:
+                                      formatOffenseNumber(offenseCount),
                                   date: (ticket['timestamp'] as Timestamp)
                                       .toDate()
                                       .toString()
                                       .split(' ')[0],
-                                  violation: ticket['violation'],
+                                  violation: violation,
                                 ),
                               ],
                             );
