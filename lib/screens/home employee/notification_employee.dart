@@ -202,6 +202,16 @@ class _NotificationStudeEmployeenState
                                     return ListView.builder(
                                       itemCount: tickets.length,
                                       itemBuilder: (context, index) {
+                                        // sort tickets latest first
+                                        tickets.sort((a, b) {
+                                          final aTimestamp =
+                                              a['timestamp'] as Timestamp;
+                                          final bTimestamp =
+                                              b['timestamp'] as Timestamp;
+                                          return bTimestamp
+                                              .compareTo(aTimestamp);
+                                        });
+
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20.w),
