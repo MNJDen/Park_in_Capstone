@@ -7,14 +7,25 @@ import 'package:park_in/components/theme/color_scheme.dart';
 import 'dart:io';
 
 class SignUpEmployeeScreen6 extends StatefulWidget {
-  const SignUpEmployeeScreen6({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpEmployeeScreen6({
+    Key? key,
+    required this.onFormValidityChanged,
+  }) : super(key: key);
 
   @override
-  State<SignUpEmployeeScreen6> createState() => _SignUpEmployeeScreen6State();
+  State<SignUpEmployeeScreen6> createState() => SignUpEmployeeScreen6State();
 }
 
-class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
+class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFormValidity(); // Initialize the form validity when the screen is loaded
+  }
 
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -22,6 +33,7 @@ class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
     if (image != null) {
       Provider.of<UserDataProvider>(context, listen: false)
           .updateUserData(imageFile: File(image.path));
+      _checkFormValidity();
     }
   }
 
@@ -31,6 +43,23 @@ class _SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
     //debug
     print(
         'Current imageFile after removal: ${Provider.of<UserDataProvider>(context, listen: false).userData.imageFile}');
+    _checkFormValidity();
+  }
+
+  void _checkFormValidity() {
+    final imageFile = Provider.of<UserDataProvider>(context, listen: false)
+        .userData
+        .imageFile;
+    bool isValid = imageFile != null; // Valid if an image is picked
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
+  }
+
+  bool isFormValid() {
+    // Check if an image file has been picked
+    final imageFile = Provider.of<UserDataProvider>(context, listen: false)
+        .userData
+        .imageFile;
+    return imageFile != null; // Valid if an image is picked
   }
 
   @override
