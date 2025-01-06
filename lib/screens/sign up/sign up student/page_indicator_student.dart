@@ -21,45 +21,136 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
 
   late final List<Widget> _pages;
 
-  // GlobalKey for SignUpStudentScreen3
+  // GlobalKeys for validation
+  final GlobalKey<SignUpStudentScreen1State> _signUpStudentScreen1Key =
+      GlobalKey<SignUpStudentScreen1State>();
+  final GlobalKey<SignUpStudentScreen2State> _signUpStudentScreen2Key =
+      GlobalKey<SignUpStudentScreen2State>();
   final GlobalKey<SignUpStudentScreen3State> _signUpStudentScreen3Key =
       GlobalKey<SignUpStudentScreen3State>();
-
   final GlobalKey<SignUpStudentScreen4State> _signUpStudentScreen4Key =
       GlobalKey<SignUpStudentScreen4State>();
+  final GlobalKey<SignUpStudentScreen5State> _signUpStudentScreen5Key =
+      GlobalKey<SignUpStudentScreen5State>();
+
+  bool _isNextButtonEnabled = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Initialize pages with the required callbacks
     _pages = [
-      const SignUpStudentScreen1(),
-      const SignUpStudentScreen2(),
-      SignUpStudentScreen3(key: _signUpStudentScreen3Key),
-      SignUpStudentScreen4(key: _signUpStudentScreen4Key),
-      const SignUpStudentScreen5(),
+      SignUpStudentScreen1(
+        key: _signUpStudentScreen1Key,
+        onFormValidityChanged: (isValid) {
+          // Call setState safely after the build phase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() => _isNextButtonEnabled = isValid);
+          });
+        },
+      ),
+      SignUpStudentScreen2(
+        key: _signUpStudentScreen2Key,
+        onFormValidityChanged: (isValid) {
+          // Call setState safely after the build phase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() => _isNextButtonEnabled = isValid);
+          });
+        },
+      ),
+      SignUpStudentScreen3(
+        key: _signUpStudentScreen3Key,
+        onFormValidityChanged: (isValid) {
+          // Call setState safely after the build phase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() => _isNextButtonEnabled = isValid);
+          });
+        },
+      ),
+      SignUpStudentScreen4(
+        key: _signUpStudentScreen4Key,
+        onFormValidityChanged: (isValid) {
+          // Call setState safely after the build phase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() => _isNextButtonEnabled = isValid);
+          });
+        },
+      ),
+      SignUpStudentScreen5(
+        key: _signUpStudentScreen5Key,
+        onFormValidityChanged: (isValid) {
+          // Call setState safely after the build phase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() => _isNextButtonEnabled = isValid);
+          });
+        },
+      ),
     ];
+
+    // Schedule validation of the current page after build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _validateCurrentPage(); // Validate the form after widgets are mounted
+    });
   }
 
   void _updateUserData() {
     switch (_currentPage) {
       case 0:
-        // SignUpStudentScreen1 automatically updates the provider
+        _signUpStudentScreen1Key.currentState;
         break;
       case 1:
-        // SignUpStudentScreen2 automatically updates the provider
+        _signUpStudentScreen2Key.currentState;
         break;
       case 2:
-        // Access the _updateProviderData method via the global key
+        _signUpStudentScreen3Key.currentState?.updateProviderData();
+        break;
+      case 3:
+        _signUpStudentScreen4Key.currentState?.updateProviderData();
+        break;
+      case 4:
+        _signUpStudentScreen5Key.currentState;
+        break;
+    }
+  }
+
+  void _validateCurrentPage() {
+    switch (_currentPage) {
+      case 0:
+        final state = _signUpStudentScreen1Key.currentState;
+        if (state != null) {
+          print('isFormValid: ${state.isFormValid()}'); // Debug log
+          setState(() => _isNextButtonEnabled = state.isFormValid());
+        } else {
+          print('State is null for SignUpStudentScreen1');
+        }
+      case 1:
+        final state = _signUpStudentScreen2Key.currentState;
+        final isValid = state?.isFormValid() ?? false;
+        print('Page 2 - isFormValid: $isValid');
+        setState(() => _isNextButtonEnabled = isValid);
+        break;
+      case 2:
         final state = _signUpStudentScreen3Key.currentState;
-        state?.updateProviderData();
+        final isValid = state?.isFormValid() ?? false;
+        print('Page 3 - isFormValid: $isValid');
+        setState(() => _isNextButtonEnabled = isValid);
         break;
       case 3:
         final state = _signUpStudentScreen4Key.currentState;
-        state?.updateProviderData();
+        final isValid = state?.isFormValid() ?? false;
+        print('Page 4 - isFormValid: $isValid');
+        setState(() => _isNextButtonEnabled = isValid);
         break;
       case 4:
+        final state = _signUpStudentScreen5Key.currentState;
+        final isValid = state?.isFormValid() ?? false;
+        print('Page 5 - isFormValid: $isValid');
+        setState(() => _isNextButtonEnabled = isValid);
         break;
-      // Add cases for other screens as needed
+      default:
+        print('Unknown page: $_currentPage');
+        break;
     }
   }
 
@@ -100,58 +191,63 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
                     ),
                   ),
                   IconButton(
-                    onPressed: _currentPage < _pages.length - 1
+                    onPressed: _isNextButtonEnabled
                         ? () {
                             _updateUserData();
-                            _controller.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.ease,
-                            );
+                            if (_currentPage < _pages.length - 1) {
+                              _controller.nextPage(
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.ease,
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1, 0),
+                                        end: Offset.zero,
+                                      ).animate(CurveTween(
+                                              curve: Curves
+                                                  .fastEaseInToSlowEaseOut)
+                                          .animate(animation1)),
+                                      child: const Material(
+                                        elevation: 5,
+                                        child: SignUpStudentScreen6(),
+                                      ),
+                                    );
+                                  },
+                                  transitionDuration:
+                                      const Duration(milliseconds: 400),
+                                ),
+                              );
+                            }
                           }
-                        : () {
-                          Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder: (BuildContext context,
-                                    Animation<double> animation1,
-                                    Animation<double> animation2) {
-                                  return SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(1, 0),
-                                      end: Offset.zero,
-                                    ).animate(CurveTween(
-                                            curve:
-                                                Curves.fastEaseInToSlowEaseOut)
-                                        .animate(animation1)),
-                                    child: const Material(
-                                      elevation: 5,
-                                      child: SignUpStudentScreen6(),
-                                    ),
-                                  );
-                                },
-                                transitionDuration:
-                                    const Duration(milliseconds: 400),
-                              ),
-                            );
-                        },
-                    icon: const Icon(
+                        : null, // Disable button
+                    icon: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: blackColor,
+                      color: _isNextButtonEnabled ? blackColor : Colors.grey,
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: PageView(
+              child: PageView.builder(
                 controller: _controller,
+                physics: _isNextButtonEnabled
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                  _updateUserData(); // Update user data when page changes
+                  setState(() => _currentPage = index);
+                  _validateCurrentPage(); // Validate when page changes
                 },
-                children: _pages,
+                itemCount: _pages.length,
+                itemBuilder: (context, index) {
+                  return _pages[index];
+                },
               ),
             ),
           ],
