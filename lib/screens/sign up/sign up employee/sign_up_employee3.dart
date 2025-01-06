@@ -6,13 +6,16 @@ import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpEmployeeScreen3 extends StatefulWidget {
-  const SignUpEmployeeScreen3({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpEmployeeScreen3({Key? key, required this.onFormValidityChanged})
+      : super(key: key);
 
   @override
-  State<SignUpEmployeeScreen3> createState() => _SignUpEmployeeScreen3State();
+  State<SignUpEmployeeScreen3> createState() => SignUpEmployeeScreen3State();
 }
 
-class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
+class SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
   final TextEditingController _searchController = TextEditingController();
   bool _isFocused = false;
   late FocusNode _focusNode;
@@ -28,6 +31,19 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
     final userData =
         Provider.of<UserDataProvider>(context, listen: false).userData;
     _searchController.text = userData.department ?? '';
+
+    _searchController.addListener(_onFieldChanged);
+  }
+
+  void _onFieldChanged() {
+    Provider.of<UserDataProvider>(context, listen: false)
+        .updateUserData(department: _searchController.text);
+    _checkFormValidity();
+  }
+
+  void _checkFormValidity() {
+    final isValid = _searchController.text.isNotEmpty;
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
   }
 
   @override
@@ -41,6 +57,10 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
+  }
+
+  bool isFormValid() {
+    return _searchController.text.isNotEmpty;
   }
 
   @override
@@ -132,15 +152,15 @@ class _SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
                   offset: const Offset(0, 50),
                   controller: _searchController,
                   suggestions: [
-                    SearchFieldListItem('Department 1'),
-                    SearchFieldListItem('Department 2'),
-                    SearchFieldListItem('Department 3'),
-                    SearchFieldListItem('Department 4'),
-                    SearchFieldListItem('Department 5'),
-                    SearchFieldListItem('Department 6'),
-                    SearchFieldListItem('Department 7'),
-                    SearchFieldListItem('Department 8'),
-                    SearchFieldListItem('Department 9'),
+                    SearchFieldListItem('College of Business and Accountancy'),
+                    SearchFieldListItem('College of Computer Studies'),
+                    SearchFieldListItem('College of Education'),
+                    SearchFieldListItem(
+                        'College of Humanities and Social Sciences'),
+                    SearchFieldListItem('College of Law'),
+                    SearchFieldListItem('College of Nursing'),
+                    SearchFieldListItem(
+                        'College of Science, Engineering, and Acrhitecture'),
                   ],
                   dynamicHeight: true,
                   maxSuggestionBoxHeight: 185.h,
