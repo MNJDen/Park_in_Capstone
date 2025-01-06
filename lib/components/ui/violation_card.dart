@@ -6,12 +6,14 @@ class PRKViolationCard extends StatefulWidget {
   final String offenseNumber;
   final String date;
   final String violation;
+  final String violationClassification;
 
   const PRKViolationCard({
     Key? key,
     required this.offenseNumber,
     required this.date,
     required this.violation,
+    required this.violationClassification,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,15 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                         widget.offenseNumber,
                         style: TextStyle(
                           fontSize: 16.r,
+                          fontWeight: FontWeight.w600,
+                          color: blackColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        widget.violationClassification,
+                        style: TextStyle(
+                          fontSize: 11.r,
                           fontWeight: FontWeight.w600,
                           color: blackColor,
                         ),
