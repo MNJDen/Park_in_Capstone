@@ -6,13 +6,18 @@ import 'package:park_in/providers/user_data_provider.dart';
 import 'package:provider/provider.dart';
 
 class SignUpStudentScreen1 extends StatefulWidget {
-  const SignUpStudentScreen1({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpStudentScreen1({
+    Key? key,
+    required this.onFormValidityChanged,
+  }) : super(key: key);
 
   @override
-  State<SignUpStudentScreen1> createState() => _SignUpStudentScreen1State();
+  State<SignUpStudentScreen1> createState() => SignUpStudentScreen1State();
 }
 
-class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
+class SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
   late TextEditingController _nameCtrl;
   late TextEditingController _userNumberCtrl;
 
@@ -24,15 +29,27 @@ class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
     _nameCtrl = TextEditingController(text: userData.name ?? '');
     _userNumberCtrl = TextEditingController(text: userData.userNumber ?? '');
 
-    _nameCtrl.addListener(() {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(name: _nameCtrl.text);
-    });
+    // Listen for changes and update user data
+    _nameCtrl.addListener(_onFieldChanged);
+    _userNumberCtrl.addListener(_onFieldChanged);
 
-    _userNumberCtrl.addListener(() {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .updateUserData(userNumber: _userNumberCtrl.text);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkFormValidity();
     });
+  }
+
+  void _onFieldChanged() {
+    Provider.of<UserDataProvider>(context, listen: false).updateUserData(
+      name: _nameCtrl.text,
+      userNumber: _userNumberCtrl.text,
+    );
+    _checkFormValidity();
+  }
+
+  void _checkFormValidity() {
+    final isValid =
+        _nameCtrl.text.isNotEmpty && _userNumberCtrl.text.isNotEmpty;
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
   }
 
   @override
@@ -40,6 +57,10 @@ class _SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
     _nameCtrl.dispose();
     _userNumberCtrl.dispose();
     super.dispose();
+  }
+
+  bool isFormValid() {
+    return _nameCtrl.text.isNotEmpty && _userNumberCtrl.text.isNotEmpty;
   }
 
   @override
