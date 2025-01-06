@@ -6,7 +6,10 @@ import 'package:park_in/providers/user_data_provider.dart';
 import 'package:provider/provider.dart';
 
 class SignUpStudentScreen3 extends StatefulWidget {
-  const SignUpStudentScreen3({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpStudentScreen3({Key? key, required this.onFormValidityChanged})
+      : super(key: key);
 
   @override
   State<SignUpStudentScreen3> createState() => SignUpStudentScreen3State();
@@ -36,14 +39,21 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
     // Initialize controllers with existing data
     if (userData.stickerNumber != null && userData.plateNumber != null) {
       for (int i = 0; i < userData.stickerNumber!.length; i++) {
-        _stickerNumberCtrls
-            .add(TextEditingController(text: userData.stickerNumber![i]));
-        _plateNumberCtrls
-            .add(TextEditingController(text: userData.plateNumber![i]));
+        final stickerController =
+            TextEditingController(text: userData.stickerNumber![i]);
+        final plateController =
+            TextEditingController(text: userData.plateNumber![i]);
+
+        stickerController.addListener(_checkFormValidity);
+        plateController.addListener(_checkFormValidity);
+
+        _stickerNumberCtrls.add(stickerController);
+        _plateNumberCtrls.add(plateController);
+
         _stickerCards.add(
           StickerFormField(
-            stickerNumberCtrl: _stickerNumberCtrls[i],
-            plateNumberCtrl: _plateNumberCtrls[i],
+            stickerNumberCtrl: stickerController,
+            plateNumberCtrl: plateController,
             stickerIndex: i + 1,
             onDelete: _removeSticker,
             index: i,
@@ -55,14 +65,20 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
   }
 
   void _addSticker() {
+    final stickerController = TextEditingController();
+    final plateController = TextEditingController();
+
+    stickerController.addListener(_checkFormValidity);
+    plateController.addListener(_checkFormValidity);
+
     setState(() {
-      _stickerNumberCtrls.add(TextEditingController());
-      _plateNumberCtrls.add(TextEditingController());
+      _stickerNumberCtrls.add(stickerController);
+      _plateNumberCtrls.add(plateController);
 
       _stickerCards.add(
         StickerFormField(
-          stickerNumberCtrl: _stickerNumberCtrls.last,
-          plateNumberCtrl: _plateNumberCtrls.last,
+          stickerNumberCtrl: stickerController,
+          plateNumberCtrl: plateController,
           stickerIndex: _stickerCards.length + 1,
           onDelete: _removeSticker,
           index: _stickerCards.length,
@@ -72,6 +88,7 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
     });
 
     updateProviderData();
+    _checkFormValidity();
   }
 
   void _removeSticker(int index) {
@@ -83,6 +100,7 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
     });
 
     updateProviderData();
+    widget.onFormValidityChanged(isFormValid());
   }
 
   void _updateStickerIndices() {
@@ -99,6 +117,7 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
         ),
       );
     }
+    widget.onFormValidityChanged(isFormValid());
   }
 
   void updateProviderData() {
@@ -116,6 +135,33 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
       stickerNumber: stickers,
       plateNumber: plates,
     );
+
+    _checkFormValidity();
+  }
+
+  bool isStickerCardsNotEmpty() {
+    // Check if the list of sticker cards is not empty
+    return _stickerCards.isNotEmpty;
+  }
+
+  bool isFormValid() {
+    // Check if all sticker and plate number fields are filled
+    bool areStickersValid =
+        _stickerNumberCtrls.every((controller) => controller.text.isNotEmpty);
+    bool arePlatesValid =
+        _plateNumberCtrls.every((controller) => controller.text.isNotEmpty);
+    bool isStickerCardsValid = isStickerCardsNotEmpty();
+
+    return areStickersValid && arePlatesValid && isStickerCardsValid;
+  }
+
+  void _checkFormValidity() {
+    bool isValid = _stickerNumberCtrls
+            .every((controller) => controller.text.isNotEmpty) &&
+        _plateNumberCtrls.every((controller) => controller.text.isNotEmpty) &&
+        _stickerCards.isNotEmpty;
+
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
   }
 
   @override
