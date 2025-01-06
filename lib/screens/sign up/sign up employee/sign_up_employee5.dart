@@ -6,7 +6,12 @@ import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 
 class SignUpEmployeeScreen5 extends StatefulWidget {
-  const SignUpEmployeeScreen5({super.key});
+  final ValueChanged<bool> onFormValidityChanged;
+
+  const SignUpEmployeeScreen5({
+    Key? key,
+    required this.onFormValidityChanged,
+  }) : super(key: key);
 
   @override
   State<SignUpEmployeeScreen5> createState() => SignUpEmployeeScreen5State();
@@ -20,6 +25,9 @@ class SignUpEmployeeScreen5State extends State<SignUpEmployeeScreen5> {
   void initState() {
     super.initState();
     _initializeFields();
+
+    _passwordCtrl.addListener(_checkFormValidity);
+    _confirmPasswordCtrl.addListener(_checkFormValidity);
   }
 
   void _initializeFields() {
@@ -50,9 +58,25 @@ class SignUpEmployeeScreen5State extends State<SignUpEmployeeScreen5> {
 
   @override
   void dispose() {
+    _passwordCtrl.removeListener(_checkFormValidity); // Remove listener
     _passwordCtrl.dispose();
+    _confirmPasswordCtrl.removeListener(_checkFormValidity); // Remove listener
     _confirmPasswordCtrl.dispose();
     super.dispose();
+  }
+
+  void _checkFormValidity() {
+    bool isValid = _passwordCtrl.text.isNotEmpty &&
+        _confirmPasswordCtrl.text.isNotEmpty &&
+        _passwordCtrl.text ==
+            _confirmPasswordCtrl.text; // Add password matching check
+
+    widget.onFormValidityChanged(isValid); // Notify parent about form validity
+  }
+
+  bool isFormValid() {
+    return _passwordCtrl.text.isNotEmpty &&
+        _confirmPasswordCtrl.text.isNotEmpty;
   }
 
   @override
