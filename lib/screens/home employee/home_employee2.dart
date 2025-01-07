@@ -916,9 +916,11 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                     } else {
                       // Sort tickets by timestamp
                       tickets.sort((a, b) {
-                        return (a['timestamp'] as Timestamp)
-                            .compareTo(b['timestamp'] as Timestamp);
+                        return (b['timestamp'] as Timestamp)
+                            .compareTo(a['timestamp'] as Timestamp);
                       });
+
+                      final totalOffenses = tickets.length;
 
                       return Column(
                         children: List.generate(
@@ -926,12 +928,14 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                           (index) {
                             final ticket = tickets[index];
                             final violation = ticket['violation'] as String;
+                            final offenseNumber = totalOffenses - index;
                             return Column(
                               children: [
                                 PRKViolationCard(
                                   violationClassification:
                                       classifyViolation(violation),
-                                  offenseNumber: formatOffenseNumber(index + 1),
+                                  offenseNumber:
+                                      formatOffenseNumber(offenseNumber),
                                   date: (ticket['timestamp'] as Timestamp)
                                       .toDate()
                                       .toString()
