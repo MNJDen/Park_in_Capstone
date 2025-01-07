@@ -68,8 +68,16 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
         userDataProvider.updateUserData(imageUrl: downloadUrl);
       }
 
+      final QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('User').get();
+
+      final int employeeCount = snapshot.docs.length;
+      final String newDocId =
+          'EM${(employeeCount + 1).toString().padLeft(3, '0')}';
+
       // Create a new user document in Firestore
-      final userDocument = FirebaseFirestore.instance.collection('User').doc();
+      final userDocument =
+          FirebaseFirestore.instance.collection('User').doc(newDocId);
       final newUserId = userDocument.id; // Get the new user's ID
 
       await userDocument.set({
