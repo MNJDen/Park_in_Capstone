@@ -100,6 +100,7 @@ class SignUpStudentScreen1State extends State<SignUpStudentScreen1> {
                     prefixIcon: Icons.person_rounded,
                     labelText: "Name",
                     controller: _nameCtrl,
+                    isCapitalized: true,
                   ),
                   SizedBox(height: 12.h),
                   PRKFormField(
