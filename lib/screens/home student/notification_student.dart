@@ -261,6 +261,14 @@ class _NotificationStudentScreenState extends State<NotificationStudentScreen> {
                                     return ListView.builder(
                                       itemCount: announcements.length,
                                       itemBuilder: (context, index) {
+                                        announcements.sort((a, b) {
+                                          final aTimestamp =
+                                              a['createdAt'] as Timestamp;
+                                          final bTimestamp =
+                                              b['createdAt'] as Timestamp;
+                                          return bTimestamp
+                                              .compareTo(aTimestamp);
+                                        });
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20.w),
