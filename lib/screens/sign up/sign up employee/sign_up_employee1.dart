@@ -100,6 +100,7 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                     prefixIcon: Icons.person_rounded,
                     labelText: "Name",
                     controller: _nameCtrl,
+                    isCapitalized: true,
                   ),
                   SizedBox(height: 12.h),
                   PRKFormField(
