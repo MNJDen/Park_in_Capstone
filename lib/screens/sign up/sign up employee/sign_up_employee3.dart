@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:park_in/components/field/search_field.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,10 @@ class SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
   final TextEditingController _searchController = TextEditingController();
   bool _isFocused = false;
   late FocusNode _focusNode;
+
+  void _onSuggestionTap(String suggestion) {
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -98,83 +103,170 @@ class SignUpEmployeeScreen3State extends State<SignUpEmployeeScreen3> {
               SizedBox(
                 height: 32.h,
               ),
-              Material(
-                child: SearchField<dynamic>(
-                  focusNode: _focusNode,
-                  searchInputDecoration: InputDecoration(
-                    filled: true,
-                    fillColor: whiteColor,
-                    prefixIcon: Icon(
-                      size: 20,
-                      Icons.apartment_rounded,
-                      color: _isFocused ? blueColor : blackColor,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        width: 1.w,
-                        color: blueColor,
+              PRKSearchField(
+                prefixIcon: Icons.apartment_rounded,
+                labelText: "Department Type",
+                searchFieldListItems: [
+                  SearchFieldListItem(
+                      child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "English Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        width: 0.1.w,
-                        color: borderBlack,
+                      'English Department'),
+                  SearchFieldListItem(
+                      child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Math Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
                       ),
-                    ),
-                    labelText: "Search Department",
-                    labelStyle: TextStyle(
-                      fontSize: 12.r,
-                      color: _isFocused ? blueColor : blackColor,
-                    ),
-                  ),
-                  suggestionStyle: TextStyle(
-                    fontSize: 12.r,
-                    color: blackColor,
-                  ),
-                  suggestionsDecoration: SuggestionDecoration(
-                    elevation: 15,
-                    color: whiteColor,
-                    selectionColor: blueColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  searchStyle: TextStyle(
-                    fontSize: 12.r,
-                    color: blackColor,
-                  ),
-                  scrollbarDecoration: ScrollbarDecoration(
-                    thumbColor: blueColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  offset: const Offset(0, 50),
-                  controller: _searchController,
-                  suggestions: [
-                    SearchFieldListItem('College of Business and Accountancy'),
-                    SearchFieldListItem('College of Computer Studies'),
-                    SearchFieldListItem('College of Education'),
-                    SearchFieldListItem(
-                        'College of Humanities and Social Sciences'),
-                    SearchFieldListItem('College of Law'),
-                    SearchFieldListItem('College of Nursing'),
-                    SearchFieldListItem(
-                        'College of Science, Engineering, and Acrhitecture'),
-                  ],
-                  dynamicHeight: true,
-                  maxSuggestionBoxHeight: 185.h,
-                  textCapitalization: TextCapitalization.sentences,
-                  onSuggestionTap: (SearchFieldListItem<dynamic> item) {
-                    setState(() {
-                      _searchController.text = item.searchKey;
-                    });
-
-                    // Update the department in the provider
-                    Provider.of<UserDataProvider>(context, listen: false)
-                        .updateUserData(department: item.searchKey);
-                  },
-                ),
+                      'Math Department'),
+                  SearchFieldListItem(
+                    child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Natural Science Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Natural Science Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Media Studies Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Media Studies Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "P.E. Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'P.E. Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Philosophy Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Philosophy Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Psychology Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Psychology Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Social Science Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Social Science Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Theology Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Theology Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Business Management Courses",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Business Management Courses'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Allied Business Courses",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Allied Business Courses'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Computer Science Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Computer Science Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "DACA Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'DACA Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "Education Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'Education Department'),
+                  SearchFieldListItem(child: Padding(
+                        padding: EdgeInsets.all(6.r),
+                        child: Text(
+                          "ECE/CoE Department",
+                          style: TextStyle(
+                            fontSize: 12.r,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),'ECE/CoE Department'),
+                ],
+                controller: _searchController,
+                onTap: (text) {
+                  _onSuggestionTap(text);
+                },
               ),
             ],
           ),
