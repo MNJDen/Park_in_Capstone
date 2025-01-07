@@ -27,8 +27,8 @@ class SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
     _checkFormValidity(); // Initialize the form validity when the screen is loaded
   }
 
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
       Provider.of<UserDataProvider>(context, listen: false)
@@ -60,6 +60,61 @@ class SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
         .userData
         .imageFile;
     return imageFile != null; // Valid if an image is picked
+  }
+
+  Future<void> _showImageSourceOptions() async {
+    final ImageSource? source = await showModalBottomSheet<ImageSource>(
+      backgroundColor: whiteColor,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Column(
+          children: [
+            ListTile(
+              dense: true,
+              title: Text(
+                "Choose a source: ",
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    color: blackColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Camera",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Gallery",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (source != null) {
+      await _pickImage(source);
+    }
   }
 
   @override
@@ -125,7 +180,7 @@ class SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
                                 bottom: 0,
                                 right: 0,
                                 child: IconButton(
-                                  onPressed: _pickImage,
+                                  onPressed: _showImageSourceOptions,
                                   style: const ButtonStyle(
                                     backgroundColor:
                                         WidgetStatePropertyAll(blueColor),
