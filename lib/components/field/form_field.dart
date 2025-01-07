@@ -16,6 +16,7 @@ class PRKFormField extends StatefulWidget {
   final void Function(String)? onChanged;
   final int? maxLength;
   final bool? isUpperCase;
+  final bool? isCapitalized;
 
   const PRKFormField({
     super.key,
@@ -31,6 +32,7 @@ class PRKFormField extends StatefulWidget {
     this.helperText,
     this.maxLength,
     this.isUpperCase,
+    this.isCapitalized,
   });
 
   @override
@@ -77,6 +79,9 @@ class _PRKFormFieldState extends State<PRKFormField> {
       obscureText: _obscureText,
       keyboardType: widget.keyboardType,
       maxLength: widget.maxLength,
+      textCapitalization: widget.isCapitalized == true
+          ? TextCapitalization.words
+          : TextCapitalization.none,
       style: TextStyle(
         fontSize: 12.r,
         color: blackColor,
