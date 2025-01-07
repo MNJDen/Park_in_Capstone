@@ -211,7 +211,7 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
                           prefixIcon: Icons.campaign_rounded,
                           labelText: "Announcement Title",
                           controller: _titleCtrl,
-                          
+                          isCapitalized: true,
                         ),
                         SizedBox(
                           height: 12.h,
