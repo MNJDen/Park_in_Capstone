@@ -878,9 +878,11 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                     } else {
                       // Sort tickets by timestamp
                       tickets.sort((a, b) {
-                        return (a['timestamp'] as Timestamp)
-                            .compareTo(b['timestamp'] as Timestamp);
+                        return (b['timestamp'] as Timestamp)
+                            .compareTo(a['timestamp'] as Timestamp);
                       });
+
+                      final totalOffenses = tickets.length;
 
                       return Column(
                         children: List.generate(
@@ -888,23 +890,14 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                           (index) {
                             final ticket = tickets[index];
                             final violation = ticket['violation'] as String;
-
-                            // Count occurrences of each violation
-                            final offenseCount = tickets
-                                .sublist(
-                                    0,
-                                    index +
-                                        1) // Consider tickets up to the current index
-                                .where((t) => t['violation'] == violation)
-                                .length;
-
+                            final offenseNumber = totalOffenses - index;
                             return Column(
                               children: [
                                 PRKViolationCard(
                                   violationClassification:
                                       classifyViolation(violation),
                                   offenseNumber:
-                                      formatOffenseNumber(offenseCount),
+                                      formatOffenseNumber(offenseNumber),
                                   date: (ticket['timestamp'] as Timestamp)
                                       .toDate()
                                       .toString()
