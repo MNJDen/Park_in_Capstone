@@ -32,8 +32,21 @@ class _AnnouncementAdminScreenState extends State<AnnouncementAdminScreen> {
     setState(() {
       _isPostingAnnouncement = true;
     });
+
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Announcement')
+        .orderBy('createdAt', descending: false)
+        .get();
+
+    final int announcementCount = snapshot.docs.length;
+    final String newDocId =
+        'AN${(announcementCount + 1).toString().padLeft(3, '0')}';
+
     try {
-      await FirebaseFirestore.instance.collection('Announcement').add({
+      final userDocument =
+          FirebaseFirestore.instance.collection('Announcement').doc(newDocId);
+
+      await userDocument.set({
         'title': title,
         'userType': userType,
         'details': details,
