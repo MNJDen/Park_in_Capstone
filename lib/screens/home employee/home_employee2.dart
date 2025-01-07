@@ -133,13 +133,13 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
 
   String formatOffenseNumber(int number) {
     if (number == 1) {
-      return '1st offense';
+      return '1st Offense';
     } else if (number == 2) {
-      return '2nd offense';
+      return '2nd Offense';
     } else if (number == 3) {
-      return '3rd offense';
+      return '3rd Offense';
     } else {
-      return '${number}th offense';
+      return '${number}th Offense';
     }
   }
 
