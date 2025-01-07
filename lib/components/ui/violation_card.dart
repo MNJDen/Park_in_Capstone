@@ -35,7 +35,7 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 8,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -57,15 +57,6 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                       ),
                       const Spacer(),
                       Text(
-                        widget.violationClassification,
-                        style: TextStyle(
-                          fontSize: 11.r,
-                          fontWeight: FontWeight.w600,
-                          color: blackColor,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
                         widget.date,
                         style: TextStyle(
                           fontSize: 12.r,
@@ -76,13 +67,28 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                   ),
                   const Divider(),
                   SizedBox(height: 8.h),
-                  Text(
-                    "Violation:",
-                    style: TextStyle(
-                      fontSize: 12.r,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(27, 27, 27, 0.5),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Violation",
+                        style: TextStyle(
+                          fontSize: 12.r,
+                          // fontWeight: FontWeight.w400,
+                          color: blackColor.withOpacity(0.5),
+                        ),
+                      ),
+                      Text(
+                        widget.violationClassification,
+                        style: TextStyle(
+                          fontSize: 12.r,
+                          // fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: blackColor.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 4.h,
@@ -91,7 +97,7 @@ class _PRKViolationCardState extends State<PRKViolationCard> {
                     widget.violation,
                     style: TextStyle(
                       fontSize: 12.r,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       color: blackColor,
                     ),
                   ),
