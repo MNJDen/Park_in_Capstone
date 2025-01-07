@@ -24,11 +24,11 @@ class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
   @override
   void initState() {
     super.initState();
-    _checkFormValidity(); // Initialize the form validity when the screen is loaded
+    _checkFormValidity();
   }
 
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
       Provider.of<UserDataProvider>(context, listen: false)
@@ -40,7 +40,6 @@ class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
   void _removeImage() {
     Provider.of<UserDataProvider>(context, listen: false)
         .updateUserData(imageFile: null);
-    //debug
     print(
         'Current imageFile after removal: ${Provider.of<UserDataProvider>(context, listen: false).userData.imageFile}');
     _checkFormValidity();
@@ -50,16 +49,70 @@ class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
     final imageFile = Provider.of<UserDataProvider>(context, listen: false)
         .userData
         .imageFile;
-    bool isValid = imageFile != null; // Valid if an image is picked
-    widget.onFormValidityChanged(isValid); // Notify parent about form validity
+    bool isValid = imageFile != null;
+    widget.onFormValidityChanged(isValid);
   }
 
   bool isFormValid() {
-    // Check if an image file has been picked
     final imageFile = Provider.of<UserDataProvider>(context, listen: false)
         .userData
         .imageFile;
-    return imageFile != null; // Valid if an image is picked
+    return imageFile != null;
+  }
+
+  Future<void> _showImageSourceOption() async {
+    final ImageSource? source = await showModalBottomSheet<ImageSource>(
+      backgroundColor: whiteColor,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Column(
+          children: [
+            ListTile(
+              dense: true,
+              title: Text(
+                "Choose a source: ",
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    color: blackColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Camera",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              dense: true,
+              title: Text(
+                "Gallery",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: blackColor,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (source != null) {
+      await _pickImage(source);
+    }
   }
 
   @override
@@ -127,7 +180,7 @@ class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
                                 bottom: 0,
                                 right: 0,
                                 child: IconButton(
-                                  onPressed: _pickImage,
+                                  onPressed: _showImageSourceOption,
                                   style: const ButtonStyle(
                                     backgroundColor:
                                         WidgetStatePropertyAll(blueColor),
