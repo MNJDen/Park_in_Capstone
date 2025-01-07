@@ -68,8 +68,16 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
         userDataProvider.updateUserData(imageUrl: downloadUrl);
       }
 
+      final QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('User').get();
+
+      final int studentCount = snapshot.docs.length;
+      final String newDocId =
+          'ST${(studentCount + 1).toString().padLeft(3, '0')}';
+
       // Create a new user document in Firestore
-      final userDocument = FirebaseFirestore.instance.collection('User').doc();
+      final userDocument =
+          FirebaseFirestore.instance.collection('User').doc(newDocId);
       final newUserId = userDocument.id;
 
       await userDocument.set({
