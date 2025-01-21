@@ -290,10 +290,17 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                                     }
                                   },
                                   errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      "assets/images/AdNU_Logo.png",
-                                      height: 60.h,
-                                      width: 60.h,
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: Container(
+                                        width: 60.h,
+                                        height: 60.h,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),
