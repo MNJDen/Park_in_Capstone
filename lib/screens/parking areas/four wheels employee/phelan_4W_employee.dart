@@ -3,14 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_router/navbar_router.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
+import 'package:park_in/components/ui/switch_btn.dart';
 
-class Phelan4wEmployee extends StatefulWidget {
-  const Phelan4wEmployee({super.key});
-  @override
-  _Phelan4wEmployee createState() => _Phelan4wEmployee();
+void showPhelan4wEmployeeBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: bgColor,
+    showDragHandle: true,
+    useSafeArea: true,
+    builder: (context) {
+      return PopScope(
+          canPop: true,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) {
+              NavbarNotifier.hideBottomNavBar = false;
+              return;
+            }
+          },
+          child: const Phelan4wEmployeeBottomSheet());
+    },
+  );
 }
 
-class _Phelan4wEmployee extends State<Phelan4wEmployee> {
+class Phelan4wEmployeeBottomSheet extends StatefulWidget {
+  const Phelan4wEmployeeBottomSheet({super.key});
+  @override
+  _Phelan4wEmployeeBottomSheet createState() => _Phelan4wEmployeeBottomSheet();
+}
+
+class _Phelan4wEmployeeBottomSheet extends State<Phelan4wEmployeeBottomSheet> {
   final DatabaseReference _databaseReference =
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
@@ -41,15 +63,15 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
 
   Color _getStatusColor() {
     if (_phelanAvailableSpace == 0) {
-      return parkingRedColor; // Red when full.
+      return parkingRedColor;
     } else if (_phelanAvailableSpace == _maxSpace) {
-      return parkingGreenColor; // Green when completely empty.
+      return const Color.fromARGB(255, 17, 194, 1);
     } else if (_phelanAvailableSpace < 30 && _phelanAvailableSpace > 15) {
-      return parkingGreenColor;
+      return const Color.fromARGB(255, 17, 194, 1);
     } else if (_phelanAvailableSpace <= 15 && _phelanAvailableSpace > 5) {
-      return parkingYellowColor; // Yellow when mid-way full.
+      return parkingYellowColor;
     } else if (_phelanAvailableSpace <= 5) {
-      return parkingOrangeColor; // Orange when almost full.
+      return parkingOrangeColor;
     } else {
       return parkingYellowColor;
     }
@@ -57,15 +79,15 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
 
   String _getStatusText() {
     if (_phelanAvailableSpace == 0) {
-      return "Full"; // Red status.
+      return "Full";
     } else if (_phelanAvailableSpace == _maxSpace) {
-      return "Plenty of Space"; // Green status.
+      return "Plenty of Space";
     } else if (_phelanAvailableSpace < 30 && _phelanAvailableSpace > 15) {
-      return "Plenty of Space"; // Green status.
+      return "Plenty of Space";
     } else if (_phelanAvailableSpace <= 15 && _phelanAvailableSpace > 5) {
-      return "Half Full"; // Yellow status.
+      return "Half Full";
     } else if (_phelanAvailableSpace <= 5) {
-      return "Almost Full"; // Orange status.
+      return "Almost Full";
     } else {
       return "Filling";
     }
@@ -73,160 +95,120 @@ class _Phelan4wEmployee extends State<Phelan4wEmployee> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) {
-          NavbarNotifier.hideBottomNavBar = false;
-          return;
-        }
-      },
-      child: Scaffold(
-        backgroundColor: bgColor,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 20.h,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(
+              "Phelan",
+              style: TextStyle(
+                fontSize: 20.r,
+                color: blueColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Current Capacity:",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: blackColor,
                     ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(
-                                context,
-                              );
-                              NavbarNotifier.hideBottomNavBar = false;
-                            },
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: blackColor,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          "Phelan",
-                          style: TextStyle(
-                            fontSize: 20.r,
-                            color: blueColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Current Capacity:",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: blackColor,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Status:",
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: blackColor,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 8.w,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w,
-                                    vertical: 2.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: _getStatusColor().withOpacity(0.09),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Text(
-                                    _getStatusText(),
-                                    style: TextStyle(
-                                      color: _getStatusColor(),
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Text(
-                          "$_phelanAvailableSpace",
-                          style: TextStyle(
-                            fontSize: 52.sp,
-                            color: blackColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Image.asset(
-                      "assets/building_images/Phelan-4W-E.png",
-                      width: 357.w,
-                      height: 191.h,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 40.h),
-                  child: Row(
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(
-                        Icons.info_rounded,
-                        color: blackColor,
+                      Text(
+                        "Status:",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: blackColor,
+                        ),
                       ),
                       SizedBox(
-                        width: 12.w,
+                        width: 8.w,
                       ),
-                      Flexible(
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 2.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor().withOpacity(0.09),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
                         child: Text(
-                          "Always be mindful of the space between vehicles.",
-                          softWrap: true,
+                          _getStatusText(),
                           style: TextStyle(
-                            color: blackColor,
+                            color: _getStatusColor(),
                             fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
                     ],
                   ),
+                ],
+              ),
+              const Spacer(),
+              Text(
+                "$_phelanAvailableSpace",
+                style: TextStyle(
+                  fontSize: 52.sp,
+                  color: blackColor,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
+          SizedBox(height: 30.h),
+          Image.asset(
+            "assets/building_images/Phelan-4W-E.png",
+            width: 357.w,
+            height: 191.h,
+          ),
+          SizedBox(height: 30.h),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.info_rounded,
+                color: blackColor,
+              ),
+              SizedBox(
+                width: 12.w,
+              ),
+              Flexible(
+                child: Text(
+                  "Always be mindful of the space between vehicles.",
+                  softWrap: true,
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 40.h),
+          const PRKSwitchBtn(),
+          SizedBox(height: 40.h),
+        ],
       ),
     );
   }
