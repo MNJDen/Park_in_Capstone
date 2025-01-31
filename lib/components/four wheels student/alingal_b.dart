@@ -70,28 +70,7 @@ class _PRKAlingalB4WStundentState extends State<PRKAlingalB4WStundent>
             const Duration(milliseconds: 350),
             () {
               _animationController.reverse();
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (BuildContext context,
-                      Animation<double> animation1,
-                      Animation<double> animation2) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(
-                          CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                              .animate(animation1)),
-                      child: const Material(
-                        elevation: 5,
-                        child: AlingalB4W(),
-                      ),
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 400),
-                ),
-              );
+              showAlingalB4WBottomSheet(context);
               NavbarNotifier.hideBottomNavBar = true;
             },
           );
