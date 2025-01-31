@@ -70,29 +70,8 @@ class _PRKLibrary2WState extends State<PRKLibrary2W>
             const Duration(milliseconds: 350),
             () {
               _animationController.reverse();
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (BuildContext context,
-                      Animation<double> animation1,
-                      Animation<double> animation2) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(
-                          CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                              .animate(animation1)),
-                      child: const Material(
-                        elevation: 5,
-                        child: Library2w(),
-                      ),
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 400),
-                ),
-              );
               NavbarNotifier.hideBottomNavBar = true;
+              showLibrary2WBottomSheet(context);
             },
           );
         }
@@ -122,18 +101,6 @@ class _PRKLibrary2WState extends State<PRKLibrary2W>
                 child: Stack(
                   children: [
                     Positioned(
-                      top: 10,
-                      right: 10,
-                      child: Container(
-                        width: 7.w,
-                        height: 7.w,
-                        decoration: BoxDecoration(
-                          color: widget.dotColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                    ),
-                    Positioned(
                       bottom: -56,
                       right: -26,
                       child: Transform.flip(
@@ -142,6 +109,18 @@ class _PRKLibrary2WState extends State<PRKLibrary2W>
                           widget.image,
                           height: 284.h,
                           width: 234.w,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        width: 7.w,
+                        height: 7.w,
+                        decoration: BoxDecoration(
+                          color: widget.dotColor,
+                          borderRadius: BorderRadius.circular(100),
                         ),
                       ),
                     ),
