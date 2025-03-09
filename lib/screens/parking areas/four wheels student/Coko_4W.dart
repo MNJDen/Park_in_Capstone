@@ -38,6 +38,8 @@ class _Coko4wBottomSheetState extends State<Coko4wBottomSheet> {
       FirebaseDatabase.instance.ref().child("parkingAreas");
 
   int _coko4wAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 16;
 
   @override
   void initState() {
@@ -54,25 +56,34 @@ class _Coko4wBottomSheetState extends State<Coko4wBottomSheet> {
         if (mounted) {
           setState(() {
             _coko4wAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _coko4wAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 16;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_coko4wAvailableSpace > 0 ? _coko4wAvailableSpace - 1 : 0)
+        : (_coko4wAvailableSpace < _maxSpace
+            ? _coko4wAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Coko Cafe').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_coko4wAvailableSpace == 0) {
-      return parkingRedColor; 
+      return parkingRedColor;
     } else if (_coko4wAvailableSpace == _maxSpace) {
-      return const Color.fromARGB(255, 17, 194, 1); 
+      return const Color.fromARGB(255, 17, 194, 1);
     } else if (_coko4wAvailableSpace < 16 && _coko4wAvailableSpace > 8) {
       return const Color.fromARGB(255, 17, 194, 1);
     } else if (_coko4wAvailableSpace <= 8 && _coko4wAvailableSpace > 4) {
-      return parkingYellowColor; 
+      return parkingYellowColor;
     } else if (_coko4wAvailableSpace <= 4) {
-      return parkingOrangeColor; 
+      return parkingOrangeColor;
     } else {
       return parkingYellowColor;
     }
@@ -199,7 +210,16 @@ class _Coko4wBottomSheetState extends State<Coko4wBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Coko Cafe',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
