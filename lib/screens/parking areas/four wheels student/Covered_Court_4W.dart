@@ -39,7 +39,7 @@ class _CoveredCourt4wBottomSheetState extends State<CoveredCourt4wBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _coveredCourtAvailableSpace = 0;
-
+  bool _isOccupied = false;
   final int _maxSpace = 19;
 
   @override
@@ -57,10 +57,23 @@ class _CoveredCourt4wBottomSheetState extends State<CoveredCourt4wBottomSheet> {
         if (mounted) {
           setState(() {
             _coveredCourtAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _coveredCourtAvailableSpace == 0;
           });
         }
       }
     });
+  }
+
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_coveredCourtAvailableSpace > 0
+            ? _coveredCourtAvailableSpace - 1
+            : 0)
+        : (_coveredCourtAvailableSpace < _maxSpace
+            ? _coveredCourtAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Covered Court').update({'count': newCount});
   }
 
   Color _getStatusColor() {
@@ -195,7 +208,16 @@ class _CoveredCourt4wBottomSheetState extends State<CoveredCourt4wBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Covered Court',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
