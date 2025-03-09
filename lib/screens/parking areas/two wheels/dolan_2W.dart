@@ -37,6 +37,8 @@ class _Dolan2wBottomSheetState extends State<Dolan2wBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _dolan2wAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 50;
 
   @override
   void initState() {
@@ -53,13 +55,22 @@ class _Dolan2wBottomSheetState extends State<Dolan2wBottomSheet> {
         if (mounted) {
           setState(() {
             _dolan2wAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _dolan2wAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 50;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_dolan2wAvailableSpace > 0 ? _dolan2wAvailableSpace - 1 : 0)
+        : (_dolan2wAvailableSpace < _maxSpace
+            ? _dolan2wAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Dolan (M)').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_dolan2wAvailableSpace == 0) {
@@ -206,7 +217,16 @@ class _Dolan2wBottomSheetState extends State<Dolan2wBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Dolan (M)',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
