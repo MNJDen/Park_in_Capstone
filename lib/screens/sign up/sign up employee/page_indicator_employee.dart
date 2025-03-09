@@ -179,6 +179,7 @@ class _PageIndicatorEmployeeState extends State<PageIndicatorEmployee> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
