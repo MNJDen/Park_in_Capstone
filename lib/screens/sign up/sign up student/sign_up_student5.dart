@@ -24,6 +24,9 @@ class SignUpStudentScreen5State extends State<SignUpStudentScreen5> {
   @override
   void initState() {
     super.initState();
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    print('Before Upload - Proof Path: ${userData.imagePath}');
     _checkFormValidity(); // Initialize the form validity when the screen is loaded
   }
 
