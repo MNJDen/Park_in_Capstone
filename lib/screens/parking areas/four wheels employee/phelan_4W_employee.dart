@@ -37,6 +37,8 @@ class _Phelan4wEmployeeBottomSheet extends State<Phelan4wEmployeeBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _phelanAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 30;
 
   @override
   void initState() {
@@ -53,13 +55,22 @@ class _Phelan4wEmployeeBottomSheet extends State<Phelan4wEmployeeBottomSheet> {
         if (mounted) {
           setState(() {
             _phelanAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _phelanAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 30;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_phelanAvailableSpace > 0 ? _phelanAvailableSpace - 1 : 0)
+        : (_phelanAvailableSpace < _maxSpace
+            ? _phelanAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Phelan').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_phelanAvailableSpace == 0) {
@@ -206,7 +217,16 @@ class _Phelan4wEmployeeBottomSheet extends State<Phelan4wEmployeeBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Phelan',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
