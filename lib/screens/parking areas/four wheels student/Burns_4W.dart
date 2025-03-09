@@ -38,6 +38,8 @@ class _Burns4wBottomSheetState extends State<Burns4wBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _burnsAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 15;
 
   @override
   void initState() {
@@ -54,13 +56,22 @@ class _Burns4wBottomSheetState extends State<Burns4wBottomSheet> {
         if (mounted) {
           setState(() {
             _burnsAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _burnsAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 15;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_burnsAvailableSpace > 0 ? _burnsAvailableSpace - 1 : 0)
+        : (_burnsAvailableSpace < _maxSpace
+            ? _burnsAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Burns').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_burnsAvailableSpace == 0) {
@@ -201,7 +212,16 @@ class _Burns4wBottomSheetState extends State<Burns4wBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Burns',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
