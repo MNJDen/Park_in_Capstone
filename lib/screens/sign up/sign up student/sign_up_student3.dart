@@ -35,6 +35,7 @@ class SignUpStudentScreen3State extends State<SignUpStudentScreen3> {
     // Debugging: Print the existing data
     print("Sticker Numbers: ${userData.stickerNumber}");
     print("Plate Numbers: ${userData.plateNumber}");
+    print('Before Upload - imageFile1 Path: ${userData.imagePath}');
 
     // Initialize controllers with existing data
     if (userData.stickerNumber != null && userData.plateNumber != null) {
