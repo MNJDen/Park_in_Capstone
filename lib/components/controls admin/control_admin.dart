@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -39,6 +41,8 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
     'Library (M)': 80,
   };
 
+  late StreamSubscription<DatabaseEvent> _databaseSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +51,22 @@ class _PRKControlsAdminState extends State<PRKControlsAdmin> {
         .ref()
         .child('parkingAreas')
         .child(widget.parkingArea);
+
+    _databaseSubscription =
+        _databaseReference.child('count').onValue.listen((event) {
+      if (event.snapshot.value != null && mounted) {
+        // Check if widget is still mounted
+        setState(() {
+          _currentCount = event.snapshot.value as int;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _databaseSubscription.cancel(); // Cancel the Firebase stream
+    super.dispose();
   }
 
   void _updateCount(int change) {
