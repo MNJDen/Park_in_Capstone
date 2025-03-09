@@ -16,6 +16,7 @@ import 'package:park_in/screens/drawer/settings/personal_details.dart';
 import 'package:park_in/screens/drawer/settings/stickers.dart';
 import 'package:park_in/screens/home%20student/notification_student.dart';
 import 'package:park_in/screens/misc/violations_empty.dart';
+import 'package:park_in/screens/parking%20areas/four%20wheels%20employee/alingal_4W_employee.dart';
 import 'package:park_in/screens/sign%20in/sign_in_student_employee.dart';
 import 'package:park_in/services/auth/Auth_Service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -898,35 +899,38 @@ class _HomeStudentScreen2State extends State<HomeStudentScreen2> {
                             final ticket = tickets[index];
                             final violation = ticket['violation'] as String;
                             final offenseNumber = totalOffenses - index;
+
                             return Column(
                               children: [
-                                PRKViolationCard(
-                                  violationClassification:
-                                      classifyViolation(violation),
-                                  offenseNumber:
-                                      formatOffenseNumber(offenseNumber),
-                                  date: (ticket['timestamp'] as Timestamp)
-                                      .toDate()
-                                      .toString()
-                                      .split(' ')[0],
-                                  violation: violation,
+                                GestureDetector(
+                                  onTap: () {
+                                    showViolationCard(
+                                        context, ticket, offenseNumber);
+                                    NavbarNotifier.hideBottomNavBar = true;
+                                  },
+                                  child: PRKViolationCard(
+                                    violationClassification:
+                                        classifyViolation(violation),
+                                    offenseNumber:
+                                        formatOffenseNumber(offenseNumber),
+                                    date: (ticket['timestamp'] as Timestamp)
+                                        .toDate()
+                                        .toString()
+                                        .split(' ')[0],
+                                    violation: violation,
+                                  ),
                                 ),
                               ],
                             );
                           },
                         )
                             .animate()
-                            .fade(
-                              delay: const Duration(
-                                milliseconds: 200,
-                              ),
-                            )
+                            .fade(delay: const Duration(milliseconds: 200))
                             .moveY(
-                              begin: 10,
-                              end: 0,
-                              curve: Curves.fastEaseInToSlowEaseOut,
-                              duration: const Duration(milliseconds: 350),
-                            ),
+                                begin: 10,
+                                end: 0,
+                                curve: Curves.fastEaseInToSlowEaseOut,
+                                duration: const Duration(milliseconds: 350)),
                       );
                     }
                   } else {
