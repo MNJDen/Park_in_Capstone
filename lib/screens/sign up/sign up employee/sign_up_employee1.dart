@@ -149,6 +149,7 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
