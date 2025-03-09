@@ -40,6 +40,8 @@ class _Alingal4wEmployeeBottomSheetState
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _alingalAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 30;
 
   @override
   void initState() {
@@ -56,13 +58,22 @@ class _Alingal4wEmployeeBottomSheetState
         if (mounted) {
           setState(() {
             _alingalAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _alingalAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 30;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_alingalAvailableSpace > 0 ? _alingalAvailableSpace - 1 : 0)
+        : (_alingalAvailableSpace < _maxSpace
+            ? _alingalAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Alingal').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_alingalAvailableSpace == 0) {
@@ -203,7 +214,16 @@ class _Alingal4wEmployeeBottomSheetState
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Alingal',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
