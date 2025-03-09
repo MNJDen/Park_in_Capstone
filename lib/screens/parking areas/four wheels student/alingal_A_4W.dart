@@ -38,6 +38,8 @@ class _AlingalA4WBottomSheetState extends State<AlingalA4WBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _alingalAAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 35;
 
   @override
   void initState() {
@@ -54,13 +56,22 @@ class _AlingalA4WBottomSheetState extends State<AlingalA4WBottomSheet> {
         if (mounted) {
           setState(() {
             _alingalAAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _alingalAAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 35;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_alingalAAvailableSpace > 0 ? _alingalAAvailableSpace - 1 : 0)
+        : (_alingalAAvailableSpace < _maxSpace
+            ? _alingalAAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Alingal A').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_alingalAAvailableSpace == 0) {
@@ -199,7 +210,16 @@ class _AlingalA4WBottomSheetState extends State<AlingalA4WBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Alingal A',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value); // Save state to Firebase
+            },
+          ),
           SizedBox(height: 20.h),
         ],
       ),
