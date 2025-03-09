@@ -936,18 +936,26 @@ class _HomeEmployeeScreen2State extends State<HomeEmployeeScreen2> {
                             final ticket = tickets[index];
                             final violation = ticket['violation'] as String;
                             final offenseNumber = totalOffenses - index;
+
                             return Column(
                               children: [
-                                PRKViolationCard(
-                                  violationClassification:
-                                      classifyViolation(violation),
-                                  offenseNumber:
-                                      formatOffenseNumber(offenseNumber),
-                                  date: (ticket['timestamp'] as Timestamp)
-                                      .toDate()
-                                      .toString()
-                                      .split(' ')[0],
-                                  violation: violation,
+                                GestureDetector(
+                                  onTap: () {
+                                    showViolationCard(
+                                        context, ticket, offenseNumber);
+                                    NavbarNotifier.hideBottomNavBar = true;
+                                  },
+                                  child: PRKViolationCard(
+                                    violationClassification:
+                                        classifyViolation(violation),
+                                    offenseNumber:
+                                        formatOffenseNumber(offenseNumber),
+                                    date: (ticket['timestamp'] as Timestamp)
+                                        .toDate()
+                                        .toString()
+                                        .split(' ')[0],
+                                    violation: violation,
+                                  ),
                                 ),
                               ],
                             );
