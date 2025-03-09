@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:park_in/components/ui/back_btn.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/ui/secondary_btn.dart';
