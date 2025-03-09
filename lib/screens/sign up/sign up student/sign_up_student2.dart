@@ -35,6 +35,7 @@ class SignUpStudentScreen2State extends State<SignUpStudentScreen2> {
 
     // Add listener to update the phone number in UserDataProvider
     _controller.addListener(_onFieldChanged);
+    print('Before Upload - imageFile1 Path: ${userData.imagePath}');
   }
 
   void _onFieldChanged() {
