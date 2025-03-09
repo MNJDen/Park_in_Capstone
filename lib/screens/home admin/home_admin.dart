@@ -1,4 +1,5 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:park_in/components/controls%20admin/announcement_btn.dart';
@@ -224,6 +225,45 @@ class _HomeAdminScreen1State extends State<HomeAdminScreen1> {
                     child: PRKChat(),
                   ),
                 ],
+              ),
+              FloatingActionButton(
+                onPressed: () async {
+                  final databaseRef =
+                      FirebaseDatabase.instance.ref("parkingAreas");
+
+                  // Define the max capacity values for each parking area
+                  final Map<String, int> parkingAreas = {
+                    'Alingal': 30,
+                    'Phelan': 30,
+                    'Alingal A': 35,
+                    'Alingal B': 13,
+                    'Burns': 15,
+                    'Coko Cafe': 16,
+                    'Covered Court': 19,
+                    'Library': 9,
+                    'Alingal (M)': 80,
+                    'Dolan (M)': 50,
+                    'Library (M)': 80,
+                  };
+
+                  try {
+                    for (var entry in parkingAreas.entries) {
+                      await databaseRef.child(entry.key).update({
+                        'count': entry.value,
+                      });
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                              'Max capacity reset for all parking areas!')),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error resetting capacities: $e')),
+                    );
+                  }
+                },
+                child: Icon(Icons.refresh),
               ),
               SizedBox(
                 height: 12.h,
