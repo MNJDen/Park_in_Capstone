@@ -158,6 +158,7 @@ class _PageIndicatorStudentState extends State<PageIndicatorStudent> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
