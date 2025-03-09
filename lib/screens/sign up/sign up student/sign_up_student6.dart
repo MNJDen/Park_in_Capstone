@@ -10,6 +10,7 @@ import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:park_in/providers/user_data_provider.dart';
+import 'package:park_in/services/auth/Auth_Gate.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:confetti/confetti.dart';
@@ -135,46 +136,10 @@ class _SignUpStudentScreen6State extends State<SignUpStudentScreen6> {
       await prefs.setString('userType', userData.usertype ?? 'Employee');
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            elevation: 0,
-            margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: blackColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: successColor,
-                  size: 20.r,
-                ),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Flexible(
-                  child: Text(
-                    'Sign Up Successful!',
-                    style: TextStyle(
-                      color: whiteColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => BottomNavBarStudent(),
+            builder: (context) => AuthGate(),
           ),
         );
       }
