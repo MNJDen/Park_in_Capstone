@@ -5,10 +5,13 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_employee.dart';
 import 'package:park_in/components/bottom%20nav%20bar/bottom_nav_bar_student.dart';
 import 'package:park_in/components/snackbar/error_snackbar.dart';
+import 'package:park_in/components/snackbar/success_snackbar.dart';
 import 'package:park_in/components/theme/color_scheme.dart';
 import 'package:park_in/components/field/form_field.dart';
 import 'package:park_in/components/ui/primary_btn.dart';
 import 'package:park_in/components/ui/secondary_btn.dart';
+import 'package:park_in/screens/misc/forgot%20password/forgot_password.dart';
+import 'package:park_in/screens/misc/verification.dart';
 import 'package:park_in/screens/sign%20in/sign_in_admin.dart';
 import 'package:park_in/screens/sign%20up/sign_up_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,21 +48,24 @@ class _SignInScreenState extends State<SignInScreen> {
         final userDoc = userSnapshot.docs.first;
         final userType = userDoc['userType'];
         final userId = userDoc.id;
+        final status = userDoc['status'];
+
+        print("User Status: $status");
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         await prefs.setString('userType', userType);
         await prefs.setString('userId', userId);
 
-        // Show loading screen only now, as credentials are correct
         setState(() {
           _isSigningIn = true;
         });
 
-        // Navigate to appropriate page based on userType
         Widget destination;
 
-        if (userType == 'Student') {
+        if (status == 'non-verified') {
+          destination = const NonVerified();
+        } else if (userType == 'Student') {
           destination = const BottomNavBarStudent();
         } else if (userType == 'Employee') {
           destination = const BottomNavBarEmployee();
@@ -71,61 +77,47 @@ class _SignInScreenState extends State<SignInScreen> {
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            elevation: 0,
-            margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: blackColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: successColor,
-                  size: 20.r,
-                ),
-                SizedBox(
-                  width: 8.w,
-                ),
-                Flexible(
-                  child: Text(
-                    'Sign In Successful!',
-                    style: TextStyle(
-                      color: whiteColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
+        if (status == 'verified') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              elevation: 0,
+              margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 90.h),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: blackColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline_rounded,
+                    color: successColor,
+                    size: 20.r,
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Flexible(
+                    child: Text(
+                      'Sign In Successful!',
+                      style: TextStyle(
+                        color: whiteColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        }
 
         Navigator.pushReplacement(
           context,
-          PageRouteBuilder(
-            pageBuilder: (BuildContext context, Animation<double> animation1,
-                Animation<double> animation2) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).animate(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)
-                    .animate(animation1)),
-                child: Material(
-                  elevation: 5,
-                  child: destination,
-                ),
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 400),
-          ),
+          MaterialPageRoute(builder: (context) => destination),
         );
       } else {
         errorSnackbar(context, "Invalid user number or password");
@@ -277,7 +269,53 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ],
                               ),
-                              
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Wrap(
+                                spacing: 2.w,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (BuildContext context,
+                                              Animation<double> animation1,
+                                              Animation<double> animation2) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(1, 0),
+                                                end: Offset.zero,
+                                              ).animate(CurveTween(
+                                                      curve: Curves
+                                                          .fastEaseInToSlowEaseOut)
+                                                  .animate(animation1)),
+                                              child: const Material(
+                                                elevation: 5,
+                                                child: ForgotPasswordScreen(),
+                                              ),
+                                            );
+                                          },
+                                          transitionDuration:
+                                              const Duration(milliseconds: 400),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      "Forgot Password?",
+                                      style: TextStyle(
+                                          color: blueColor,
+                                          fontSize: 12.r,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: blueColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ],
