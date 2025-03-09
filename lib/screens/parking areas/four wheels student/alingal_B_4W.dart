@@ -38,6 +38,8 @@ class _AlingalB4WBottomSheetState extends State<AlingalB4WBottomSheet> {
       FirebaseDatabase.instance.ref().child('parkingAreas');
 
   int _alingalBAvailableSpace = 0;
+  bool _isOccupied = false;
+  final int _maxSpace = 13;
 
   @override
   void initState() {
@@ -54,25 +56,34 @@ class _AlingalB4WBottomSheetState extends State<AlingalB4WBottomSheet> {
         if (mounted) {
           setState(() {
             _alingalBAvailableSpace = data?['count'] ?? 0;
+            _isOccupied = _alingalBAvailableSpace == 0;
           });
         }
       }
     });
   }
 
-  final int _maxSpace = 13;
+  void _updateCount(bool value) {
+    final int newCount = value
+        ? (_alingalBAvailableSpace > 0 ? _alingalBAvailableSpace - 1 : 0)
+        : (_alingalBAvailableSpace < _maxSpace
+            ? _alingalBAvailableSpace + 1
+            : _maxSpace);
+
+    _databaseReference.child('Alingal B').update({'count': newCount});
+  }
 
   Color _getStatusColor() {
     if (_alingalBAvailableSpace == 0) {
-      return parkingRedColor; 
+      return parkingRedColor;
     } else if (_alingalBAvailableSpace == _maxSpace) {
-      return const Color.fromARGB(255, 17, 194, 1); 
+      return const Color.fromARGB(255, 17, 194, 1);
     } else if (_alingalBAvailableSpace < 13 && _alingalBAvailableSpace > 7) {
       return const Color.fromARGB(255, 17, 194, 1);
     } else if (_alingalBAvailableSpace <= 7 && _alingalBAvailableSpace > 5) {
-      return parkingYellowColor; 
+      return parkingYellowColor;
     } else if (_alingalBAvailableSpace <= 5) {
-      return parkingOrangeColor; 
+      return parkingOrangeColor;
     } else {
       return parkingYellowColor;
     }
@@ -80,15 +91,15 @@ class _AlingalB4WBottomSheetState extends State<AlingalB4WBottomSheet> {
 
   String _getStatusText() {
     if (_alingalBAvailableSpace == 0) {
-      return "Full"; 
+      return "Full";
     } else if (_alingalBAvailableSpace == _maxSpace) {
-      return "Plenty of Space"; 
+      return "Plenty of Space";
     } else if (_alingalBAvailableSpace < 13 && _alingalBAvailableSpace > 7) {
-      return "Plenty of Space"; 
+      return "Plenty of Space";
     } else if (_alingalBAvailableSpace <= 7 && _alingalBAvailableSpace > 5) {
-      return "Half Full"; 
+      return "Half Full";
     } else if (_alingalBAvailableSpace <= 5) {
-      return "Almost Full"; 
+      return "Almost Full";
     } else {
       return "Filling";
     }
@@ -190,7 +201,16 @@ class _AlingalB4WBottomSheetState extends State<AlingalB4WBottomSheet> {
             ],
           ),
           SizedBox(height: 40.h),
-          const PRKSwitchBtn(),
+          PRKSwitchBtn(
+            parkingArea: 'Alingal B',
+            initialValue: _isOccupied,
+            onChanged: (value) {
+              setState(() {
+                _isOccupied = value;
+              });
+              _updateCount(value);
+            },
+          ),
           SizedBox(height: 40.h),
         ],
       ),
