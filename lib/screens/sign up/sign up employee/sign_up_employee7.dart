@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:park_in/providers/user_data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:confetti/confetti.dart';
+import 'dart:io';
 
 class SignUpEmployeeScreen7 extends StatefulWidget {
   const SignUpEmployeeScreen7({super.key});
@@ -30,6 +31,9 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
   @override
   void initState() {
     super.initState();
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    print('Final Path - Proof: ${userData.imagePath}');
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _leftConfettiController.play();
       _rightConfettiController.play();
@@ -55,6 +59,8 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
 
       // Upload the image and get the download URL (if any)
       String? downloadUrl;
+      String? downloadUrl1;
+
       if (userData.imageFile != null) {
         final storageRef = FirebaseStorage.instance
             .ref()
@@ -67,6 +73,35 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
 
         // Update the userData with the download URL
         userDataProvider.updateUserData(imageUrl: downloadUrl);
+      }
+
+      if (userData.imagePath != null) {
+        File imageFile = File(userData.imagePath!); // Convert path to File
+
+        final storageRef1 = FirebaseStorage.instance
+            .ref()
+            .child('User Attachments')
+            .child('${userData.name}-ID.jpg');
+
+        try {
+          final uploadTask = storageRef1.putFile(imageFile);
+
+          // Wait for the task to complete
+          final snapshot = await uploadTask.whenComplete(() {
+            print('Upload completed successfully');
+          });
+
+          // Check if the upload was successful
+          if (snapshot.state == TaskState.success) {
+            downloadUrl1 = await snapshot.ref.getDownloadURL();
+            print('Download URL 1: $downloadUrl1');
+            userDataProvider.updateUserData(imageUrl1: downloadUrl1);
+          } else {
+            print('Upload failed: ${snapshot.state}');
+          }
+        } catch (e) {
+          print('Error uploading image: $e');
+        }
       }
 
       final QuerySnapshot snapshot =
@@ -84,11 +119,13 @@ class _SignUpEmployeeScreen7State extends State<SignUpEmployeeScreen7> {
       await userDocument.set({
         'userType': userData.usertype,
         'name': userData.name,
+        'email': userData.email,
         'userNumber': userData.userNumber,
         'mobileNo': userData.phoneNumber,
         'department': userData.department,
         'password': userData.password,
         'profilePicture': downloadUrl, // Use the downloadUrl
+        'attachment': downloadUrl1,
         'stickerNumber': userData.stickerNumber,
         'plateNo': userData.plateNumber,
         'status': 'non-verified',
