@@ -21,8 +21,10 @@ class SignUpEmployeeScreen1 extends StatefulWidget {
 }
 
 class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
+  late TextEditingController _emailCtrl;
   late TextEditingController _nameCtrl;
   late TextEditingController _userNumberCtrl;
+  final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
 
   bool off = false;
@@ -32,12 +34,19 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
     super.initState();
     final userData =
         Provider.of<UserDataProvider>(context, listen: false).userData;
+
+    _emailCtrl = TextEditingController(text: userData.email ?? '');
     _nameCtrl = TextEditingController(text: userData.name ?? '');
     _userNumberCtrl = TextEditingController(text: userData.userNumber ?? '');
+
+    if (userData.imagePath != null && userData.imagePath!.isNotEmpty) {
+      _selectedImage = File(userData.imagePath!);
+    }
 
     // Listen for changes and update user data
     _nameCtrl.addListener(_onFieldChanged);
     _userNumberCtrl.addListener(_onFieldChanged);
+    _emailCtrl.addListener(_onFieldChanged);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkFormValidity();
@@ -48,35 +57,34 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
     Provider.of<UserDataProvider>(context, listen: false).updateUserData(
       name: _nameCtrl.text,
       userNumber: _userNumberCtrl.text,
+      email: _emailCtrl.text,
     );
     _checkFormValidity();
   }
 
   void _checkFormValidity() {
-    final isValid =
-        _nameCtrl.text.isNotEmpty && _userNumberCtrl.text.isNotEmpty;
+    final isValid = _nameCtrl.text.isNotEmpty &&
+        _userNumberCtrl.text.isNotEmpty &&
+        _selectedImage != null;
     widget.onFormValidityChanged(isValid); // Notify parent about form validity
   }
 
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final ImageSource? source = await _showImageSourceOption();
-    if (source != null) {
-      final XFile? image = await picker.pickImage(
-        source: source,
-      );
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
 
-      if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
-      }
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+      Provider.of<UserDataProvider>(context, listen: false)
+          .updateUserData(imagePath: image.path);
     }
+    _checkFormValidity();
   }
 
-  Future<ImageSource?> _showImageSourceOption() async {
-    return await showModalBottomSheet<ImageSource>(
-      backgroundColor: bgColor,
+  Future<void> _showImageSourceOptions() async {
+    final ImageSource? source = await showModalBottomSheet<ImageSource>(
+      backgroundColor: whiteColor,
       showDragHandle: true,
       useSafeArea: true,
       context: context,
@@ -126,23 +134,33 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
         ),
       ),
     );
+
+    if (source != null) {
+      await _pickImage(source);
+    }
   }
 
   void _clearImage() {
     setState(() {
       _selectedImage = null;
     });
+
+    Provider.of<UserDataProvider>(context, listen: false)
+        .updateUserData(imagePath: null);
   }
 
   @override
   void dispose() {
     _nameCtrl.dispose();
     _userNumberCtrl.dispose();
+    _emailCtrl.dispose();
     super.dispose();
   }
 
   bool isFormValid() {
-    return _nameCtrl.text.isNotEmpty && _userNumberCtrl.text.isNotEmpty;
+    return _nameCtrl.text.isNotEmpty &&
+        _userNumberCtrl.text.isNotEmpty &&
+        _selectedImage != null;
   }
 
   @override
@@ -155,6 +173,7 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +199,7 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                   PRKFormField(
                     prefixIcon: Icons.alternate_email_rounded,
                     labelText: "Email",
-                    controller: _nameCtrl,
+                    controller: _emailCtrl,
                     isCapitalized: true,
                   ),
                   SizedBox(height: 12.h),
@@ -195,11 +214,10 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                     prefixIcon: Icons.badge_rounded,
                     labelText: "Employee Number",
                     controller: _userNumberCtrl,
-                    helperText: "Ex: 202100228",
+                    helperText: "Ex: 202100153",
                     keyboardType: TextInputType.number,
                     maxLength: 9,
                   ),
-                  SizedBox(height: 12.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -301,7 +319,7 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                           const Spacer(),
                           IconButton(
                             onPressed: () {
-                              _pickImage();
+                              _showImageSourceOptions();
                             },
                             icon: Icon(
                               _selectedImage != null
@@ -313,30 +331,6 @@ class SignUpEmployeeScreen1State extends State<SignUpEmployeeScreen1> {
                       ),
                     ),
                   )
-                  // Row(
-                  //   children: [
-                  //     Switch(
-                  //       value: off,
-                  //       inactiveThumbColor: blackColor,
-                  //       inactiveTrackColor: whiteColor,
-                  //       activeTrackColor: blueColor,
-                  //       activeColor: whiteColor,
-                  //       onChanged: (bool value) {
-                  //         setState(() {
-                  //           off = value;
-                  //         });
-                  //       },
-                  //     ),
-                  //     SizedBox(width: 12.w),
-                  //     Text(
-                  //       "I have a reserved parking space",
-                  //       style: TextStyle(
-                  //         fontSize: 12.r,
-                  //         color: blackColor,
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                 ],
               ),
               Padding(
