@@ -24,6 +24,9 @@ class SignUpEmployeeScreen6State extends State<SignUpEmployeeScreen6> {
   @override
   void initState() {
     super.initState();
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    print('Before Upload - Proof Path: ${userData.imagePath}');
     _checkFormValidity();
   }
 
